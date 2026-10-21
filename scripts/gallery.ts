@@ -1,9 +1,9 @@
-// Builds concepts/gallery.html: an offline preview of every round-one concept in context.
+// Builds concepts/gallery.html: an offline preview of the current logo concepts in context.
 // Run with `pnpm gallery`, then open the file in a browser.
 
 import { writeFileSync } from 'node:fs';
 import { Resvg } from '@resvg/resvg-js';
-import { type Concept, concepts, ink, type MarkId, productAccent, tile } from './concepts.ts';
+import { type Concept, concepts, ink, type MarkId, tile } from './concepts.ts';
 import { wordmark } from './wordmark.ts';
 
 interface Colors {
@@ -67,7 +67,7 @@ const contrast = (a: string, b: string): string => {
 };
 
 const accentOf = (concept: Concept, id: MarkId, mode: 'light' | 'dark'): string =>
-  id === 'openlinkos' ? concept.accent[mode] : productAccent[id][mode];
+  concept.accents[id][mode];
 
 const LABEL: Record<MarkId, { word: string; descriptor?: string; title: string }> = {
   openlinkos: { word: 'OpenLinkOS', title: 'OpenLinkOS' },
@@ -129,17 +129,34 @@ const section = (concept: Concept): string => {
   const readme = (mode: 'light' | 'dark'): string => `
       <div class="readme ${mode}"><img height="44" src="${dataSvg(lockupSvg(inner('origin'), mode === 'light' ? light('origin') : dark('origin'), 'Origin'))}"><p><b>Local-first, cross-agent personal memory for AI coding agents.</b></p><p class="badges"><span>CI passing</span><span>license MIT</span></p></div>`;
 
+  const swatch = (name: string, kind: string, l: string, d: string, need: number): string => {
+    const cl = Number(contrast(l, '#ffffff'));
+    const cd = Number(contrast(d, '#1b1b1f'));
+    const mark = (c: number): string => (c >= need ? '✓' : '✗');
+    return `
+      <div class="swatch"><i style="background:${l}"></i><i style="background:${d}"></i><span><b>${name}</b> ${kind}<br>${l} · ${cl}:1 on white ${mark(cl)}<br>${d} · ${cd}:1 on #1b1b1f ${mark(cd)}</span></div>`;
+  };
   const swatches = [
-    ['OpenLinkOS', concept.accent.light, concept.accent.dark],
-    ['Origin', productAccent.origin.light, productAccent.origin.dark],
-    ['LinkOS', productAccent.linkos.light, productAccent.linkos.dark],
-    ['Ink', ink.light, ink.dark],
-  ]
-    .map(
-      ([name, l, d]) => `
-      <div class="swatch"><i style="background:${l}"></i><i style="background:${d}"></i><span><b>${name}</b><br>${l} · ${contrast(l, '#ffffff')}:1 on white<br>${d} · ${contrast(d, '#1b1b1f')}:1 on #1b1b1f</span></div>`,
-    )
-    .join('');
+    ...IDS.map((id) =>
+      swatch(
+        LABEL[id].title.split(' ')[0],
+        'mark (≥3:1)',
+        concept.accents[id].light,
+        concept.accents[id].dark,
+        3,
+      ),
+    ),
+    ...IDS.map((id) =>
+      swatch(
+        LABEL[id].title.split(' ')[0],
+        'text (≥4.5:1)',
+        concept.text[id].light,
+        concept.text[id].dark,
+        4.5,
+      ),
+    ),
+    swatch('Ink', '', ink.light, ink.dark, 4.5),
+  ].join('');
 
   return `
   <section id="${concept.id}">
@@ -157,7 +174,7 @@ const section = (concept: Concept): string => {
 };
 
 const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>OpenLinkOS logo concepts · round 1</title>
+<html lang="en"><head><meta charset="utf-8"><title>OpenLinkOS logo concepts · round 3</title>
 <style>
   :root { font-family: Inter, "Segoe UI", system-ui, sans-serif; color: #0f172a; }
   body { margin: 0; padding: 32px 48px 96px; background: #f8fafc; }
@@ -187,13 +204,13 @@ const html = `<!doctype html>
   .readme { width: 420px; padding: 24px; border-radius: 12px; font-size: 14px; }
   .readme.light { background: #fff; border: 1px solid #d0d7de; color: #1f2328; } .readme.dark { background: #0d1117; border: 1px solid #30363d; color: #e6edf3; }
   .badges span { display: inline-block; font-size: 11px; padding: 2px 6px; margin-right: 6px; border-radius: 3px; background: #555; color: #fff; }
-  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .swatch { display: flex; gap: 8px; align-items: center; font-size: 12px; color: #334155; }
   .swatch i { width: 36px; height: 36px; border-radius: 8px; display: inline-block; }
 </style></head>
 <body>
-  <h1>OpenLinkOS logo concepts · round 1</h1>
-  <p class="lead">Three directions on one system: 48-unit grid, 4-unit margin, 4-unit round strokes (5.5 at 16/32 px), at most two colours, mono must still work. Each direction shows the OpenLinkOS master mark, the Origin product mark and the LinkOS service-line mark (shown as LinkOS Mirrors). Wordmarks use one shared monoline alphabet drawn as paths. Product and service accents are held constant across directions so the shapes compare fairly; the palette is tuned after a direction is chosen.</p>
+  <h1>OpenLinkOS logo concepts · round 3</h1>
+  <p class="lead">Direction B, refined. The system: a hexagonal cell on a 48-unit grid (4-unit margin, 4-unit round strokes, 5.5 at 16/32 px). The OpenLinkOS master mark is the cell opened on one side; products are closed cells with one inner glyph (Origin: the origin point); the LinkOS service line is the closed cell with the cube of the legacy LinkOS mark. B1–B4 vary only the master mark; the last section shows B2 with a blue master colour. Each palette lists mark colours (graphics need 3:1) and text colours for links and buttons (4.5:1).</p>
   <nav class="toc">${concepts.map((c) => `<a href="#${c.id}">${c.name}</a>`).join('')}</nav>
   ${concepts.map(section).join('')}
 </body></html>`;
