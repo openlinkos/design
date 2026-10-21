@@ -89,15 +89,22 @@ const resolveHostname = (hostname: string): string => {
   return url.origin;
 };
 
-/** The family menu: OpenLinkOS projects and LinkOS services, from brands.json. */
+/** The family menu: the OpenLinkOS home, its projects and the LinkOS services, from brands.json. */
 const familyNav = (locale: 'en' | 'zh'): DefaultTheme.NavItem => {
+  const brands = loadBrands();
   const group = (nav: 'projects' | 'services'): DefaultTheme.NavItemChildren => ({
     text: FAMILY[locale][nav],
-    items: loadBrands()
-      .filter((b) => b.nav === nav)
-      .map((b) => ({ text: b.name, link: b.url[locale] })),
+    items: brands.filter((b) => b.nav === nav).map((b) => ({ text: b.name, link: b.url[locale] })),
   });
-  return { text: 'OpenLinkOS', items: [group('projects'), group('services')] };
+  const home = brands.find((b) => b.tier === 'master');
+  return {
+    text: 'OpenLinkOS',
+    items: [
+      ...(home ? [{ text: FAMILY[locale].home, link: home.url[locale] }] : []),
+      group('projects'),
+      group('services'),
+    ],
+  };
 };
 
 /** The search options: local search with Chinese strings and a CJK-aware tokenizer. */

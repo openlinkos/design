@@ -109,6 +109,7 @@ describe('defineOpenLinkOSConfig', () => {
     expect(en.at(-1)).toEqual({
       text: 'OpenLinkOS',
       items: [
+        { text: 'OpenLinkOS home', link: 'https://openlinkos.com/' },
         {
           text: 'Projects',
           items: [
@@ -128,10 +129,15 @@ describe('defineOpenLinkOSConfig', () => {
     const family = zh.at(-1) as DefaultTheme.NavItemWithChildren;
     expect(family.text).toBe('OpenLinkOS');
     expect(family.items.map((g) => (g as DefaultTheme.NavItemChildren).text)).toEqual([
+      'OpenLinkOS 主页',
       '开源项目',
       '服务',
     ]);
-    expect((family.items[0] as DefaultTheme.NavItemChildren).items[0]).toEqual({
+    expect(family.items[0]).toEqual({
+      text: 'OpenLinkOS 主页',
+      link: 'https://openlinkos.com/zh/',
+    });
+    expect((family.items[1] as DefaultTheme.NavItemChildren).items[0]).toEqual({
       text: 'Origin',
       link: 'https://origin.openlinkos.com/zh/',
     });

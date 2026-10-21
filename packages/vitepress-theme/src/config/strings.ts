@@ -63,8 +63,8 @@ export const UI: Record<'en' | 'zh', UiStrings> = {
 
 /** Labels of the family menu. */
 export const FAMILY = {
-  en: { projects: 'Projects', services: 'Services' },
-  zh: { projects: '开源项目', services: '服务' },
+  en: { home: 'OpenLinkOS home', projects: 'Projects', services: 'Services' },
+  zh: { home: 'OpenLinkOS 主页', projects: '开源项目', services: '服务' },
 } as const;
 
 /** Local search in Chinese: the button and every key of the modal. */
