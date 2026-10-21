@@ -1,6 +1,13 @@
-# OpenLinkOS Design
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="brand/out/openlinkos/github/readme-dark.svg">
+    <img alt="OpenLinkOS Design" src="brand/out/openlinkos/github/readme-light.svg" height="48">
+  </picture>
+</h1>
 
 **The brand and the shared site theme of OpenLinkOS and LinkOS.**
+
+[![npm](https://img.shields.io/npm/v/@openlinkos/vitepress-theme)](https://www.npmjs.com/package/@openlinkos/vitepress-theme) [![CI](https://github.com/openlinkos/design/actions/workflows/ci.yml/badge.svg)](https://github.com/openlinkos/design/actions/workflows/ci.yml)
 
 English | [简体中文](README.zh-CN.md)
 
