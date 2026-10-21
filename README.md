@@ -10,7 +10,7 @@ This repository holds:
 - the generated brand assets: favicons, app icons, social images, and README headers;
 - `@openlinkos/vitepress-theme`, the VitePress theme every OpenLinkOS and LinkOS site uses for its look, bilingual (English and Simplified Chinese) interface, language detection, and metadata.
 
-The design system is in its first iteration; the marks are being chosen.
+The marks, the asset generator and the brand registry are in place; the shared theme is in progress. Maintainers: see [BRAND.md](BRAND.md).
 
 ## License
 

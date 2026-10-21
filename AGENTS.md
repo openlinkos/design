@@ -10,15 +10,18 @@ The OpenLinkOS design system: the brand marks of OpenLinkOS (open-source project
 
 ```bash
 pnpm install
-pnpm gallery      # round-one logo concepts → concepts/gallery.html
+pnpm gen          # regenerate brand/out/ from brand/brands.json, brand/marks.ts, brand/wordmark.ts
+pnpm test         # vitest: brand registry, contrast rules, generated assets
 pnpm lint         # biome check
 pnpm lint:fix     # biome check --write
 ```
 
+Read [BRAND.md](BRAND.md) before changing a mark, a colour, or the asset set.
+
 ## Rules
 
 - **Marks are geometry.** Brand marks and wordmarks are drawn on a 48-unit grid with round-capped strokes, as paths only: no `<text>`, filters, external references, or embedded fonts. Colours come from classes (`ink`, `accent`, `ink-f`, `accent-f`), never inline, so one geometry renders every colourway.
-- **Generated files are reproducible.** Never hand-edit generated assets; change the source or the generator and regenerate.
+- **Generated files are reproducible.** Never hand-edit `brand/out/`; change the source or the generator, run `pnpm gen`, and commit both. CI fails if the committed output differs from a fresh run on Linux or Windows.
 - **The marks are not MIT-licensed.** The code is MIT; the OpenLinkOS and LinkOS names and marks are governed by the brand guidelines on openlinkos.com/brand.
 - **Use English** for code, comments, docs, and commit messages. Keep `README.zh-CN.md` in sync with `README.md`.
 - **Ask before adding dependencies**, and pin every dependency to an exact version.
@@ -27,6 +30,6 @@ pnpm lint:fix     # biome check --write
 ## Git
 
 - Maintainers commit directly to `master`. External contributions come in through pull requests.
-- Run `pnpm lint` before every commit, then commit and push once a change is complete and verified.
+- Run `pnpm lint` and `pnpm test` (and `pnpm gen` when the brand changes) before every commit, then commit and push once a change is complete and verified.
 - Use Conventional Commits in English: `<type>(<scope>): <summary>`, where type is one of `feat | fix | docs | refactor | test | perf | build | ci | chore`.
 - Do not add attribution trailers such as `Co-Authored-By`. The project's `.claude/settings.json` blanks Claude Code's commit and PR attribution to enforce this.

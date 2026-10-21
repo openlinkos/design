@@ -10,7 +10,7 @@
 - 由标志生成的品牌资产：favicon、应用图标、社交分享图和 README 头图；
 - `@openlinkos/vitepress-theme`：所有 OpenLinkOS 与 LinkOS 站点共用的 VitePress 主题，提供统一外观、中英双语界面、语言检测和元信息。
 
-设计系统处于第一轮迭代，标志方案正在选定。
+标志、资产生成器和品牌注册表已经就绪，共享主题正在开发。维护者请阅读 [BRAND.md](BRAND.md)。
 
 ## 许可
 

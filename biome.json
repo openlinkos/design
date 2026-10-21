@@ -6,7 +6,9 @@
   },
   "files": {
     "includes": [
+      "brand/**",
       "scripts/**",
+      "test/**",
       "packages/**",
       "playground/.vitepress/**",
       "*.ts",
