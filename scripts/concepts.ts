@@ -1,16 +1,12 @@
-// Round-two logo concepts: the Hex/Node direction (round one, commit 28ead5e, also had Link and
-// Aperture). Every mark sits on a 48-unit grid with a 4-unit margin and is drawn with 4-unit
-// round-capped strokes. Colours are applied through classes only:
+// Logo concepts under review (earlier rounds are in git history: round one 28ead5e, round two
+// and three 7928d65). Every mark sits on a 48-unit grid with a 4-unit margin and is drawn with
+// 4-unit round-capped strokes. Colours are applied through classes only:
 //   .ink / .accent      stroked shapes
 //   .ink-f / .accent-f  filled shapes (dots)
 // so one geometry renders in light, dark and mono colourways.
-//
-// The system: a hexagonal cell. The OpenLinkOS master mark is the cell opened on one side;
-// products are closed cells with one inner glyph (Origin: the origin point); the LinkOS
-// service line is the closed cell with the isometric cube of the legacy LinkOS mark.
 
-import { hexagon, line, polar, polyline } from './geometry.ts';
-import { candidates } from './round3.ts';
+import { hexagon, line, polyline } from './geometry.ts';
+import { variants } from './round4.ts';
 
 export type MarkId = 'openlinkos' | 'origin' | 'linkos';
 
@@ -41,11 +37,6 @@ const open = (cls: string): string =>
   p(cls, polyline([hex[1], hex[2], hex[3], hex[4], hex[5], hex[0]]));
 const mid: [number, number] = [(hex[0][0] + hex[1][0]) / 2, (hex[0][1] + hex[1][1]) / 2];
 
-const origin = (): string => closed('ink') + dotAt('accent-f', C, 6);
-const linkos = (): string =>
-  closed('ink') +
-  p('accent', [hex[5], hex[1], hex[3]].map(([x, y]) => line(24, 24, x, y)).join(''));
-
 const cyan = {
   accents: {
     openlinkos: { light: '#0891b2', dark: '#22d3ee' },
@@ -59,84 +50,30 @@ const cyan = {
   },
 };
 
-const blue = {
-  accents: { ...cyan.accents, openlinkos: { light: '#2563eb', dark: '#6b9bff' } },
-  text: { ...cyan.text, openlinkos: { light: '#1d4ed8', dark: '#6b9bff' } },
-};
-
-const plug = (): string => open('ink') + dotAt('accent-f', mid, 4.5);
-
 export const concepts: Concept[] = [
   {
-    id: 'h',
-    name: 'H · 开 本 互',
-    idea: 'Round three. Four- and five-stroke Chinese characters drawn with the monoline construction, one accent stroke each: 开 "open" for OpenLinkOS, 本 "root, origin" for Origin, 互 "inter-, mutual" (as in 互联, to interconnect) for LinkOS. Screened with Google Lens and Baidu image search: no logo matches, only the characters themselves in fonts.',
-    ...cyan,
-    marks: {
-      openlinkos: candidates['kai-2'].svg,
-      origin: candidates.ben.svg,
-      linkos: candidates['hu-2'].svg,
-    },
-  },
-
-  {
-    id: 'b1',
-    name: 'B1 · Node and link',
-    idea: 'Round one: a node at the centre, linked out through the opening to a second node.',
-    ...cyan,
-    marks: {
-      openlinkos: () =>
-        open('ink') +
-        p('accent', line(24, 24, mid[0], mid[1])) +
-        dotAt('accent-f', C, 4.5) +
-        dotAt('accent-f', mid, 3.5),
-      origin,
-      linkos,
-    },
-  },
-  {
     id: 'b2',
-    name: 'B2 · Plug',
-    idea: 'A single node sits in the opening: the cell is open, and this is where it connects.',
-    ...cyan,
-    marks: { openlinkos: plug, origin, linkos },
-  },
-  {
-    id: 'b3',
-    name: 'B3 · Hub',
-    idea: 'A larger centre node with one link reaching out through the opening; no second dot.',
+    name: 'B2 · Plug (round two, as you liked it)',
+    idea: 'An open cell with a node in the opening; Origin is the closed cell with the origin point, LinkOS the cell with the cube of the legacy LinkOS mark. See the screening section: all three have close look-alikes.',
     ...cyan,
     marks: {
-      openlinkos: () =>
-        open('ink') + p('accent', line(24, 24, mid[0], mid[1])) + dotAt('accent-f', C, 6),
-      origin,
-      linkos,
+      openlinkos: () => open('ink') + dotAt('accent-f', mid, 4.5),
+      origin: () => closed('ink') + dotAt('accent-f', C, 6),
+      linkos: () =>
+        closed('ink') +
+        p('accent', [hex[5], hex[1], hex[3]].map(([x, y]) => line(24, 24, x, y)).join('')),
     },
   },
   {
-    id: 'b4',
-    name: 'B4 · Lid',
-    idea: 'The upper-right edge swings open like a lid, with a node inside: an open box.',
+    id: 'lifted',
+    name: 'L · Lifted edge',
+    idea: 'Round four. Keeps the open cell of B2 but drops the dot: one edge is lifted away from the cell as an accent stroke. The edge that is lifted identifies the brand (OpenLinkOS: upper right; Origin: left; LinkOS: right), the colour identifies the tier.',
     ...cyan,
     marks: {
-      openlinkos: () => {
-        const tip = polar(hex[0][0], hex[0][1], 18, 5);
-        return (
-          p('ink', polyline([hex[1], hex[2], hex[3], hex[4], hex[5], hex[0]])) +
-          p('accent', line(hex[0][0], hex[0][1], tip[0], tip[1])) +
-          dotAt('accent-f', C, 5.5)
-        );
-      },
-      origin,
-      linkos,
+      openlinkos: variants['m-offset'].svg,
+      origin: variants['f-origin'].svg,
+      linkos: variants['f-linkos'].svg,
     },
-  },
-  {
-    id: 'b2-blue',
-    name: 'B2 · Plug, blue master colour',
-    idea: 'Same as B2 with a blue master colour, to separate OpenLinkOS more clearly from the green LinkOS line.',
-    ...blue,
-    marks: { openlinkos: plug, origin, linkos },
   },
 ];
 

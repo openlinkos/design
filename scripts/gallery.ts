@@ -1,7 +1,7 @@
 // Builds concepts/gallery.html: an offline preview of the current logo concepts in context.
 // Run with `pnpm gallery`, then open the file in a browser.
 
-import { writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { Resvg } from '@resvg/resvg-js';
 import { type Concept, concepts, ink, type MarkId, tile } from './concepts.ts';
 import { wordmark } from './wordmark.ts';
@@ -173,8 +173,34 @@ const section = (concept: Concept): string => {
   </section>`;
 };
 
+function screening(): string {
+  const dir = new URL('../concepts/screening/', import.meta.url);
+  const rows: Array<[string, string]> = [
+    [
+      'b2-openlinkos.png',
+      'B2 OpenLinkOS — Lens: GluCare.Health, Caplo (an agent-memory product) use an open hexagon with a dot in the gap',
+    ],
+    ['b2-origin.png', 'B2 Origin — Lens: Blisk browser and generic hex-nut icons'],
+    ['b2-linkos.png', 'B2 LinkOS — Lens: FinOps Foundation and other cube-in-hexagon marks'],
+    [
+      'lifted-openlinkos.png',
+      'Lifted edge OpenLinkOS — Lens: closest is Modaly (a hexagon with one edge coloured, not lifted) and IBM Carbon (two offset hexagons)',
+    ],
+  ];
+  const items = rows
+    .filter(([f]) => existsSync(new URL(f, dir)))
+    .map(
+      ([f, caption]) =>
+        `<figure><img width="680" src="data:image/png;base64,${readFileSync(new URL(f, dir)).toString('base64')}"><figcaption>${caption}</figcaption></figure>`,
+    )
+    .join('');
+  return items
+    ? `<section id="screening"><h2>Similarity screening (Google Lens)</h2><p class="idea">Left: our mark. Right: the top visual matches.</p><div class="grid">${items}</div></section>`
+    : '';
+}
+
 const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>OpenLinkOS logo concepts · round 3</title>
+<html lang="en"><head><meta charset="utf-8"><title>OpenLinkOS logo concepts · round 4</title>
 <style>
   :root { font-family: Inter, "Segoe UI", system-ui, sans-serif; color: #0f172a; }
   body { margin: 0; padding: 32px 48px 96px; background: #f8fafc; }
@@ -209,10 +235,14 @@ const html = `<!doctype html>
   .swatch i { width: 36px; height: 36px; border-radius: 8px; display: inline-block; }
 </style></head>
 <body>
-  <h1>OpenLinkOS logo concepts · round 3</h1>
+  <h1>OpenLinkOS logo concepts · round 4</h1>
   <p class="lead">Direction B, refined. The system: a hexagonal cell on a 48-unit grid (4-unit margin, 4-unit round strokes, 5.5 at 16/32 px). The OpenLinkOS master mark is the cell opened on one side; products are closed cells with one inner glyph (Origin: the origin point); the LinkOS service line is the closed cell with the cube of the legacy LinkOS mark. B1–B4 vary only the master mark; the last section shows B2 with a blue master colour. Each palette lists mark colours (graphics need 3:1) and text colours for links and buttons (4.5:1).</p>
   <nav class="toc">${concepts.map((c) => `<a href="#${c.id}">${c.name}</a>`).join('')}</nav>
-  ${concepts.map(section).join('')}
+  ${concepts
+    .filter((c) => ['b2', 'lifted'].includes(c.id))
+    .map(section)
+    .join('')}
+  ${screening()}
 </body></html>`;
 
 writeFileSync(new URL('../concepts/gallery.html', import.meta.url), html);
