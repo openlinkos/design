@@ -43,6 +43,8 @@ Contrast rules, also enforced by the tests: the mark accent reaches 3:1 against 
 
 Raster images contain no text other than the drawn wordmark, so they are the same for every language. The output is committed and never edited by hand. CI regenerates it on Linux and Windows and fails if a single byte differs.
 
+Sites do not copy these files: `@openlinkos/vitepress-theme` ships them and writes the brand's `web/` files to each site's root (and, with `brandKit`, every brand's files under `/brand/<id>/` on openlinkos.com). After regenerating, rebuild the theme with `pnpm build`.
+
 ## Changing the brand
 
 1. Edit `brand/brands.json`, `brand/marks.ts` or `brand/wordmark.ts`.

@@ -15,3 +15,6 @@ playground/.vitepress/cache/
 playground/.vitepress/dist/
 concepts/gallery.html
 concepts/screening/
+
+# Playground fixtures created by the theme tests
+playground/.tmp/

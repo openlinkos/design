@@ -21,9 +21,13 @@
   "scripts": {
     "gen": "node scripts/generate.ts",
     "gen:check": "node scripts/generate.ts && git diff --exit-code -- brand/out",
+    "build": "pnpm -r build",
     "test": "vitest run",
     "lint": "biome check .",
-    "lint:fix": "biome check --write ."
+    "lint:fix": "biome check --write .",
+    "docs:dev": "pnpm --filter @openlinkos/design-playground docs:dev",
+    "docs:build": "pnpm --filter @openlinkos/design-playground docs:build",
+    "docs:preview": "pnpm --filter @openlinkos/design-playground docs:preview"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",

@@ -10,7 +10,31 @@
 - 由标志生成的品牌资产：favicon、应用图标、社交分享图和 README 头图；
 - `@openlinkos/vitepress-theme`：所有 OpenLinkOS 与 LinkOS 站点共用的 VitePress 主题，提供统一外观、中英双语界面、语言检测和元信息。
 
-标志、资产生成器和品牌注册表已经就绪，共享主题正在开发。维护者请阅读 [BRAND.md](BRAND.md)。
+维护者请阅读 [BRAND.md](BRAND.md)。
+
+## 使用主题
+
+```ts
+// <site>/.vitepress/theme/index.ts
+export { default } from '@openlinkos/vitepress-theme';
+```
+
+```ts
+// <site>/.vitepress/config.ts
+import { defineOpenLinkOSConfig } from '@openlinkos/vitepress-theme/config';
+
+export default defineOpenLinkOSConfig({
+  brand: 'origin',
+  hostname: 'https://origin.openlinkos.com',
+  title: 'Origin',
+  locales: {
+    root: { description: '…', themeConfig: { nav: [], sidebar: [] } },
+    zh: { description: '…', themeConfig: { nav: [], sidebar: [] } },
+  },
+});
+```
+
+每个页面都需要在 `zh/` 下有对应的简体中文页面，构建时会检查两者是否同步。选项、语言检测和双语规则见[主题的 README](packages/vitepress-theme/README.md)（英文）。[`playground/`](playground) 是一个使用该主题的双语小站点：先运行一次 `pnpm build`，再运行 `pnpm docs:dev`。
 
 ## 许可
 

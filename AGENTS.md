@@ -11,12 +11,15 @@ The OpenLinkOS design system: the brand marks of OpenLinkOS (open-source project
 ```bash
 pnpm install
 pnpm gen          # regenerate brand/out/ from brand/brands.json, brand/marks.ts, brand/wordmark.ts
-pnpm test         # vitest: brand registry, contrast rules, generated assets
+pnpm build        # build packages/vitepress-theme into dist/ (tsc, plus the CSS and brand files)
+pnpm test         # vitest: brand registry, contrast rules, generated assets, theme (unit and playground builds)
 pnpm lint         # biome check
 pnpm lint:fix     # biome check --write
+pnpm docs:dev     # the playground site (playground/) with live reload; run pnpm build first
+pnpm docs:build   # build the playground, including the bilingual coverage check
 ```
 
-Read [BRAND.md](BRAND.md) before changing a mark, a colour, or the asset set.
+Read [BRAND.md](BRAND.md) before changing a mark, a colour, or the asset set, and [packages/vitepress-theme/README.md](packages/vitepress-theme/README.md) before changing the theme. The theme ships the generated assets, so run `pnpm build` after `pnpm gen`.
 
 ## Rules
 

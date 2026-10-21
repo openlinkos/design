@@ -10,7 +10,31 @@ This repository holds:
 - the generated brand assets: favicons, app icons, social images, and README headers;
 - `@openlinkos/vitepress-theme`, the VitePress theme every OpenLinkOS and LinkOS site uses for its look, bilingual (English and Simplified Chinese) interface, language detection, and metadata.
 
-The marks, the asset generator and the brand registry are in place; the shared theme is in progress. Maintainers: see [BRAND.md](BRAND.md).
+Maintainers: see [BRAND.md](BRAND.md).
+
+## Using the theme
+
+```ts
+// <site>/.vitepress/theme/index.ts
+export { default } from '@openlinkos/vitepress-theme';
+```
+
+```ts
+// <site>/.vitepress/config.ts
+import { defineOpenLinkOSConfig } from '@openlinkos/vitepress-theme/config';
+
+export default defineOpenLinkOSConfig({
+  brand: 'origin',
+  hostname: 'https://origin.openlinkos.com',
+  title: 'Origin',
+  locales: {
+    root: { description: '…', themeConfig: { nav: [], sidebar: [] } },
+    zh: { description: '…', themeConfig: { nav: [], sidebar: [] } },
+  },
+});
+```
+
+Every page needs a Simplified Chinese counterpart under `zh/`, and the build checks that the two stay in step. See the [theme's README](packages/vitepress-theme/README.md) for the options, the language detection and the bilingual rules. [`playground/`](playground) is a small bilingual site that uses the theme: run `pnpm build` once, then `pnpm docs:dev`.
 
 ## License
 

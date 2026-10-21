@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   check:
-    name: Lint, test & generated assets (${{ matrix.os }})
+    name: Lint, build, test & generated assets (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -40,8 +40,16 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Build the theme
+        run: pnpm build
+
+      # Unit tests, plus integration tests that build the playground and broken fixtures.
       - name: Test
         run: pnpm test
+
+      # The playground is the reference site: it must build, including the bilingual check.
+      - name: Build the playground
+        run: pnpm docs:build
 
       # The committed assets must be exactly what the generator produces, on every OS.
       - name: Generated assets are up to date
