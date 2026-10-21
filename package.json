@@ -1,0 +1,39 @@
+{
+  "name": "@openlinkos/design-monorepo",
+  "private": true,
+  "version": "0.0.0",
+  "description": "OpenLinkOS brand assets and the shared VitePress theme for OpenLinkOS and LinkOS sites.",
+  "license": "MIT",
+  "author": "OpenLinkOS",
+  "homepage": "https://github.com/openlinkos/design#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openlinkos/design.git"
+  },
+  "bugs": {
+    "url": "https://github.com/openlinkos/design/issues"
+  },
+  "type": "module",
+  "packageManager": "pnpm@12.14.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "gen": "node scripts/generate.ts",
+    "gen:check": "node scripts/generate.ts && git diff --exit-code -- brand/out",
+    "build": "pnpm -r build",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "docs:dev": "pnpm --filter @openlinkos/design-playground docs:dev",
+    "docs:build": "pnpm --filter @openlinkos/design-playground docs:build",
+    "docs:preview": "pnpm --filter @openlinkos/design-playground docs:preview"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@resvg/resvg-js": "2.6.2",
+    "@types/node": "24.19.2",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5"
+  }
+}

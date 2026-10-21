@@ -1,0 +1,7 @@
+/* Chinese pages: Inter for Latin text, then the common Simplified Chinese system fonts. */
+html[lang^="zh"] {
+  --vp-font-family-base:
+    "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
+    "Source Han Sans SC", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+}

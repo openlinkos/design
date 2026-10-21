@@ -1,0 +1,55 @@
+{
+  "name": "@openlinkos/vitepress-theme",
+  "version": "0.1.0",
+  "description": "The shared VitePress theme of OpenLinkOS and LinkOS sites: brand, bilingual interface, language detection, metadata and a bilingual coverage check.",
+  "license": "MIT",
+  "author": "OpenLinkOS",
+  "homepage": "https://github.com/openlinkos/design/tree/master/packages/vitepress-theme#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openlinkos/design.git",
+    "directory": "packages/vitepress-theme"
+  },
+  "bugs": {
+    "url": "https://github.com/openlinkos/design/issues"
+  },
+  "keywords": [
+    "vitepress",
+    "vitepress-theme",
+    "openlinkos"
+  ],
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/theme/index.d.ts",
+      "default": "./dist/theme/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "default": "./dist/config/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "build": "node scripts/build.ts"
+  },
+  "peerDependencies": {
+    "vitepress": "^1.6.4"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vitepress": "1.6.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
