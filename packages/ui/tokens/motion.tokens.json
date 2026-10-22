@@ -1,0 +1,42 @@
+{
+  "$description": "Motion. Every animation stops for users who prefer reduced motion.",
+  "duration": {
+    "$type": "duration",
+    "fast": {
+      "$value": {
+        "value": 100,
+        "unit": "ms"
+      },
+      "$description": "Hover and press feedback."
+    },
+    "normal": {
+      "$value": {
+        "value": 160,
+        "unit": "ms"
+      },
+      "$description": "Small elements entering: menus, popovers."
+    },
+    "slow": {
+      "$value": {
+        "value": 240,
+        "unit": "ms"
+      },
+      "$description": "Larger elements: dialogs, toasts."
+    }
+  },
+  "ease": {
+    "$type": "cubicBezier",
+    "standard": {
+      "$value": [0.2, 0, 0, 1],
+      "$description": "Moves within the screen."
+    },
+    "enter": {
+      "$value": [0.05, 0.7, 0.1, 1],
+      "$description": "Elements entering (decelerate)."
+    },
+    "exit": {
+      "$value": [0.3, 0, 1, 1],
+      "$description": "Elements leaving (accelerate)."
+    }
+  }
+}

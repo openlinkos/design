@@ -1,0 +1,206 @@
+/*
+ * Overlays: popovers, menus, and dialogs, built on the platform's top layer so they need no
+ * z-index and, for popovers, no JavaScript.
+ *
+ *   <button class="ol-btn" popovertarget="more">More</button>
+ *   <div class="ol-menu" id="more" popover>
+ *     <a class="ol-menu-item" href="…">…</a>
+ *     <hr class="ol-menu-separator">
+ *     <form method="post"><button class="ol-menu-item ol-menu-item-danger">…</button></form>
+ *   </div>
+ *
+ * The invoker is the popover's implicit anchor, so where CSS anchor positioning is supported the
+ * menu opens below its button with no inline style (strict CSP forbids style attributes); elsewhere
+ * it opens centred in the viewport. Dialogs use <dialog class="ol-dialog">, opened by
+ * command="show-modal" commandfor="id" or by script.
+ */
+
+.ol-popover,
+.ol-menu {
+  margin: auto;
+  padding: var(--ol-space-1);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface-overlay);
+  box-shadow: var(--ol-shadow-lg);
+  color: var(--ol-color-fg);
+  opacity: 0;
+  transform: translateY(-0.25rem);
+  transition:
+    opacity var(--ol-duration-fast) var(--ol-ease-enter),
+    transform var(--ol-duration-fast) var(--ol-ease-enter),
+    overlay var(--ol-duration-fast) allow-discrete,
+    display var(--ol-duration-fast) allow-discrete;
+}
+
+.ol-popover:popover-open,
+.ol-menu:popover-open {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .ol-popover:popover-open,
+  .ol-menu:popover-open {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+.ol-popover {
+  width: min(20rem, calc(100vw - 2rem));
+  padding: var(--ol-space-4);
+}
+
+.ol-menu {
+  min-width: 11rem;
+  max-width: min(20rem, calc(100vw - 2rem));
+}
+
+@supports (position-area: block-end) {
+  .ol-popover,
+  .ol-menu {
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline;
+    margin: var(--ol-space-1) 0 0;
+  }
+
+  .ol-menu-end {
+    position-area: block-end span-inline-start;
+  }
+}
+
+.ol-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  width: 100%;
+  min-height: var(--ol-size-control-md);
+  padding-inline: var(--ol-space-2);
+  border: 0;
+  border-radius: var(--ol-radius-control);
+  background: none;
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-sm);
+  text-align: start;
+  cursor: pointer;
+}
+
+.ol-menu-item .ol-icon {
+  color: var(--ol-color-fg-subtle);
+}
+
+.ol-menu-item:hover,
+.ol-menu-item:focus-visible {
+  background: var(--ol-color-fill-hover);
+  outline: none;
+  text-decoration: none;
+}
+
+.ol-menu-item[aria-current="true"],
+.ol-menu-item[aria-checked="true"] {
+  font-weight: var(--ol-font-weight-medium);
+}
+
+.ol-menu-item-danger,
+.ol-menu-item-danger .ol-icon {
+  color: var(--ol-color-danger-text);
+}
+
+.ol-menu-item-danger:hover {
+  background: var(--ol-color-danger-bg);
+}
+
+.ol-menu-label {
+  padding: var(--ol-space-1-5) var(--ol-space-2) var(--ol-space-1);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-medium);
+}
+
+.ol-menu-separator {
+  margin: var(--ol-space-1) calc(var(--ol-space-1) * -1);
+}
+
+.ol-menu form {
+  display: contents;
+}
+
+/* Dialogs */
+
+.ol-dialog {
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 4rem);
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-overlay);
+  background: var(--ol-color-surface-overlay);
+  box-shadow: var(--ol-shadow-xl);
+  color: var(--ol-color-fg);
+  opacity: 0;
+  transform: translateY(0.5rem) scale(0.98);
+  transition:
+    opacity var(--ol-duration-normal) var(--ol-ease-enter),
+    transform var(--ol-duration-normal) var(--ol-ease-enter),
+    overlay var(--ol-duration-normal) allow-discrete,
+    display var(--ol-duration-normal) allow-discrete;
+}
+
+.ol-dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .ol-dialog[open] {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+}
+
+.ol-dialog::backdrop {
+  background: var(--ol-color-overlay);
+}
+
+.ol-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ol-space-3);
+  padding: var(--ol-space-5) var(--ol-space-5) 0;
+}
+
+.ol-dialog-title {
+  flex: 1;
+  font-size: var(--ol-font-size-lg);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: var(--ol-line-height-lg);
+}
+
+.ol-dialog-body {
+  padding: var(--ol-space-3) var(--ol-space-5) var(--ol-space-5);
+  color: var(--ol-color-fg-muted);
+}
+
+.ol-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--ol-space-2);
+  padding: var(--ol-space-3) var(--ol-space-5);
+  border-block-start: 1px solid var(--ol-color-border);
+  background: var(--ol-color-bg-subtle);
+}
+
+@media (forced-colors: active) {
+  .ol-popover,
+  .ol-menu,
+  .ol-dialog {
+    border: 1px solid CanvasText;
+  }
+
+  .ol-menu-item:hover,
+  .ol-menu-item:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "name": "@openlinkos/ui",
+  "version": "0.2.0",
+  "description": "The OpenLinkOS design system for apps: DTCG design tokens, framework-free CSS for layout and components (per brand, light and dark, accessible by test), and a curated Lucide icon set.",
+  "license": "MIT",
+  "author": "OpenLinkOS",
+  "homepage": "https://github.com/openlinkos/design/tree/master/packages/ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openlinkos/design.git",
+    "directory": "packages/ui"
+  },
+  "bugs": {
+    "url": "https://github.com/openlinkos/design/issues"
+  },
+  "keywords": [
+    "css",
+    "design-system",
+    "lucide",
+    "openlinkos"
+  ],
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    "./ui.css": "./dist/ui.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./tokens.json": "./dist/tokens.json",
+    "./tokens.light.json": "./dist/tokens.light.json",
+    "./tokens.dark.json": "./dist/tokens.dark.json",
+    "./icons.svg": "./dist/icons.svg",
+    "./icons.json": "./dist/icons.json",
+    "./fonts/*": "./dist/fonts/*",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "build": "node scripts/build.ts"
+  },
+  "devDependencies": {
+    "lucide-static": "1.60.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

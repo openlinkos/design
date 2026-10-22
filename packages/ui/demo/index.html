@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@openlinkos/ui demo</title>
+  <link rel="stylesheet" href="../dist/ui.css">
+</head>
+<!-- A demo of every component, laid out like an app page. Serve the package directory over HTTP
+     (the icon sprite cannot load from file://), for example with `node demo/serve.ts`. -->
+<body data-brand="origin">
+<a class="ol-skip-link" href="#main">Skip to content</a>
+<div class="ol-app">
+  <aside class="ol-sidebar">
+    <input type="checkbox" id="nav" class="ol-nav-toggle">
+    <div class="ol-sidebar-head">
+      <a class="ol-brand" href="#demo">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="5.5"/><circle cx="24" cy="24" r="6" class="ol-brand-accent"/></svg>
+        <span>Origin</span>
+      </a>
+      <span class="ol-brand-tag">Admin</span>
+      <label for="nav" class="ol-btn ol-btn-ghost ol-btn-icon ol-nav-toggle-button" aria-label="Menu"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#menu"/></svg></label>
+    </div>
+    <nav class="ol-nav" aria-label="Main">
+      <div class="ol-nav-group">
+        <a class="ol-nav-item" href="#demo" aria-current="page"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#layout-dashboard"/></svg>Overview</a>
+      </div>
+      <div class="ol-nav-group">
+        <div class="ol-nav-label">Memory</div>
+        <a class="ol-nav-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#history"/></svg>Timeline</a>
+        <a class="ol-nav-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#search"/></svg>Search</a>
+        <a class="ol-nav-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#book-marked"/></svg>Entries<span class="ol-nav-count">128</span></a>
+      </div>
+      <div class="ol-nav-group">
+        <div class="ol-nav-label">Connect</div>
+        <a class="ol-nav-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#laptop"/></svg>Devices</a>
+        <a class="ol-nav-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#key-round"/></svg>Tokens</a>
+        <a class="ol-nav-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#plug"/></svg>Connect an agent</a>
+      </div>
+      <div class="ol-nav-group">
+        <div class="ol-nav-label">Security</div>
+        <a class="ol-nav-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#eraser"/></svg>Forgotten</a>
+        <a class="ol-nav-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#scroll-text"/></svg>Audit log</a>
+        <a class="ol-nav-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#monitor-check"/></svg>Sign-ins</a>
+      </div>
+    </nav>
+    <div class="ol-sidebar-foot">
+      <form class="ol-segmented ol-segmented-block" aria-label="Theme">
+        <button type="button" aria-pressed="true" title="System"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg>Auto</button>
+        <button type="button" aria-pressed="false" title="Light"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg>Light</button>
+        <button type="button" aria-pressed="false" title="Dark"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg>Dark</button>
+      </form>
+      <div class="ol-cluster">
+        <a class="ol-btn ol-btn-ghost ol-btn-sm" href="#demo"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#languages"/></svg>中文</a>
+        <button class="ol-btn ol-btn-ghost ol-btn-sm" type="button"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#log-out"/></svg>Sign out</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="ol-main">
+    <header class="ol-topbar">
+      <ol class="ol-breadcrumb">
+        <li><a href="#demo">memory.example.com</a></li>
+        <li><span aria-current="page">Overview</span></li>
+      </ol>
+      <div class="ol-topbar-actions">
+        <form class="ol-search">
+          <svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#search"/></svg>
+          <input class="ol-input" type="search" placeholder="Search memory…" aria-label="Search">
+        </form>
+      </div>
+    </header>
+
+    <main class="ol-content" id="main" tabindex="-1">
+      <div class="ol-page-header">
+        <div class="ol-page-heading">
+          <h1 class="ol-page-title">Overview</h1>
+          <p class="ol-page-description">What this hub holds, which devices push to it, and whether anything needs attention.</p>
+        </div>
+        <div class="ol-page-actions">
+          <a class="ol-btn ol-btn-secondary" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#plug"/></svg>Connect an agent</a>
+          <a class="ol-btn ol-btn-primary" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#plus"/></svg>New token</a>
+        </div>
+      </div>
+
+      <section class="ol-section">
+        <div class="ol-stats">
+          <a class="ol-stat" href="#demo"><span class="ol-stat-label"><span class="ol-stat-icon"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#message-square"/></svg></span>Events</span><span class="ol-stat-value">48,213</span><span class="ol-stat-meta">+1,204 this week</span></a>
+          <a class="ol-stat" href="#demo"><span class="ol-stat-label"><span class="ol-stat-icon"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#history"/></svg></span>Sessions</span><span class="ol-stat-value">612</span><span class="ol-stat-meta">across 9 projects</span></a>
+          <a class="ol-stat" href="#demo"><span class="ol-stat-label"><span class="ol-stat-icon"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#book-marked"/></svg></span>Entries</span><span class="ol-stat-value">128</span><span class="ol-stat-meta">74 memory, 41 knowledge, 13 cognition</span></a>
+          <a class="ol-stat" href="#demo"><span class="ol-stat-label"><span class="ol-stat-icon"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#laptop"/></svg></span>Devices</span><span class="ol-stat-value">3</span><span class="ol-stat-meta">last push 4 min ago</span></a>
+        </div>
+      </section>
+
+      <div class="ol-grid ol-grid-sidebar ol-section">
+        <section>
+          <div class="ol-section-header">
+            <h2 class="ol-section-title">Devices</h2>
+            <p class="ol-section-description">Machines that push their agent sessions to this hub.</p>
+            <div class="ol-section-actions"><a class="ol-btn ol-btn-ghost ol-btn-sm" href="#demo">All devices</a></div>
+          </div>
+          <div class="ol-table-wrap">
+            <table class="ol-table">
+              <thead><tr><th>Device</th><th>Sources</th><th>Last push</th><th class="ol-num">Events</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><span class="ol-cell-title">laptop</span><span class="ol-cell-sub">token laptop</span></td><td>claude-code, codex</td><td>4 min ago</td><td class="ol-num">31,980</td><td><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Healthy</span></td></tr>
+                <tr><td><span class="ol-cell-title">workstation</span><span class="ol-cell-sub">token workstation</span></td><td>claude-code</td><td>2 h ago</td><td class="ol-num">14,077</td><td><span class="ol-badge ol-badge-warning"><span class="ol-dot"></span>3 parse errors</span></td></tr>
+                <tr><td><span class="ol-cell-title">ci-runner</span><span class="ol-cell-sub">token ci-runner</span></td><td>codex</td><td>6 days ago</td><td class="ol-num">2,156</td><td><span class="ol-badge"><span class="ol-dot"></span>Idle</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <aside class="ol-panel">
+          <div class="ol-panel-header"><h2 class="ol-panel-title"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#activity"/></svg>Health</h2><span class="ol-badge ol-badge-success">OK</span></div>
+          <div class="ol-panel-body">
+            <dl class="ol-dl">
+              <dt>Parse errors</dt><dd>None today, 3 this week</dd>
+              <dt>Database</dt><dd>212 MiB <span class="ol-subtle">+ 18 MiB WAL</span></dd>
+              <dt>Raw mirrors</dt><dd>1.4 GiB</dd>
+              <dt>Free disk</dt><dd>18.2 GiB</dd>
+              <dt>Uptime</dt><dd>12 days</dd>
+            </dl>
+          </div>
+          <div class="ol-panel-footer">Checked just now</div>
+        </aside>
+      </div>
+
+      <section class="ol-section">
+        <div class="ol-section-header"><h2 class="ol-section-title">Notices</h2></div>
+        <div class="ol-stack">
+          <div class="ol-alert ol-alert-info"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#info"/></svg><div class="ol-alert-body"><p class="ol-alert-title">Connect your first agent</p><p>Create a token, then run the command shown next to it on the device.</p></div></div>
+          <div class="ol-alert ol-alert-success"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#circle-check"/></svg><div class="ol-alert-body"><p>Token <span class="ol-mono">laptop</span> created. It is shown once.</p></div></div>
+          <div class="ol-alert ol-alert-warning"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#triangle-alert"/></svg><div class="ol-alert-body"><p>3 lines from <span class="ol-mono">workstation</span> could not be parsed. They are kept and counted.</p></div></div>
+          <div class="ol-alert ol-alert-danger"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#circle-alert"/></svg><div class="ol-alert-body"><p>What would be forgotten has changed. Review the plan again.</p></div></div>
+        </div>
+      </section>
+
+      <div class="ol-grid ol-grid-2 ol-section">
+        <section>
+          <div class="ol-section-header"><h2 class="ol-section-title">New token</h2></div>
+          <form class="ol-form">
+            <div class="ol-field">
+              <label class="ol-label" for="name">Name</label>
+              <input class="ol-input ol-input-mono" id="name" value="laptop" spellcheck="false">
+              <p class="ol-hint">Lowercase letters, digits, dot, dash, underscore. Usually the device name.</p>
+            </div>
+            <div class="ol-field">
+              <label class="ol-label" for="kind">Kind</label>
+              <select class="ol-select" id="kind"><option>memory</option><option>knowledge</option><option>cognition</option></select>
+            </div>
+            <div class="ol-field">
+              <label class="ol-label" for="text">Text</label>
+              <textarea class="ol-textarea" id="text">Prefers small, runnable increments over milestone plans.</textarea>
+            </div>
+            <label class="ol-check"><input class="ol-checkbox" type="checkbox" checked>Hide tool events</label>
+            <div class="ol-form-actions">
+              <button class="ol-btn ol-btn-primary" type="button">Create token</button>
+              <button class="ol-btn ol-btn-ghost" type="button">Cancel</button>
+            </div>
+          </form>
+        </section>
+        <section>
+          <div class="ol-section-header"><h2 class="ol-section-title">Connect</h2></div>
+          <div class="ol-stack">
+            <p class="ol-hint">Shown once. Copy it now; the hub keeps only its hash.</p>
+            <code class="ol-secret">ogn_Q2x7mVt9bS1pRzK0aWcYdLhE4nFj8uXo3gTqBvNe6sM</code>
+            <div class="ol-code">
+              <div class="ol-code-label"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#terminal"/></svg>On the device</div>
+              <pre><code>origin hub connect https://memory.example.com --token ogn_Q2x7… --device laptop
+origin push</code></pre>
+              <button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon ol-copy" type="button" aria-label="Copy"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg></button>
+            </div>
+            <div class="ol-cluster">
+              <button class="ol-btn ol-btn-secondary ol-btn-sm" type="button"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg>Copy</button>
+              <button class="ol-btn ol-btn-danger ol-btn-sm" type="button"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#ban"/></svg>Revoke</button>
+              <button class="ol-btn ol-btn-danger-soft ol-btn-sm" type="button"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#eraser"/></svg>Forget…</button>
+              <button class="ol-btn ol-btn-link" type="button">Learn more</button>
+              <span class="ol-badge ol-badge-accent">memory</span>
+              <span class="ol-badge ol-badge-outline ol-badge-square">v3</span>
+              <span class="ol-badge ol-badge-danger">revoked</span>
+              <span class="ol-kbd">⌘</span><span class="ol-kbd">K</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="ol-section">
+        <nav class="ol-tabs" aria-label="Session">
+          <a class="ol-tab" href="#demo" aria-current="page"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#message-square"/></svg>Conversation</a>
+          <a class="ol-tab" href="#demo"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#wrench"/></svg>With tool events</a>
+          <a class="ol-tab" href="#demo"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#book-marked"/></svg>Entries citing it</a>
+        </nav>
+        <ol class="ol-feed">
+          <li class="ol-feed-item" data-role="user"><span class="ol-feed-avatar"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#user"/></svg></span><div><div class="ol-feed-meta"><strong>User</strong><span>10-21 09:14</span><span class="ol-mono">evt_7f3a</span></div><div class="ol-feed-body">帮我检查一下仓库的状态，然后把 README 的中文版同步一下。</div></div></li>
+          <li class="ol-feed-item" data-role="assistant" data-highlight="true"><span class="ol-feed-avatar"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#bot"/></svg></span><div><div class="ol-feed-meta"><strong>claude-code</strong><span>10-21 09:14</span><span class="ol-badge ol-badge-accent">cited by 2 entries</span></div><div class="ol-feed-body">The working tree is clean. README.zh-CN.md is two sections behind README.md; I updated both and kept the anchors aligned.</div></div></li>
+          <li class="ol-feed-item" data-role="tool"><span class="ol-feed-avatar"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#terminal"/></svg></span><div><div class="ol-feed-meta"><strong>Bash</strong><span>10-21 09:15</span></div><div class="ol-feed-body">git status --short</div><details class="ol-details"><summary>Raw line</summary><div class="ol-code"><pre><code>{"type":"tool_use","name":"Bash","input":{"command":"git status --short"}}</code></pre></div></details></div></li>
+        </ol>
+        <div class="ol-pager"><span>Showing 1–3 of 214 events</span><span class="ol-pager-links"><a class="ol-btn ol-btn-secondary ol-btn-sm" href="#demo" aria-disabled="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-left"/></svg>Newer</a><a class="ol-btn ol-btn-secondary ol-btn-sm" href="#demo">Older<svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-right"/></svg></a></span></div>
+      </section>
+
+      <section class="ol-section">
+        <div class="ol-section-header"><h2 class="ol-section-title">Forgotten</h2></div>
+        <div class="ol-empty">
+          <span class="ol-empty-icon"><svg class="ol-icon ol-icon-lg" aria-hidden="true"><use href="../dist/icons.svg#inbox"/></svg></span>
+          <p class="ol-empty-title">Nothing has been forgotten</p>
+          <p class="ol-empty-text">When you forget an entry or an event, its record appears here. The text itself is never shown again.</p>
+          <a class="ol-btn ol-btn-secondary ol-btn-sm" href="#demo">How forgetting works</a>
+        </div>
+      </section>
+
+      <section class="ol-section">
+        <div class="ol-panel ol-panel-danger">
+          <div class="ol-panel-header"><h2 class="ol-panel-title"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#triangle-alert"/></svg>Forget entry <span class="ol-mono">ent_91c2</span></h2></div>
+          <div class="ol-panel-body ol-stack">
+            <p class="ol-muted ol-text-sm">This hides 1 entry and excludes 2 source events from every query. It cannot be undone.</p>
+            <div class="ol-field"><label class="ol-label" for="confirm">Type the id to confirm</label><input class="ol-input ol-input-mono" id="confirm" placeholder="ent_91c2"></div>
+            <div><button class="ol-btn ol-btn-danger" type="button">Forget</button></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="ol-footer"><span>Origin 0.1.0</span><a href="#demo">Documentation</a><a href="#demo">OpenLinkOS</a></footer>
+  </div>
+</div>
+</body>
+</html>

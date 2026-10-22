@@ -1,0 +1,183 @@
+/*
+ * Containers: panels, cards, dividers, and disclosures.
+ *
+ * Frame only what belongs together. A page of identical framed boxes reads as noise; use sections,
+ * headings and whitespace first, a panel for a group of related detail, a card for one item in a
+ * collection.
+ */
+
+.ol-panel {
+  min-width: 0;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface);
+}
+
+.ol-panel-header {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-height: 2.75rem;
+  padding: var(--ol-space-2) var(--ol-space-4);
+  border-block-end: 1px solid var(--ol-color-border);
+}
+
+.ol-panel-title {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-panel-title .ol-icon {
+  color: var(--ol-color-fg-subtle);
+}
+
+.ol-panel-header > :last-child:not(:first-child) {
+  margin-inline-start: auto;
+}
+
+.ol-panel-body {
+  padding: var(--ol-space-4);
+}
+
+.ol-panel-footer {
+  padding: var(--ol-space-3) var(--ol-space-4);
+  border-block-start: 1px solid var(--ol-color-border);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+}
+
+.ol-panel > .ol-table-wrap {
+  border: 0;
+  border-radius: 0 0 var(--ol-radius-container) var(--ol-radius-container);
+}
+
+.ol-panel-danger {
+  border-color: var(--ol-color-danger-border);
+}
+
+.ol-panel-danger > .ol-panel-header {
+  border-block-end-color: var(--ol-color-danger-border);
+  background: var(--ol-color-danger-bg);
+}
+
+/* Cards: one item of a collection, optionally a link (.ol-card on <a>). */
+.ol-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-2);
+  min-width: 0;
+  padding: var(--ol-space-4);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface);
+  color: inherit;
+  transition:
+    border-color var(--ol-duration-fast) var(--ol-ease-standard),
+    box-shadow var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+a.ol-card:hover {
+  border-color: var(--ol-color-border-strong);
+  box-shadow: var(--ol-shadow-sm);
+  text-decoration: none;
+}
+
+.ol-card-title {
+  color: var(--ol-color-fg);
+  font-weight: var(--ol-font-weight-semibold);
+}
+
+.ol-card-meta {
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+}
+
+/* Dividers, optionally with a label: <div class="ol-divider">or</div> */
+.ol-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-3);
+  margin-block: var(--ol-space-4);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+}
+
+.ol-divider::before,
+.ol-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ol-color-border);
+}
+
+.ol-divider:empty {
+  gap: 0;
+}
+
+/* Disclosures: <details class="ol-details"><summary>…</summary>…</details>.
+   Accordions: give several <details class="ol-accordion"> the same name to open one at a time. */
+
+.ol-details > summary,
+.ol-accordion > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-1-5);
+  cursor: pointer;
+  list-style: none;
+}
+
+.ol-details > summary::-webkit-details-marker,
+.ol-accordion > summary::-webkit-details-marker {
+  display: none;
+}
+
+.ol-details > summary::before,
+.ol-accordion > summary::after {
+  content: "";
+  flex: none;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-inline-end: 1.5px solid currentColor;
+  border-block-end: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-accordion > summary::after {
+  margin-inline-end: var(--ol-space-1);
+}
+
+.ol-details > summary {
+  display: inline-flex;
+  color: var(--ol-color-accent-text);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-medium);
+}
+
+.ol-details[open] > summary::before,
+.ol-accordion[open] > summary::after {
+  transform: rotate(45deg);
+}
+
+.ol-details > :not(summary) {
+  margin-block-start: var(--ol-space-2);
+}
+
+.ol-accordion {
+  border-block-end: 1px solid var(--ol-color-border);
+}
+
+.ol-accordion > summary {
+  justify-content: space-between;
+  min-height: var(--ol-size-control-lg);
+  font-weight: var(--ol-font-weight-medium);
+}
+
+.ol-accordion > :not(summary) {
+  padding-block-end: var(--ol-space-4);
+  color: var(--ol-color-fg-muted);
+}

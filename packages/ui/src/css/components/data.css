@@ -1,0 +1,326 @@
+/*
+ * Data display: tables, stats, description lists, and feeds.
+ */
+
+/* Tables: wrap in .ol-table-wrap for the frame and horizontal scrolling. Mark sortable column
+   headings with aria-sort and selected rows with aria-selected="true". */
+
+.ol-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface);
+}
+
+.ol-table {
+  --ol-cell-padding-block: var(--ol-space-2-5);
+  --ol-cell-padding-inline: var(--ol-space-3-5);
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--ol-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-table-compact {
+  --ol-cell-padding-block: var(--ol-space-1-5);
+}
+
+.ol-table-relaxed {
+  --ol-cell-padding-block: var(--ol-space-3-5);
+}
+
+.ol-table th,
+.ol-table td {
+  padding: var(--ol-cell-padding-block) var(--ol-cell-padding-inline);
+  border-block-end: 1px solid var(--ol-color-border);
+  text-align: start;
+}
+
+.ol-table th {
+  padding-block: var(--ol-space-2);
+  background: var(--ol-color-bg-subtle);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-xs);
+  white-space: nowrap;
+}
+
+.ol-table td {
+  vertical-align: middle;
+}
+
+.ol-table tbody tr:last-child > * {
+  border-block-end: 0;
+}
+
+.ol-table tbody tr {
+  transition: background var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-table tbody tr:hover {
+  background: var(--ol-color-fill-subtle);
+}
+
+.ol-table tbody tr[aria-selected="true"] {
+  background: var(--ol-color-accent-bg);
+}
+
+.ol-table-sticky thead th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+}
+
+.ol-table th[aria-sort] a,
+.ol-table th[aria-sort] button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-1);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ol-table th[aria-sort] :is(a, button)::after {
+  content: "↕";
+  color: var(--ol-color-fg-subtle);
+}
+
+.ol-table th[aria-sort="ascending"] :is(a, button)::after {
+  content: "↑";
+  color: var(--ol-color-fg);
+}
+
+.ol-table th[aria-sort="descending"] :is(a, button)::after {
+  content: "↓";
+  color: var(--ol-color-fg);
+}
+
+.ol-table .ol-num {
+  text-align: end;
+}
+
+.ol-table .ol-actions {
+  width: 1%;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.ol-cell-title {
+  color: var(--ol-color-fg);
+  font-weight: var(--ol-font-weight-medium);
+}
+
+.ol-cell-sub {
+  display: block;
+  margin-block-start: 0.125rem;
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+@media (max-width: 860px) {
+  /* Tables scroll sideways rather than squeezing every cell into a column of words. */
+  .ol-table th,
+  .ol-table td {
+    white-space: nowrap;
+  }
+}
+
+/* Stats: one framed strip of figures divided by hairlines, not a grid of separate cards. */
+
+.ol-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-border);
+}
+
+.ol-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-1);
+  min-width: 0;
+  padding: var(--ol-space-4) var(--ol-space-5);
+  background: var(--ol-color-surface);
+  color: inherit;
+}
+
+a.ol-stat {
+  transition: background var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+a.ol-stat:hover {
+  background: var(--ol-color-fill-subtle);
+  text-decoration: none;
+}
+
+.ol-stat-label {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-xs);
+}
+
+/* A small tinted tile for the stat's icon: the accent by default, or a tone. */
+.ol-stat-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: var(--ol-radius-sm);
+  background: var(--ol-color-accent-bg);
+  color: var(--ol-color-accent-text);
+}
+
+.ol-stat-icon.ol-tone-success {
+  background: var(--ol-color-success-bg);
+  color: var(--ol-color-success-text);
+}
+
+.ol-stat-icon.ol-tone-warning {
+  background: var(--ol-color-warning-bg);
+  color: var(--ol-color-warning-text);
+}
+
+.ol-stat-icon.ol-tone-danger {
+  background: var(--ol-color-danger-bg);
+  color: var(--ol-color-danger-text);
+}
+
+.ol-stat-value {
+  margin-block-start: var(--ol-space-1);
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-2xl);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: var(--ol-tracking-tight);
+  line-height: var(--ol-line-height-2xl);
+}
+
+.ol-stat-meta {
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+.ol-trend-up {
+  color: var(--ol-color-success-text);
+}
+
+.ol-trend-down {
+  color: var(--ol-color-danger-text);
+}
+
+/* Description lists: key-value pairs. */
+
+.ol-dl {
+  display: grid;
+  grid-template-columns: minmax(7rem, max-content) minmax(0, 1fr);
+  gap: var(--ol-space-2) var(--ol-space-6);
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-dl dt {
+  color: var(--ol-color-fg-muted);
+}
+
+.ol-dl dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Feeds: a conversation or event stream. Set data-role on items: user, assistant, tool, system. */
+
+.ol-feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.ol-feed-item {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  gap: var(--ol-space-3);
+  padding-block: var(--ol-space-3);
+}
+
+.ol-feed-item + .ol-feed-item {
+  border-block-start: 1px solid var(--ol-color-border);
+}
+
+.ol-feed-avatar {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-fill);
+  color: var(--ol-color-fg-muted);
+}
+
+.ol-feed-item[data-role="user"] .ol-feed-avatar {
+  background: var(--ol-color-accent-bg);
+  color: var(--ol-color-accent-text);
+}
+
+.ol-feed-item[data-role="assistant"] .ol-feed-avatar {
+  background: var(--ol-color-success-bg);
+  color: var(--ol-color-success-text);
+}
+
+.ol-feed-item[data-role="tool"] .ol-feed-avatar {
+  border: 1px dashed var(--ol-color-border-strong);
+  background: transparent;
+}
+
+.ol-feed-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-1) var(--ol-space-2);
+  margin-block-end: var(--ol-space-1);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+.ol-feed-meta strong {
+  color: var(--ol-color-fg);
+}
+
+.ol-feed-body {
+  font-size: var(--ol-font-size-sm);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ol-feed-item[data-role="tool"] .ol-feed-body {
+  color: var(--ol-color-fg-muted);
+  font-family: var(--ol-font-family-mono);
+  font-size: var(--ol-font-size-xs);
+}
+
+.ol-feed-item[data-highlight="true"] {
+  padding-inline: var(--ol-space-3);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-accent-bg);
+}
+
+.ol-feed-item[data-highlight="true"] + .ol-feed-item,
+.ol-feed-item + .ol-feed-item[data-highlight="true"] {
+  border-block-start-color: transparent;
+}

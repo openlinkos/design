@@ -1,0 +1,117 @@
+{
+  "$description": "Sizes of controls, icons and layout regions.",
+  "size": {
+    "$type": "dimension",
+    "control": {
+      "xs": {
+        "$value": {
+          "value": 1.5,
+          "unit": "rem"
+        },
+        "$description": "Smallest control; the WCAG 2.5.8 minimum target."
+      },
+      "sm": {
+        "$value": {
+          "value": 1.75,
+          "unit": "rem"
+        },
+        "$description": "Small controls: dense tables, toolbars."
+      },
+      "md": {
+        "$value": {
+          "value": 2.0,
+          "unit": "rem"
+        },
+        "$description": "Default controls (compact density).",
+        "$extensions": {
+          "com.openlinkos": {
+            "density": {
+              "comfortable": {
+                "value": 2.25,
+                "unit": "rem"
+              }
+            }
+          }
+        }
+      },
+      "lg": {
+        "$value": {
+          "value": 2.5,
+          "unit": "rem"
+        },
+        "$description": "Large controls and touch-first layouts.",
+        "$extensions": {
+          "com.openlinkos": {
+            "density": {
+              "comfortable": {
+                "value": 2.75,
+                "unit": "rem"
+              }
+            }
+          }
+        }
+      }
+    },
+    "target-min": {
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      },
+      "$description": "Minimum size of any pointer target (WCAG 2.5.8)."
+    },
+    "icon": {
+      "sm": {
+        "$value": {
+          "value": 0.875,
+          "unit": "rem"
+        }
+      },
+      "md": {
+        "$value": {
+          "value": 1.0,
+          "unit": "rem"
+        }
+      },
+      "lg": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        }
+      }
+    },
+    "avatar": {
+      "sm": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        }
+      },
+      "md": {
+        "$value": {
+          "value": 1.75,
+          "unit": "rem"
+        }
+      },
+      "lg": {
+        "$value": {
+          "value": 2.25,
+          "unit": "rem"
+        }
+      }
+    },
+    "sidebar": {
+      "$value": {
+        "value": 15.0,
+        "unit": "rem"
+      },
+      "$description": "Width of the app sidebar."
+    },
+    "content": {
+      "$value": {
+        "value": 75.0,
+        "unit": "rem"
+      },
+      "$description": "Maximum width of page content."
+    }
+  }
+}

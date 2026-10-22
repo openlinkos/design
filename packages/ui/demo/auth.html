@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in to Origin</title>
+  <link rel="stylesheet" href="../dist/ui.css">
+</head>
+<!-- The sign-in layout: a brand panel with the mark as an origin of rings, and the form. -->
+<body data-brand="origin">
+<main class="ol-auth">
+  <aside class="ol-auth-aside">
+    <div class="ol-auth-rings" aria-hidden="true"></div>
+    <a class="ol-auth-brand" href="#demo">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="5.5"/><circle cx="24" cy="24" r="6" class="ol-brand-accent"/></svg>
+      <span>Origin</span>
+    </a>
+    <p class="ol-auth-statement">Local-first, cross-agent memory for your AI coding agents.</p>
+    <p class="ol-auth-meta">memory.example.com</p>
+  </aside>
+  <div class="ol-auth-body">
+    <div class="ol-auth-card">
+      <h1 class="ol-auth-title">Sign in</h1>
+      <p>Enter the admin password of this hub.</p>
+      <form class="ol-stack">
+        <input type="text" name="username" value="origin-admin" autocomplete="username" hidden>
+        <div class="ol-field">
+          <label class="ol-label" for="password">Admin password</label>
+          <input class="ol-input ol-input-lg" id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="ol-btn ol-btn-primary ol-btn-lg ol-btn-block" type="submit">Sign in</button>
+      </form>
+      <details class="ol-details">
+        <summary>Forgot the password?</summary>
+        <p class="ol-hint">Set a new one on the hub. It signs out every session.</p>
+        <div class="ol-code"><pre><code>origin admin password</code></pre></div>
+      </details>
+    </div>
+    <div class="ol-auth-foot"><span>Origin 0.2.0</span><a href="#demo" lang="zh-CN">中文</a><a href="#demo">Documentation</a></div>
+  </div>
+</main>
+</body>
+</html>

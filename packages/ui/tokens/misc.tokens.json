@@ -1,0 +1,36 @@
+{
+  "$description": "Stacking order and focus indicator geometry.",
+  "z": {
+    "$type": "number",
+    "$description": "Stacking order for elements outside the top layer (popovers and dialogs use the top layer).",
+    "sticky": {
+      "$value": 100
+    },
+    "dropdown": {
+      "$value": 1000
+    },
+    "overlay": {
+      "$value": 1100
+    },
+    "toast": {
+      "$value": 1300
+    }
+  },
+  "focus": {
+    "$type": "dimension",
+    "width": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Focus ring width (WCAG 2.4.13 asks for at least 2px)."
+    },
+    "offset": {
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Gap between an element and its focus ring."
+    }
+  }
+}

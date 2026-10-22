@@ -1,0 +1,746 @@
+/*
+ * Layout: the app shell, page structure, grids and stacks, and the sign-in layout. Spacing uses
+ * logical properties. Grids respond to the width of their container, not the viewport.
+ *
+ * The shell is a quiet frame: the sidebar sits on the shell colour, and the content is one
+ * floating panel that scrolls on its own, so navigation stays put and the page reads as a single
+ * object. Below 860px the panel becomes the page, and the sidebar folds into a bar whose menu
+ * opens with a checkbox, so navigation needs no JavaScript.
+ *
+ *   <a class="ol-skip-link" href="#main">Skip to content</a>
+ *   <div class="ol-app">
+ *     <aside class="ol-sidebar">
+ *       <input type="checkbox" id="nav" class="ol-nav-toggle">
+ *       <div class="ol-sidebar-head">brand … <label for="nav" class="ol-nav-toggle-button">…</label></div>
+ *       <nav class="ol-nav">.ol-nav-group > .ol-nav-label + .ol-nav-item…</nav>
+ *       <div class="ol-sidebar-foot">…</div>
+ *     </aside>
+ *     <div class="ol-main">
+ *       <header class="ol-topbar">…</header>
+ *       <main class="ol-content" id="main">.ol-page-header, .ol-section…</main>
+ *       <footer class="ol-footer">…</footer>
+ *     </div>
+ *   </div>
+ */
+
+.ol-skip-link {
+  position: absolute;
+  inset-block-start: var(--ol-space-2);
+  inset-inline-start: var(--ol-space-2);
+  z-index: var(--ol-z-toast);
+  padding: var(--ol-space-2) var(--ol-space-3);
+  border-radius: var(--ol-radius-control);
+  background: var(--ol-color-accent-solid);
+  color: var(--ol-color-accent-on-solid);
+  font-weight: var(--ol-font-weight-medium);
+  transform: translateY(-200%);
+}
+
+.ol-skip-link:focus-visible {
+  transform: none;
+}
+
+.ol-app {
+  display: grid;
+  grid-template-columns: var(--ol-size-sidebar) minmax(0, 1fr);
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--ol-color-shell);
+}
+
+/* Sidebar */
+
+.ol-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-6);
+  min-height: 0;
+  padding: var(--ol-space-3) var(--ol-space-3) var(--ol-space-3) var(--ol-space-4);
+  overflow-y: auto;
+}
+
+.ol-sidebar-head {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-height: var(--ol-size-control-lg);
+  padding-inline: var(--ol-space-1);
+}
+
+.ol-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-lg);
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: var(--ol-tracking-tight);
+}
+
+.ol-brand:hover {
+  text-decoration: none;
+}
+
+.ol-brand img,
+.ol-brand svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* The accent shape of an inline SVG mark. */
+.ol-brand-accent {
+  fill: var(--ol-color-mark);
+}
+
+.ol-brand-tag {
+  padding: 0.0625rem 0.4375rem;
+  border: 1px solid var(--ol-color-border-strong);
+  border-radius: var(--ol-radius-full);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-2xs);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: 1.4;
+}
+
+.ol-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-5);
+}
+
+.ol-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ol-nav-label {
+  padding: 0 var(--ol-space-2) var(--ol-space-1-5);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-xs);
+}
+
+.ol-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: var(--ol-size-control-md);
+  padding-inline: var(--ol-space-2);
+  border-radius: var(--ol-radius-control);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+  transition:
+    background var(--ol-duration-fast) var(--ol-ease-standard),
+    color var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-nav-item .ol-icon {
+  color: var(--ol-color-fg-subtle);
+}
+
+.ol-nav-item:hover {
+  background: var(--ol-color-fill-hover);
+  color: var(--ol-color-fg);
+  text-decoration: none;
+}
+
+.ol-nav-item:active {
+  background: var(--ol-color-fill-active);
+}
+
+/* The current page is lifted onto the panel's surface, its icon in the brand colour. */
+.ol-nav-item[aria-current="page"] {
+  background: var(--ol-color-surface);
+  box-shadow:
+    var(--ol-shadow-sm),
+    0 0 0 1px var(--ol-color-border);
+  color: var(--ol-color-fg);
+}
+
+.ol-nav-item[aria-current="page"] .ol-icon {
+  color: var(--ol-color-accent-text);
+}
+
+.ol-nav-count {
+  margin-inline-start: auto;
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.ol-sidebar-foot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-2);
+  margin-block-start: auto;
+  padding: var(--ol-space-3) var(--ol-space-1) 0;
+  border-block-start: 1px solid var(--ol-color-border);
+}
+
+.ol-nav-toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The floating content panel */
+
+.ol-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  margin: var(--ol-space-2) var(--ol-space-2) var(--ol-space-2) 0;
+  overflow-y: auto;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-frame);
+  background: var(--ol-color-surface);
+  box-shadow: var(--ol-shadow-sm);
+  /* Keep focused elements clear of the sticky top bar (WCAG 2.4.11). */
+  scroll-padding-block-start: 4.5rem;
+}
+
+.ol-topbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--ol-z-sticky);
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--ol-space-3);
+  min-height: 3.25rem;
+  padding-inline: var(--ol-space-8);
+  border-block-end: 1px solid var(--ol-color-border);
+  background: color-mix(in srgb, var(--ol-color-surface) 85%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  backdrop-filter: blur(10px) saturate(1.4);
+}
+
+.ol-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-width: 0;
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+}
+
+.ol-breadcrumb li {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.ol-breadcrumb li + li::before {
+  content: "/";
+  color: var(--ol-color-border-strong);
+}
+
+.ol-breadcrumb a {
+  color: inherit;
+}
+
+.ol-breadcrumb a:hover {
+  color: var(--ol-color-fg);
+}
+
+.ol-breadcrumb [aria-current="page"] {
+  overflow: hidden;
+  color: var(--ol-color-fg);
+  font-weight: var(--ol-font-weight-medium);
+  text-overflow: ellipsis;
+}
+
+.ol-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  margin-inline-start: auto;
+}
+
+.ol-content {
+  container: ol-content / inline-size;
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: var(--ol-size-content);
+  margin-inline: auto;
+  padding: var(--ol-space-10) var(--ol-space-8) var(--ol-space-12);
+}
+
+.ol-content:focus {
+  outline: none;
+}
+
+.ol-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ol-space-2) var(--ol-space-4);
+  padding: var(--ol-space-4) var(--ol-space-8);
+  border-block-start: 1px solid var(--ol-color-border);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+}
+
+.ol-footer a {
+  color: var(--ol-color-fg-muted);
+}
+
+/* Page structure */
+
+.ol-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ol-space-4);
+  margin-block-end: var(--ol-space-8);
+}
+
+.ol-page-heading {
+  flex: 1 1 24rem;
+  min-width: 0;
+}
+
+.ol-eyebrow {
+  margin-block-end: var(--ol-space-1);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-page-title {
+  font-size: var(--ol-font-size-2xl);
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: var(--ol-tracking-tight);
+  line-height: var(--ol-line-height-2xl);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.ol-page-description {
+  max-width: 72ch;
+  margin-block-start: var(--ol-space-1-5);
+  color: var(--ol-color-fg-muted);
+  text-wrap: pretty;
+}
+
+.ol-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ol-space-2);
+}
+
+.ol-section + .ol-section {
+  margin-block-start: var(--ol-space-10);
+}
+
+.ol-section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ol-space-1) var(--ol-space-3);
+  margin-block-end: var(--ol-space-4);
+}
+
+.ol-section-title {
+  font-size: var(--ol-font-size-lg);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: var(--ol-line-height-lg);
+}
+
+.ol-section-description {
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+}
+
+.ol-section-actions {
+  display: flex;
+  gap: var(--ol-space-2);
+  margin-inline-start: auto;
+}
+
+/* Grids collapse by the width of their container. */
+
+.ol-grid {
+  display: grid;
+  gap: var(--ol-space-6);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@container (min-width: 40rem) {
+  .ol-grid-2,
+  .ol-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ol-grid-sidebar {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+  }
+}
+
+@container (min-width: 60rem) {
+  .ol-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.ol-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-stack-gap, var(--ol-space-3));
+}
+
+/* Buttons and badges keep their own width inside a stack. */
+.ol-stack > :is(.ol-btn, .ol-badge):not(.ol-btn-block) {
+  align-self: flex-start;
+}
+
+.ol-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-cluster-gap, var(--ol-space-2));
+}
+
+.ol-split {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ol-space-3);
+}
+
+/*
+ * Sign-in. A brand panel beside the form: the brand's mark drawn large as an origin point, with
+ * rings spreading from it at widening intervals and fading out, then the product's one-line
+ * description. On its own (error pages), .ol-auth centres the card.
+ *
+ *   <main class="ol-auth">
+ *     <aside class="ol-auth-aside">
+ *       <div class="ol-auth-rings" aria-hidden="true"></div>
+ *       <a class="ol-auth-brand" href="…">…mark… Origin</a>
+ *       <p class="ol-auth-statement">Local-first, cross-agent memory for AI coding agents.</p>
+ *       <p class="ol-auth-meta">memory.example.com</p>
+ *     </aside>
+ *     <div class="ol-auth-body">
+ *       <div class="ol-auth-card"><h1 class="ol-auth-title">Sign in</h1> …form…</div>
+ *       <div class="ol-auth-foot">…</div>
+ *     </div>
+ *   </main>
+ */
+
+.ol-auth {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100dvh;
+  background: var(--ol-color-surface);
+}
+
+.ol-auth:has(> .ol-auth-aside) {
+  grid-template-columns: minmax(26rem, 46%) minmax(0, 1fr);
+}
+
+.ol-auth-aside {
+  /* Where the mark sits, and the length of one unit of the drawing (all radii scale with it). */
+  --ol-origin-x: 66%;
+  --ol-origin-y: 38%;
+  --ol-ring: 1px;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-4);
+  min-height: 0;
+  padding: var(--ol-space-8) var(--ol-space-10);
+  overflow: hidden;
+  background: var(--ol-color-brand-panel);
+  color: var(--ol-color-on-brand-panel);
+}
+
+.ol-auth-rings,
+.ol-auth-rings::before,
+.ol-auth-rings::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+/* A soft light around the origin, under everything. */
+.ol-auth-rings {
+  background: radial-gradient(
+    circle at var(--ol-origin-x) var(--ol-origin-y),
+    color-mix(in srgb, var(--ol-color-mark-inverse) 22%, transparent),
+    transparent calc(384 * var(--ol-ring))
+  );
+}
+
+/* The ripples: rings at widening intervals (×1.42), fading with distance. */
+.ol-auth-rings::before {
+  --ol-ripple: color-mix(in srgb, var(--ol-color-mark-inverse) 42%, transparent);
+  content: "";
+  background: radial-gradient(
+    circle at var(--ol-origin-x) var(--ol-origin-y),
+    transparent 0 calc(99 * var(--ol-ring)),
+    var(--ol-ripple) calc(99 * var(--ol-ring)) calc(99 * var(--ol-ring) + 2px),
+    transparent calc(99 * var(--ol-ring) + 2px) calc(141 * var(--ol-ring)),
+    var(--ol-ripple) calc(141 * var(--ol-ring)) calc(141 * var(--ol-ring) + 1.5px),
+    transparent calc(141 * var(--ol-ring) + 1.5px) calc(201 * var(--ol-ring)),
+    var(--ol-ripple) calc(201 * var(--ol-ring)) calc(201 * var(--ol-ring) + 1.5px),
+    transparent calc(201 * var(--ol-ring) + 1.5px) calc(286 * var(--ol-ring)),
+    var(--ol-ripple) calc(286 * var(--ol-ring)) calc(286 * var(--ol-ring) + 1.5px),
+    transparent calc(286 * var(--ol-ring) + 1.5px) calc(406 * var(--ol-ring)),
+    var(--ol-ripple) calc(406 * var(--ol-ring)) calc(406 * var(--ol-ring) + 1.5px),
+    transparent calc(406 * var(--ol-ring) + 1.5px) calc(577 * var(--ol-ring)),
+    var(--ol-ripple) calc(577 * var(--ol-ring)) calc(577 * var(--ol-ring) + 1.5px),
+    transparent calc(577 * var(--ol-ring) + 1.5px) calc(820 * var(--ol-ring)),
+    var(--ol-ripple) calc(820 * var(--ol-ring)) calc(820 * var(--ol-ring) + 1.5px),
+    transparent calc(820 * var(--ol-ring) + 1.5px)
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at var(--ol-origin-x) var(--ol-origin-y),
+    #000 0 calc(224 * var(--ol-ring)),
+    transparent calc(736 * var(--ol-ring))
+  );
+  mask-image: radial-gradient(
+    circle at var(--ol-origin-x) var(--ol-origin-y),
+    #000 0 calc(224 * var(--ol-ring)),
+    transparent calc(736 * var(--ol-ring))
+  );
+  animation: ol-ripple-in 1.6s var(--ol-ease-enter) both;
+  transform-origin: var(--ol-origin-x) var(--ol-origin-y);
+}
+
+/* The mark itself at the origin: a ring and its centre, in the mark's proportions (r 17 and 6,
+   stroke 5.5 on its 48-unit grid). */
+.ol-auth-rings::after {
+  content: "";
+  background:
+    radial-gradient(
+      circle at var(--ol-origin-x) var(--ol-origin-y),
+      var(--ol-color-mark-inverse) 0 calc(20 * var(--ol-ring)),
+      transparent calc(20 * var(--ol-ring) + 0.5px)
+    ),
+    radial-gradient(
+      circle at var(--ol-origin-x) var(--ol-origin-y),
+      transparent 0 calc(47 * var(--ol-ring)),
+      var(--ol-color-on-brand-panel) calc(47 * var(--ol-ring) + 0.5px) calc(65 * var(--ol-ring)),
+      transparent calc(65 * var(--ol-ring) + 0.5px)
+    );
+}
+
+@keyframes ol-ripple-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+.ol-auth-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  align-self: flex-start;
+  color: inherit;
+  font-size: var(--ol-font-size-lg);
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: var(--ol-tracking-tight);
+}
+
+.ol-auth-brand:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ol-auth-brand img,
+.ol-auth-brand svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.ol-auth-brand .ol-brand-accent {
+  fill: var(--ol-color-mark-inverse);
+}
+
+.ol-auth-statement {
+  max-width: 17em;
+  margin-block-start: auto;
+  font-size: var(--ol-font-size-2xl);
+  font-weight: var(--ol-font-weight-medium);
+  letter-spacing: var(--ol-tracking-tight);
+  line-height: var(--ol-line-height-2xl);
+  text-wrap: balance;
+}
+
+.ol-auth-meta {
+  color: var(--ol-color-on-brand-panel-muted);
+  font-size: var(--ol-font-size-sm);
+}
+
+.ol-auth-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ol-space-6);
+  padding: var(--ol-space-8) var(--ol-space-6);
+}
+
+.ol-auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-5);
+  width: min(22rem, 100%);
+}
+
+/* A card on its own, without the brand panel, gets a frame. */
+.ol-auth:not(:has(> .ol-auth-aside)) {
+  background: var(--ol-color-shell);
+}
+
+.ol-auth:not(:has(> .ol-auth-aside)) .ol-auth-card {
+  padding: var(--ol-space-8);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-frame);
+  background: var(--ol-color-surface);
+  box-shadow: var(--ol-shadow-md);
+}
+
+.ol-auth-title {
+  font-size: var(--ol-font-size-2xl);
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: var(--ol-tracking-tight);
+  line-height: var(--ol-line-height-2xl);
+}
+
+.ol-auth-title + p {
+  margin-block-start: calc(var(--ol-space-4) * -1);
+  color: var(--ol-color-fg-muted);
+}
+
+.ol-auth-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--ol-space-1) var(--ol-space-4);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+}
+
+.ol-auth-foot a {
+  color: var(--ol-color-fg-muted);
+}
+
+/* Narrow screens: the panel becomes the page, the sidebar a bar with a menu, the brand panel a band. */
+
+@media (max-width: 860px) {
+  .ol-app {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .ol-sidebar {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--ol-z-sticky);
+    gap: var(--ol-space-3);
+    padding: var(--ol-space-2) var(--ol-space-3);
+    overflow: visible;
+    border-block-end: 1px solid var(--ol-color-border);
+    background: var(--ol-color-shell);
+  }
+
+  .ol-nav,
+  .ol-sidebar-foot {
+    display: none;
+  }
+
+  .ol-nav-toggle:checked ~ .ol-nav,
+  .ol-nav-toggle:checked ~ .ol-sidebar-foot {
+    display: flex;
+  }
+
+  .ol-nav-toggle:focus-visible ~ .ol-sidebar-head .ol-nav-toggle-button {
+    outline: var(--ol-focus-width) solid var(--ol-color-focus-ring);
+    outline-offset: var(--ol-focus-offset);
+  }
+
+  .ol-main {
+    margin: 0;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .ol-topbar {
+    position: static;
+    padding-inline: var(--ol-space-4);
+  }
+
+  .ol-breadcrumb li:not(:last-child) {
+    display: none;
+  }
+
+  .ol-breadcrumb li:last-child::before {
+    content: none;
+  }
+
+  .ol-content {
+    padding: var(--ol-space-6) var(--ol-space-4) var(--ol-space-10);
+  }
+
+  .ol-footer {
+    padding: var(--ol-space-4);
+  }
+
+  .ol-auth:has(> .ol-auth-aside) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+
+  .ol-auth-aside {
+    --ol-origin-x: 84%;
+    --ol-origin-y: 50%;
+    --ol-ring: 0.62px;
+    min-height: 9.5rem;
+    padding: var(--ol-space-5);
+  }
+
+  .ol-auth-statement {
+    max-width: 12em;
+    font-size: var(--ol-font-size-lg);
+    line-height: var(--ol-line-height-lg);
+  }
+
+  .ol-auth-meta {
+    display: none;
+  }
+
+  .ol-auth-body {
+    justify-content: flex-start;
+    padding-block-start: var(--ol-space-8);
+  }
+}
+
+@media (forced-colors: active) {
+  .ol-nav-item[aria-current="page"] {
+    outline: 2px solid Highlight;
+  }
+
+  .ol-main {
+    border-color: CanvasText;
+  }
+
+  .ol-auth-rings {
+    display: none;
+  }
+}

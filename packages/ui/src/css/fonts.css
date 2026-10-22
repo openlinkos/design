@@ -1,0 +1,32 @@
+/*
+ * Geist and Geist Mono (SIL Open Font License 1.1, see fonts/LICENSE-geist.txt), variable weights
+ * 100–900. URLs are relative to this stylesheet: serve dist/fonts/ next to ui.css.
+ *
+ * "Geist ZH" is the same file without the curly quotes, middle dot, em dash and ellipsis, so on
+ * Chinese pages those characters come from the Chinese font in their full-width forms.
+ */
+
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/Geist-Variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Geist ZH";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/Geist-Variable.woff2") format("woff2");
+  unicode-range: U+0000-00B6, U+00B8-2013, U+2015-2017, U+2020-2025, U+2027-2FFF;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/GeistMono-Variable.woff2") format("woff2");
+}

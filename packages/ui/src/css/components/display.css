@@ -1,0 +1,208 @@
+/*
+ * Display: badges, avatars, code, keys, and secrets.
+ */
+
+/* Badges: short status or category labels. .ol-badge plus a tone (-accent, -success, -warning,
+   -danger, -info; neutral without one) and optionally -solid or -outline; -square for tags.
+   Add .ol-dot for a status dot. Badges are not buttons: never make one the only way to act. */
+
+.ol-badge {
+  --ol-badge-bg: var(--ol-color-fill);
+  --ol-badge-fg: var(--ol-color-fg-muted);
+  --ol-badge-border: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  height: 1.25rem;
+  padding-inline: var(--ol-space-2);
+  border: 1px solid var(--ol-badge-border);
+  border-radius: var(--ol-radius-badge);
+  background: var(--ol-badge-bg);
+  color: var(--ol-badge-fg);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ol-badge-accent {
+  --ol-badge-bg: var(--ol-color-accent-bg);
+  --ol-badge-fg: var(--ol-color-accent-text);
+}
+
+.ol-badge-success {
+  --ol-badge-bg: var(--ol-color-success-bg);
+  --ol-badge-fg: var(--ol-color-success-text);
+}
+
+.ol-badge-warning {
+  --ol-badge-bg: var(--ol-color-warning-bg);
+  --ol-badge-fg: var(--ol-color-warning-text);
+}
+
+.ol-badge-danger {
+  --ol-badge-bg: var(--ol-color-danger-bg);
+  --ol-badge-fg: var(--ol-color-danger-text);
+}
+
+.ol-badge-info {
+  --ol-badge-bg: var(--ol-color-info-bg);
+  --ol-badge-fg: var(--ol-color-info-text);
+}
+
+.ol-badge-solid {
+  --ol-badge-bg: var(--ol-color-fg);
+  --ol-badge-fg: var(--ol-color-bg);
+}
+
+.ol-badge-solid.ol-badge-accent {
+  --ol-badge-bg: var(--ol-color-accent-solid);
+  --ol-badge-fg: var(--ol-color-accent-on-solid);
+}
+
+.ol-badge-solid.ol-badge-danger {
+  --ol-badge-bg: var(--ol-color-danger-solid);
+  --ol-badge-fg: var(--ol-color-danger-on-solid);
+}
+
+.ol-badge-outline {
+  --ol-badge-bg: transparent;
+  --ol-badge-border: var(--ol-color-border-strong);
+}
+
+.ol-badge-square {
+  border-radius: var(--ol-radius-xs);
+}
+
+.ol-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* A count next to a label, such as unread items. */
+.ol-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding-inline: 0.3125rem;
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-fill);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-2xs);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--ol-font-weight-medium);
+  line-height: 1;
+}
+
+/* Avatars: initials or an icon in a circle. Sizes -sm and -lg. */
+.ol-avatar {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--ol-size-avatar-md);
+  height: var(--ol-size-avatar-md);
+  overflow: hidden;
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-accent-bg);
+  color: var(--ol-color-accent-text);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ol-avatar-sm {
+  width: var(--ol-size-avatar-sm);
+  height: var(--ol-size-avatar-sm);
+  font-size: var(--ol-font-size-2xs);
+}
+
+.ol-avatar-lg {
+  width: var(--ol-size-avatar-lg);
+  height: var(--ol-size-avatar-lg);
+  font-size: var(--ol-font-size-sm);
+}
+
+.ol-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Code blocks, with an optional label and a copy button (.ol-copy). */
+.ol-code {
+  position: relative;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-control);
+  background: var(--ol-color-bg-subtle);
+}
+
+.ol-code pre {
+  margin: 0;
+  padding: var(--ol-space-2-5) var(--ol-space-3);
+  overflow-x: auto;
+  font-size: var(--ol-font-size-xs);
+  line-height: 1.65;
+}
+
+.ol-code-label {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-height: var(--ol-size-control-md);
+  padding-inline: var(--ol-space-3) var(--ol-space-10);
+  border-block-end: 1px solid var(--ol-color-border);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-medium);
+}
+
+.ol-code > .ol-copy {
+  position: absolute;
+  inset-block-start: var(--ol-space-1);
+  inset-inline-end: var(--ol-space-1);
+}
+
+.ol-mono {
+  font-family: var(--ol-font-family-mono);
+  font-size: 0.9em;
+}
+
+.ol-kbd {
+  display: inline-block;
+  min-width: 1.25rem;
+  padding-inline: 0.3125rem;
+  border: 1px solid var(--ol-color-border-strong);
+  border-block-end-width: 2px;
+  border-radius: var(--ol-radius-xs);
+  background: var(--ol-color-surface);
+  font-family: var(--ol-font-family-mono);
+  font-size: var(--ol-font-size-2xs);
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* A secret shown once, such as a new token: select-all on click, wrapping anywhere. */
+.ol-secret {
+  display: block;
+  padding: var(--ol-space-2-5) var(--ol-space-3);
+  border: 1px dashed var(--ol-color-border-strong);
+  border-radius: var(--ol-radius-control);
+  background: var(--ol-color-bg-subtle);
+  font-family: var(--ol-font-family-mono);
+  font-size: var(--ol-font-size-sm);
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+@media (forced-colors: active) {
+  .ol-badge,
+  .ol-count,
+  .ol-avatar {
+    border: 1px solid CanvasText;
+  }
+}

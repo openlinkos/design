@@ -1,0 +1,428 @@
+{
+  "$description": "Semantic colours. $value is light mode; com.openlinkos.dark is dark mode.",
+  "color": {
+    "$type": "color",
+    "shell": {
+      "$value": "{palette.neutral.3}",
+      "$description": "The app shell around the floating content panel, and the sidebar.",
+      "$extensions": {
+        "com.openlinkos": {
+          "dark": "{palette.neutral.1}"
+        }
+      }
+    },
+    "bg": {
+      "$value": "{palette.neutral.1}",
+      "$description": "The app background."
+    },
+    "bg-subtle": {
+      "$value": "{palette.neutral.2}",
+      "$description": "Recessed areas: sidebar, table headings, code."
+    },
+    "surface": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1, 1, 1],
+        "hex": "#ffffff"
+      },
+      "$description": "Content surfaces: the floating panel, tables, inputs.",
+      "$extensions": {
+        "com.openlinkos": {
+          "dark": "{palette.neutral.2}"
+        }
+      }
+    },
+    "surface-overlay": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1, 1, 1],
+        "hex": "#ffffff"
+      },
+      "$description": "Floating surfaces: menus, popovers, dialogs, toasts.",
+      "$extensions": {
+        "com.openlinkos": {
+          "dark": "{palette.neutral.3}"
+        }
+      }
+    },
+    "fill-subtle": {
+      "$value": "{palette.neutral.2}",
+      "$description": "Faint fill: hovered table rows.",
+      "$extensions": {
+        "com.openlinkos": {
+          "dark": "{palette.neutral.3}"
+        }
+      }
+    },
+    "fill": {
+      "$value": "{palette.neutral.3}",
+      "$description": "Neutral fill: segmented controls, neutral badges, inline code."
+    },
+    "fill-hover": {
+      "$value": "{palette.neutral.4}",
+      "$description": "Hovered neutral fill: ghost buttons, menu items, navigation."
+    },
+    "fill-active": {
+      "$value": "{palette.neutral.5}",
+      "$description": "Pressed neutral fill."
+    },
+    "fg": {
+      "$value": "{palette.neutral.12}",
+      "$description": "Primary text."
+    },
+    "fg-muted": {
+      "$value": "{palette.neutral.11}",
+      "$description": "Secondary text: descriptions, labels, table headings."
+    },
+    "fg-subtle": {
+      "$value": "{palette.neutral.text-subtle}",
+      "$description": "Tertiary text: meta, placeholders (still 4.5:1)."
+    },
+    "fg-disabled": {
+      "$value": "{palette.neutral.8}",
+      "$description": "Disabled text; exempt from contrast requirements."
+    },
+    "border": {
+      "$value": "{palette.neutral.6}",
+      "$description": "Separators and container edges."
+    },
+    "border-strong": {
+      "$value": "{palette.neutral.7}",
+      "$description": "Edges that need more weight: secondary buttons, badges."
+    },
+    "border-input": {
+      "$value": "{palette.neutral.border-input}",
+      "$description": "Edges of form controls (3:1, WCAG 1.4.11)."
+    },
+    "border-input-hover": {
+      "$value": "{palette.neutral.border-input-hover}",
+      "$description": "Hovered form control edges."
+    },
+    "focus-ring": {
+      "$value": "{palette.accent.9}",
+      "$description": "The focus indicator (3:1 against every surface).",
+      "$extensions": {
+        "com.openlinkos": {
+          "dark": "{palette.accent.11}"
+        }
+      }
+    },
+    "selection": {
+      "$value": "{palette.accent.5}",
+      "$description": "Selected text."
+    },
+    "overlay": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.1098, 0.1255, 0.1412],
+        "alpha": 0.4,
+        "hex": "#1c2024"
+      },
+      "$description": "The backdrop behind modal dialogs.",
+      "$extensions": {
+        "com.openlinkos": {
+          "dark": {
+            "colorSpace": "srgb",
+            "components": [0.0, 0.0, 0.0],
+            "alpha": 0.6,
+            "hex": "#000000"
+          }
+        }
+      }
+    },
+    "shadow": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.1098, 0.1255, 0.1412],
+        "alpha": 0.1,
+        "hex": "#1c2024"
+      },
+      "$description": "Shadow colour.",
+      "$extensions": {
+        "com.openlinkos": {
+          "dark": {
+            "colorSpace": "srgb",
+            "components": [0.0, 0.0, 0.0],
+            "alpha": 0.5,
+            "hex": "#000000"
+          }
+        }
+      }
+    },
+    "shadow-weak": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.1098, 0.1255, 0.1412],
+        "alpha": 0.05,
+        "hex": "#1c2024"
+      },
+      "$description": "The lighter layer of a shadow.",
+      "$extensions": {
+        "com.openlinkos": {
+          "dark": {
+            "colorSpace": "srgb",
+            "components": [0.0, 0.0, 0.0],
+            "alpha": 0.3,
+            "hex": "#000000"
+          }
+        }
+      }
+    },
+    "mark": {
+      "$value": "{palette.accent.mark}",
+      "$description": "The brand mark's accent, for logos drawn in the page."
+    },
+    "mark-inverse": {
+      "$value": "{palette.accent.mark-inverse}",
+      "$description": "The mark's accent on the brand panel, which is dark in both modes."
+    },
+    "brand-panel": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.0588, 0.0902, 0.1647],
+        "hex": "#0f172a"
+      },
+      "$description": "The brand panel of the sign-in page: the brand tile colour in both modes."
+    },
+    "on-brand-panel": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.8863, 0.9098, 0.9412],
+        "hex": "#e2e8f0"
+      },
+      "$description": "Text on the brand panel."
+    },
+    "on-brand-panel-muted": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.5804, 0.6392, 0.7216],
+        "hex": "#94a3b8"
+      },
+      "$description": "Secondary text on the brand panel."
+    },
+    "highlight": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [1.0, 1.0, 1.0],
+        "alpha": 0.16,
+        "hex": "#ffffff"
+      },
+      "$description": "The light top edge of solid buttons."
+    },
+    "accent": {
+      "$description": "The brand accent: links, primary actions, current state.",
+      "bg": {
+        "$value": "{palette.accent.3}",
+        "$description": "Tinted background: badges, alerts, selected rows."
+      },
+      "bg-hover": {
+        "$value": "{palette.accent.4}",
+        "$description": "Hovered tinted background."
+      },
+      "bg-active": {
+        "$value": "{palette.accent.5}",
+        "$description": "Pressed or selected tinted background."
+      },
+      "border": {
+        "$value": "{palette.accent.7}",
+        "$description": "Border of tinted elements."
+      },
+      "border-hover": {
+        "$value": "{palette.accent.8}",
+        "$description": "Hovered border."
+      },
+      "solid": {
+        "$value": "{palette.accent.9}",
+        "$description": "Solid fill: primary buttons, emphasis."
+      },
+      "solid-hover": {
+        "$value": "{palette.accent.10}",
+        "$description": "Hovered solid fill."
+      },
+      "text": {
+        "$value": "{palette.accent.11}",
+        "$description": "Text and icons on the page or a tint (4.5:1)."
+      },
+      "text-strong": {
+        "$value": "{palette.accent.12}",
+        "$description": "High-contrast text (7:1)."
+      },
+      "on-solid": {
+        "$value": "{palette.accent.on-solid}",
+        "$description": "Text on the solid fill (4.5:1)."
+      }
+    },
+    "success": {
+      "$description": "Success.",
+      "bg": {
+        "$value": "{palette.success.3}",
+        "$description": "Tinted background: badges, alerts, selected rows."
+      },
+      "bg-hover": {
+        "$value": "{palette.success.4}",
+        "$description": "Hovered tinted background."
+      },
+      "bg-active": {
+        "$value": "{palette.success.5}",
+        "$description": "Pressed or selected tinted background."
+      },
+      "border": {
+        "$value": "{palette.success.7}",
+        "$description": "Border of tinted elements."
+      },
+      "border-hover": {
+        "$value": "{palette.success.8}",
+        "$description": "Hovered border."
+      },
+      "solid": {
+        "$value": "{palette.success.9}",
+        "$description": "Solid fill: primary buttons, emphasis."
+      },
+      "solid-hover": {
+        "$value": "{palette.success.10}",
+        "$description": "Hovered solid fill."
+      },
+      "text": {
+        "$value": "{palette.success.11}",
+        "$description": "Text and icons on the page or a tint (4.5:1)."
+      },
+      "text-strong": {
+        "$value": "{palette.success.12}",
+        "$description": "High-contrast text (7:1)."
+      },
+      "on-solid": {
+        "$value": "{palette.success.on-solid}",
+        "$description": "Text on the solid fill (4.5:1)."
+      }
+    },
+    "warning": {
+      "$description": "Warning.",
+      "bg": {
+        "$value": "{palette.warning.3}",
+        "$description": "Tinted background: badges, alerts, selected rows."
+      },
+      "bg-hover": {
+        "$value": "{palette.warning.4}",
+        "$description": "Hovered tinted background."
+      },
+      "bg-active": {
+        "$value": "{palette.warning.5}",
+        "$description": "Pressed or selected tinted background."
+      },
+      "border": {
+        "$value": "{palette.warning.7}",
+        "$description": "Border of tinted elements."
+      },
+      "border-hover": {
+        "$value": "{palette.warning.8}",
+        "$description": "Hovered border."
+      },
+      "solid": {
+        "$value": "{palette.warning.9}",
+        "$description": "Solid fill: primary buttons, emphasis."
+      },
+      "solid-hover": {
+        "$value": "{palette.warning.10}",
+        "$description": "Hovered solid fill."
+      },
+      "text": {
+        "$value": "{palette.warning.11}",
+        "$description": "Text and icons on the page or a tint (4.5:1)."
+      },
+      "text-strong": {
+        "$value": "{palette.warning.12}",
+        "$description": "High-contrast text (7:1)."
+      },
+      "on-solid": {
+        "$value": "{palette.warning.on-solid}",
+        "$description": "Text on the solid fill (4.5:1)."
+      }
+    },
+    "danger": {
+      "$description": "Danger: errors and destructive actions.",
+      "bg": {
+        "$value": "{palette.danger.3}",
+        "$description": "Tinted background: badges, alerts, selected rows."
+      },
+      "bg-hover": {
+        "$value": "{palette.danger.4}",
+        "$description": "Hovered tinted background."
+      },
+      "bg-active": {
+        "$value": "{palette.danger.5}",
+        "$description": "Pressed or selected tinted background."
+      },
+      "border": {
+        "$value": "{palette.danger.7}",
+        "$description": "Border of tinted elements."
+      },
+      "border-hover": {
+        "$value": "{palette.danger.8}",
+        "$description": "Hovered border."
+      },
+      "solid": {
+        "$value": "{palette.danger.9}",
+        "$description": "Solid fill: primary buttons, emphasis."
+      },
+      "solid-hover": {
+        "$value": "{palette.danger.10}",
+        "$description": "Hovered solid fill."
+      },
+      "text": {
+        "$value": "{palette.danger.11}",
+        "$description": "Text and icons on the page or a tint (4.5:1)."
+      },
+      "text-strong": {
+        "$value": "{palette.danger.12}",
+        "$description": "High-contrast text (7:1)."
+      },
+      "on-solid": {
+        "$value": "{palette.danger.on-solid}",
+        "$description": "Text on the solid fill (4.5:1)."
+      }
+    },
+    "info": {
+      "$description": "Information.",
+      "bg": {
+        "$value": "{palette.info.3}",
+        "$description": "Tinted background: badges, alerts, selected rows."
+      },
+      "bg-hover": {
+        "$value": "{palette.info.4}",
+        "$description": "Hovered tinted background."
+      },
+      "bg-active": {
+        "$value": "{palette.info.5}",
+        "$description": "Pressed or selected tinted background."
+      },
+      "border": {
+        "$value": "{palette.info.7}",
+        "$description": "Border of tinted elements."
+      },
+      "border-hover": {
+        "$value": "{palette.info.8}",
+        "$description": "Hovered border."
+      },
+      "solid": {
+        "$value": "{palette.info.9}",
+        "$description": "Solid fill: primary buttons, emphasis."
+      },
+      "solid-hover": {
+        "$value": "{palette.info.10}",
+        "$description": "Hovered solid fill."
+      },
+      "text": {
+        "$value": "{palette.info.11}",
+        "$description": "Text and icons on the page or a tint (4.5:1)."
+      },
+      "text-strong": {
+        "$value": "{palette.info.12}",
+        "$description": "High-contrast text (7:1)."
+      },
+      "on-solid": {
+        "$value": "{palette.info.on-solid}",
+        "$description": "Text on the solid fill (4.5:1)."
+      }
+    }
+  }
+}

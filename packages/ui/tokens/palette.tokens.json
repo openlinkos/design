@@ -1,0 +1,35 @@
+{
+  "$description": "Palette anchors. Each is the solid colour (step 9) of a 12-step scale generated in OKLCH for light and dark mode, plus the accessible extras text-subtle, border-input, border-input-hover and on-solid. Reference steps as {palette.<name>.<step>}.",
+  "palette": {
+    "$type": "color",
+    "neutral": {
+      "$value": { "colorSpace": "srgb", "components": [0.5451, 0.5529, 0.5961], "hex": "#8b8d98" },
+      "$description": "Slate: surfaces, text and lines.",
+      "$extensions": { "com.openlinkos": { "scale": "neutral" } }
+    },
+    "accent": {
+      "$description": "The brand accent, generated per brand from the solid colours in brand/brands.json.",
+      "$extensions": { "com.openlinkos": { "brand": true } }
+    },
+    "success": {
+      "$value": { "colorSpace": "srgb", "components": [0.0824, 0.502, 0.2392], "hex": "#15803d" },
+      "$description": "Completed, healthy, active.",
+      "$extensions": { "com.openlinkos": { "scale": "accent" } }
+    },
+    "warning": {
+      "$value": { "colorSpace": "srgb", "components": [0.9608, 0.6471, 0.1412], "hex": "#f5a524" },
+      "$description": "Needs attention but nothing is broken. Its solid takes dark text.",
+      "$extensions": { "com.openlinkos": { "scale": "accent" } }
+    },
+    "danger": {
+      "$value": { "colorSpace": "srgb", "components": [0.8627, 0.149, 0.149], "hex": "#dc2626" },
+      "$description": "Errors and destructive actions.",
+      "$extensions": { "com.openlinkos": { "scale": "accent" } }
+    },
+    "info": {
+      "$value": { "colorSpace": "srgb", "components": [0.1451, 0.3882, 0.9216], "hex": "#2563eb" },
+      "$description": "Neutral information that is not about the brand.",
+      "$extensions": { "com.openlinkos": { "scale": "accent" } }
+    }
+  }
+}

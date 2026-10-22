@@ -53,6 +53,8 @@ Sites do not copy these files: `@openlinkos/vitepress-theme` ships them and writ
 
 To add a product, add an entry to `brands.json` (reuse a mark, pick an accent that passes the contrast tests) and regenerate. A product gets its own mark only when it needs one; until then it uses the interlocked rings in its own colour.
 
+Every brand's solid accent (`brand[2]` for each mode) also seeds its 12-step accent scale in `@openlinkos/ui`, selected with `data-brand="<id>"`. The ui tests check that scale for contrast in both modes, so a new brand needs no further change there; run `pnpm build` to regenerate the token reference.
+
 ## How the marks were chosen
 
 The marks were chosen in October 2026 after twelve rounds of concepts. Every candidate was screened with a reverse image search, and the bar was set at "not confusable with an existing mark in software or AI": simple geometric marks always have look-alikes somewhere, so a perfectly unique simple mark is not achievable. Several attractive motifs were ruled out because existing software marks were too close: an open hexagon with a dot, a cube inside a hexagon, interlocked rounded squares (the generic link icon) and an open ring with a node. Two interlocked rings are a common motif rather than anyone's distinctive mark, and the ring with a centre point is a generic bullseye; neither should be registered as a trademark without a formal search. The names and wordmarks carry the brand.

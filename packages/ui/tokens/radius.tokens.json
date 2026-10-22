@@ -1,0 +1,69 @@
+{
+  "$description": "Corner radii. Roles differ on purpose: tight controls, softer containers, pill badges.",
+  "radius": {
+    "$type": "dimension",
+    "none": {
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      }
+    },
+    "xs": {
+      "$value": {
+        "value": 0.1875,
+        "unit": "rem"
+      }
+    },
+    "sm": {
+      "$value": {
+        "value": 0.25,
+        "unit": "rem"
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 0.375,
+        "unit": "rem"
+      }
+    },
+    "lg": {
+      "$value": {
+        "value": 0.625,
+        "unit": "rem"
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 0.875,
+        "unit": "rem"
+      }
+    },
+    "full": {
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      },
+      "$description": "Pills and circles."
+    },
+    "control": {
+      "$value": "{radius.md}",
+      "$description": "Buttons, inputs, menu items."
+    },
+    "container": {
+      "$value": "{radius.lg}",
+      "$description": "Panels, tables, cards, alerts, menus and popovers."
+    },
+    "overlay": {
+      "$value": "{radius.xl}",
+      "$description": "Dialogs."
+    },
+    "frame": {
+      "$value": "{radius.xl}",
+      "$description": "The app's floating content panel and the single sign-in card."
+    },
+    "badge": {
+      "$value": "{radius.full}",
+      "$description": "Status badges."
+    }
+  }
+}

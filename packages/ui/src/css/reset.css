@@ -1,0 +1,79 @@
+/*
+ * Reset: a small, modern normalisation. It sets box sizing, removes default margins where the kit
+ * sets its own rhythm, and makes media and form controls behave predictably. It styles no visual
+ * design; that starts in base.css.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  tab-size: 4;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+ul[class],
+ol[class] {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+svg {
+  flex: none;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+button,
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  -webkit-appearance: button;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+[hidden]:not([hidden="until-found"]) {
+  /* biome-ignore lint/complexity/noImportantStyles: the hidden attribute must win over display classes. */
+  display: none !important;
+}

@@ -1,0 +1,322 @@
+{
+  "$description": "Type: families, weights, sizes with matching line heights, and presets.",
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": [
+          "Geist",
+          "PingFang SC",
+          "Hiragino Sans GB",
+          "Microsoft YaHei UI",
+          "Microsoft YaHei",
+          "Noto Sans CJK SC",
+          "Source Han Sans SC",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+          "Apple Color Emoji",
+          "Segoe UI Emoji"
+        ],
+        "$description": "Geist for Latin text (bundled), then the common Simplified Chinese system fonts."
+      },
+      "mono": {
+        "$value": [
+          "Geist Mono",
+          "ui-monospace",
+          "SFMono-Regular",
+          "Cascadia Code",
+          "Menlo",
+          "Consolas",
+          "Liberation Mono",
+          "monospace"
+        ],
+        "$description": "Code, ids and tokens only."
+      },
+      "sans-zh": {
+        "$value": [
+          "Geist ZH",
+          "PingFang SC",
+          "Hiragino Sans GB",
+          "Microsoft YaHei UI",
+          "Microsoft YaHei",
+          "Noto Sans CJK SC",
+          "Source Han Sans SC",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+          "Apple Color Emoji",
+          "Segoe UI Emoji"
+        ],
+        "$description": "Chinese pages: Geist without curly quotes, middle dot, em dash and ellipsis, so those take the Chinese font's full-width forms."
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": {
+        "$value": 400
+      },
+      "medium": {
+        "$value": 500
+      },
+      "semibold": {
+        "$value": 600
+      },
+      "bold": {
+        "$value": 700
+      }
+    },
+    "size": {
+      "$type": "dimension",
+      "2xs": {
+        "$value": {
+          "value": 0.6875,
+          "unit": "rem"
+        }
+      },
+      "xs": {
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        }
+      },
+      "sm": {
+        "$value": {
+          "value": 0.8125,
+          "unit": "rem"
+        }
+      },
+      "md": {
+        "$value": {
+          "value": 0.875,
+          "unit": "rem"
+        },
+        "$description": "Body text."
+      },
+      "lg": {
+        "$value": {
+          "value": 1.0,
+          "unit": "rem"
+        }
+      },
+      "xl": {
+        "$value": {
+          "value": 1.25,
+          "unit": "rem"
+        }
+      },
+      "2xl": {
+        "$value": {
+          "value": 1.5,
+          "unit": "rem"
+        }
+      },
+      "3xl": {
+        "$value": {
+          "value": 2.25,
+          "unit": "rem"
+        }
+      }
+    }
+  },
+  "line-height": {
+    "$type": "dimension",
+    "2xs": {
+      "$value": {
+        "value": 0.875,
+        "unit": "rem"
+      }
+    },
+    "xs": {
+      "$value": {
+        "value": 1.0,
+        "unit": "rem"
+      }
+    },
+    "sm": {
+      "$value": {
+        "value": 1.25,
+        "unit": "rem"
+      }
+    },
+    "md": {
+      "$value": {
+        "value": 1.375,
+        "unit": "rem"
+      }
+    },
+    "lg": {
+      "$value": {
+        "value": 1.5,
+        "unit": "rem"
+      }
+    },
+    "xl": {
+      "$value": {
+        "value": 1.75,
+        "unit": "rem"
+      }
+    },
+    "2xl": {
+      "$value": {
+        "value": 2.0,
+        "unit": "rem"
+      }
+    },
+    "3xl": {
+      "$value": {
+        "value": 2.75,
+        "unit": "rem"
+      }
+    }
+  },
+  "tracking": {
+    "$type": "number",
+    "$description": "Letter spacing in em (DTCG dimensions allow only px and rem). Chinese text resets tight tracking to 0.",
+    "tight": {
+      "$value": -0.011,
+      "$extensions": {
+        "com.openlinkos": {
+          "unit": "em"
+        }
+      }
+    },
+    "normal": {
+      "$value": 0,
+      "$extensions": {
+        "com.openlinkos": {
+          "unit": "em"
+        }
+      }
+    }
+  },
+  "text": {
+    "display": {
+      "$type": "typography",
+      "$description": "Hero figures and landing headings.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.3xl}",
+        "fontWeight": "{font.weight.semibold}",
+        "lineHeight": 1.2222,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "heading-xl": {
+      "$type": "typography",
+      "$description": "Page titles.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.2xl}",
+        "fontWeight": "{font.weight.semibold}",
+        "lineHeight": 1.3333,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "heading-lg": {
+      "$type": "typography",
+      "$description": "Major sections.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.xl}",
+        "fontWeight": "{font.weight.semibold}",
+        "lineHeight": 1.4,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "heading-md": {
+      "$type": "typography",
+      "$description": "Sections.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.lg}",
+        "fontWeight": "{font.weight.semibold}",
+        "lineHeight": 1.5,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "heading-sm": {
+      "$type": "typography",
+      "$description": "Panel and card titles.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.md}",
+        "fontWeight": "{font.weight.semibold}",
+        "lineHeight": 1.5714,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "body": {
+      "$type": "typography",
+      "$description": "Body text.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.md}",
+        "fontWeight": "{font.weight.regular}",
+        "lineHeight": 1.5714,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "body-sm": {
+      "$type": "typography",
+      "$description": "Dense text: tables, descriptions.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.sm}",
+        "fontWeight": "{font.weight.regular}",
+        "lineHeight": 1.5385,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "caption": {
+      "$type": "typography",
+      "$description": "Meta and help text.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.xs}",
+        "fontWeight": "{font.weight.regular}",
+        "lineHeight": 1.3333,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "label": {
+      "$type": "typography",
+      "$description": "Form labels and buttons.",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.sm}",
+        "fontWeight": "{font.weight.medium}",
+        "lineHeight": 1.5385,
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "$description": "Type presets. lineHeight is a multiplier, as DTCG requires; the line-height tokens give the same values as lengths."
+  }
+}

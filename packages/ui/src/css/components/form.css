@@ -1,0 +1,363 @@
+/*
+ * Forms. A field is a label, a control, and optional hint and error text:
+ *
+ *   <div class="ol-field">
+ *     <label class="ol-label" for="name">Name <span class="ol-required">*</span></label>
+ *     <input class="ol-input" id="name" aria-describedby="name-hint" required>
+ *     <p class="ol-hint" id="name-hint">…</p>
+ *   </div>
+ *
+ * Mark invalid controls with aria-invalid="true" and point aria-describedby at .ol-field-error.
+ * Control borders reach 3:1 against the page so the field is visible without its label (WCAG 1.4.11).
+ */
+
+.ol-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-5);
+  max-width: 36rem;
+}
+
+.ol-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-1-5);
+  min-width: 0;
+}
+
+.ol-label {
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-required {
+  color: var(--ol-color-danger-text);
+}
+
+.ol-hint {
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+.ol-field-error {
+  display: flex;
+  gap: var(--ol-space-1);
+  color: var(--ol-color-danger-text);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+.ol-input,
+.ol-select,
+.ol-textarea {
+  --ol-control-height: var(--ol-size-control-md);
+  width: 100%;
+  min-height: var(--ol-control-height);
+  padding-inline: var(--ol-space-2-5);
+  border: 1px solid var(--ol-color-border-input);
+  border-radius: var(--ol-radius-control);
+  background: var(--ol-color-surface);
+  box-shadow: var(--ol-shadow-xs);
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-md);
+  line-height: var(--ol-line-height-md);
+  transition:
+    border-color var(--ol-duration-fast) var(--ol-ease-standard),
+    box-shadow var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-input::placeholder,
+.ol-textarea::placeholder {
+  color: var(--ol-color-fg-subtle);
+  opacity: 1;
+}
+
+.ol-input:hover,
+.ol-select:hover,
+.ol-textarea:hover {
+  border-color: var(--ol-color-border-input-hover);
+}
+
+/* Focus: a 2px ring on the edge (WCAG 2.4.13) with a soft halo around it. */
+.ol-input:focus-visible,
+.ol-select:focus-visible,
+.ol-textarea:focus-visible {
+  border-color: var(--ol-color-focus-ring);
+  outline: var(--ol-focus-width) solid var(--ol-color-focus-ring);
+  outline-offset: -1px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ol-color-focus-ring) 18%, transparent);
+}
+
+.ol-input[aria-invalid="true"],
+.ol-select[aria-invalid="true"],
+.ol-textarea[aria-invalid="true"] {
+  border-color: var(--ol-color-danger-solid);
+}
+
+.ol-input[aria-invalid="true"]:focus-visible,
+.ol-select[aria-invalid="true"]:focus-visible,
+.ol-textarea[aria-invalid="true"]:focus-visible {
+  outline-color: var(--ol-color-danger-solid);
+}
+
+.ol-input:disabled,
+.ol-select:disabled,
+.ol-textarea:disabled {
+  background: var(--ol-color-fill);
+  color: var(--ol-color-fg-disabled);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.ol-input:read-only:not(:disabled),
+.ol-textarea:read-only:not(:disabled) {
+  background: var(--ol-color-bg-subtle);
+}
+
+.ol-input-sm,
+.ol-select.ol-input-sm {
+  --ol-control-height: var(--ol-size-control-sm);
+  font-size: var(--ol-font-size-sm);
+}
+
+.ol-input-lg,
+.ol-select.ol-input-lg {
+  --ol-control-height: var(--ol-size-control-lg);
+}
+
+.ol-input-mono {
+  font-family: var(--ol-font-family-mono);
+  font-size: var(--ol-font-size-sm);
+}
+
+.ol-textarea {
+  min-height: 5.5rem;
+  padding-block: var(--ol-space-2);
+  resize: vertical;
+  field-sizing: content;
+}
+
+.ol-select {
+  padding-inline-end: var(--ol-space-8);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b8d98' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right var(--ol-space-2) center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+/* A control with text or a button attached: <div class="ol-input-group"><span class="ol-addon">https://</span><input class="ol-input">…</div> */
+.ol-input-group {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.ol-input-group > .ol-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ol-input-group > :not(:first-child) {
+  margin-inline-start: -1px;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+
+.ol-input-group > :not(:last-child) {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.ol-input-group > :focus-visible {
+  z-index: 1;
+}
+
+.ol-addon {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--ol-space-2-5);
+  border: 1px solid var(--ol-color-border-input);
+  border-radius: var(--ol-radius-control);
+  background: var(--ol-color-bg-subtle);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+  white-space: nowrap;
+}
+
+/* A search box with a leading icon: <div class="ol-search"><svg class="ol-icon">…</svg><input class="ol-input" type="search"></div> */
+.ol-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.ol-search > .ol-icon {
+  position: absolute;
+  inset-inline-start: var(--ol-space-2-5);
+  color: var(--ol-color-fg-subtle);
+  pointer-events: none;
+}
+
+.ol-search > .ol-input {
+  padding-inline-start: var(--ol-space-8);
+}
+
+/* Checkboxes, radios and switches: native inputs with a custom face, plus a label around them. */
+
+.ol-check {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--ol-space-2);
+  min-height: var(--ol-size-target-min);
+  padding-block: 0.125rem;
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+  cursor: pointer;
+}
+
+.ol-check:has(:disabled) {
+  color: var(--ol-color-fg-disabled);
+  cursor: not-allowed;
+}
+
+.ol-checkbox,
+.ol-radio,
+.ol-switch {
+  flex: none;
+  margin: 0.125rem 0 0;
+  border: 1px solid var(--ol-color-border-input);
+  background-color: var(--ol-color-surface);
+  background-position: center;
+  background-repeat: no-repeat;
+  appearance: none;
+  cursor: inherit;
+  transition:
+    background-color var(--ol-duration-fast) var(--ol-ease-standard),
+    border-color var(--ol-duration-fast) var(--ol-ease-standard),
+    background-position var(--ol-duration-normal) var(--ol-ease-standard);
+}
+
+.ol-checkbox {
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--ol-radius-xs);
+  background-size: 0.75rem;
+}
+
+.ol-checkbox:checked {
+  border-color: var(--ol-color-accent-solid);
+  background-color: var(--ol-color-accent-solid);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+.ol-checkbox:indeterminate {
+  border-color: var(--ol-color-accent-solid);
+  background-color: var(--ol-color-accent-solid);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E");
+}
+
+.ol-radio {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+}
+
+.ol-radio:checked {
+  border: 5px solid var(--ol-color-accent-solid);
+  background-color: var(--ol-color-accent-on-solid);
+}
+
+/* A switch is a checkbox with role="switch": <input type="checkbox" role="switch" class="ol-switch"> */
+.ol-switch {
+  width: 2rem;
+  height: 1.125rem;
+  border-color: transparent;
+  border-radius: var(--ol-radius-full);
+  background-color: var(--ol-color-border-input);
+  background-image: radial-gradient(circle, #fff 0 0.4375rem, transparent 0.5rem);
+  background-position: left 0.0625rem center;
+  background-size: 1rem 1rem;
+}
+
+.ol-switch:checked {
+  background-color: var(--ol-color-accent-solid);
+  background-position: right 0.0625rem center;
+}
+
+.ol-checkbox:hover:not(:checked, :indeterminate, :disabled),
+.ol-radio:hover:not(:checked, :disabled) {
+  border-color: var(--ol-color-border-input-hover);
+}
+
+.ol-checkbox:disabled,
+.ol-radio:disabled,
+.ol-switch:disabled {
+  opacity: 0.5;
+}
+
+.ol-checkbox[aria-invalid="true"],
+.ol-radio[aria-invalid="true"] {
+  border-color: var(--ol-color-danger-solid);
+}
+
+.ol-fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ol-fieldset > legend {
+  margin-block-end: var(--ol-space-1);
+  padding: 0;
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+}
+
+/* A row of filters or controls above a table. Fields keep their natural width; .ol-grow fills. */
+.ol-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--ol-space-3);
+  margin-block-end: var(--ol-space-4);
+}
+
+.ol-toolbar .ol-field {
+  flex: 0 1 auto;
+}
+
+.ol-toolbar .ol-grow {
+  flex: 1 1 16rem;
+}
+
+.ol-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-2);
+  padding-block-start: var(--ol-space-1);
+}
+
+@media (forced-colors: active) {
+  .ol-checkbox,
+  .ol-radio,
+  .ol-switch {
+    appearance: auto;
+  }
+
+  .ol-select {
+    appearance: auto;
+    background-image: none;
+  }
+}

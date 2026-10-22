@@ -1,0 +1,136 @@
+/*
+ * Navigation inside a page: tabs, segmented controls, and pagination.
+ */
+
+/* Tabs: links along a line, each a separate page or URL state. Mark the current one with
+   aria-current="page". (For in-page panels switched by script, use the ARIA tabs pattern.) */
+.ol-tabs {
+  display: flex;
+  gap: var(--ol-space-1);
+  margin-block-end: var(--ol-space-4);
+  overflow-x: auto;
+  border-block-end: 1px solid var(--ol-color-border);
+  scrollbar-width: none;
+}
+
+.ol-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-1-5);
+  min-height: var(--ol-size-control-lg);
+  margin-block-end: -1px;
+  padding-inline: var(--ol-space-2-5);
+  border-block-end: 2px solid transparent;
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+  white-space: nowrap;
+  transition:
+    color var(--ol-duration-fast) var(--ol-ease-standard),
+    border-color var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-tab:hover {
+  border-block-end-color: var(--ol-color-border-strong);
+  color: var(--ol-color-fg);
+  text-decoration: none;
+}
+
+.ol-tab[aria-current="page"] {
+  border-block-end-color: var(--ol-color-accent-solid);
+  color: var(--ol-color-fg);
+}
+
+/* Segmented controls: mutually exclusive options. Buttons mark the chosen one with
+   aria-pressed="true", links with aria-current="true". */
+.ol-segmented {
+  display: inline-flex;
+  box-shadow: inset 0 0 0 1px var(--ol-color-border);
+  gap: 2px;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 2px;
+  border: 0;
+  border-radius: calc(var(--ol-radius-control) + 2px);
+  background: var(--ol-color-fill);
+}
+
+.ol-segmented > a,
+.ol-segmented > button {
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ol-space-1);
+  min-height: var(--ol-size-target-min);
+  padding-inline: var(--ol-space-2-5);
+  border: 0;
+  border-radius: var(--ol-radius-control);
+  background: transparent;
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--ol-duration-fast) var(--ol-ease-standard),
+    color var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-segmented > a:hover,
+.ol-segmented > button:hover {
+  color: var(--ol-color-fg);
+  text-decoration: none;
+}
+
+.ol-segmented > [aria-pressed="true"],
+.ol-segmented > [aria-current="true"] {
+  background: var(--ol-color-surface);
+  box-shadow: var(--ol-shadow-sm);
+  color: var(--ol-color-fg);
+}
+
+.ol-segmented-block {
+  display: flex;
+}
+
+/* Pagination: a summary and previous/next links. */
+.ol-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ol-space-3);
+  margin-block-start: var(--ol-space-3);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+}
+
+.ol-pager-links {
+  display: flex;
+  gap: var(--ol-space-2);
+}
+
+/* The sidebar's menu button (a .ol-btn) appears only on narrow screens. It lives in the component
+   layer so it overrides the button's display. */
+.ol-sidebar-head .ol-nav-toggle-button {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .ol-sidebar-head .ol-nav-toggle-button {
+    display: inline-flex;
+    margin-inline-start: auto;
+  }
+}
+
+@media (forced-colors: active) {
+  .ol-segmented > [aria-pressed="true"],
+  .ol-segmented > [aria-current="true"] {
+    outline: 2px solid Highlight;
+  }
+
+  .ol-tab[aria-current="page"] {
+    border-block-end-color: Highlight;
+  }
+}

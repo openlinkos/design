@@ -1,0 +1,191 @@
+/*
+ * Base: page typography, links, focus, selection, and the type presets. Element styles stay few
+ * and quiet so content that is not built from ol- classes still reads well.
+ */
+
+body {
+  background: var(--ol-color-bg);
+  color: var(--ol-color-fg);
+  font-family: var(--ol-font-family-sans);
+  font-size: var(--ol-font-size-md);
+  font-weight: var(--ol-font-weight-regular);
+  line-height: var(--ol-line-height-md);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  scrollbar-color: var(--ol-color-border-strong) transparent;
+}
+
+/* Chinese (clreq): Geist without the punctuation Chinese sets full-width, no negative tracking,
+   trimmed punctuation, and space between Han and Latin where the browser supports it. */
+:lang(zh) {
+  --ol-font-family-sans: var(--ol-font-family-sans-zh);
+  --ol-tracking-tight: 0em;
+  text-spacing-trim: normal;
+  text-autospace: normal;
+}
+
+a {
+  color: var(--ol-color-accent-text);
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: from-font;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* One focus indicator everywhere: a solid ring of at least 3:1 against the page (WCAG 2.4.13). */
+:focus-visible {
+  outline: var(--ol-focus-width) solid var(--ol-color-focus-ring);
+  outline-offset: var(--ol-focus-offset);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background: var(--ol-color-selection);
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--ol-font-family-mono);
+  font-size: 0.9em;
+}
+
+:not(pre) > code {
+  padding: 0.1em 0.35em;
+  border-radius: var(--ol-radius-xs);
+  background: var(--ol-color-fill);
+  overflow-wrap: anywhere;
+}
+
+hr {
+  height: 1px;
+  margin: var(--ol-space-6) 0;
+  border: 0;
+  background: var(--ol-color-border);
+}
+
+strong,
+b {
+  font-weight: var(--ol-font-weight-semibold);
+}
+
+small {
+  font-size: var(--ol-font-size-sm);
+}
+
+/* Type presets: size, line height, weight and tracking that belong together. */
+
+.ol-text-display {
+  font-size: var(--ol-font-size-3xl);
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: var(--ol-tracking-tight);
+  line-height: var(--ol-line-height-3xl);
+  text-wrap: balance;
+}
+
+.ol-heading-xl {
+  font-size: var(--ol-font-size-2xl);
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: var(--ol-tracking-tight);
+  line-height: var(--ol-line-height-2xl);
+  text-wrap: balance;
+}
+
+.ol-heading-lg {
+  font-size: var(--ol-font-size-xl);
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: var(--ol-tracking-tight);
+  line-height: var(--ol-line-height-xl);
+  text-wrap: balance;
+}
+
+.ol-heading-md {
+  font-size: var(--ol-font-size-lg);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: var(--ol-line-height-lg);
+}
+
+.ol-heading-sm {
+  font-size: var(--ol-font-size-md);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: var(--ol-line-height-md);
+}
+
+.ol-text-lg {
+  font-size: var(--ol-font-size-lg);
+  line-height: var(--ol-line-height-lg);
+}
+
+.ol-text-md {
+  font-size: var(--ol-font-size-md);
+  line-height: var(--ol-line-height-md);
+}
+
+.ol-text-sm {
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-text-xs {
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+.ol-text-label {
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-text-prose {
+  max-width: 72ch;
+  text-wrap: pretty;
+}
+
+/* Running Chinese text wants more leading than Latin (clreq: 1.5 to 2). */
+:lang(zh) .ol-text-prose {
+  max-width: 40em;
+  line-height: 1.75;
+}
+
+/* Users who ask for less motion get none. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion overrides every component. */
+    animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion overrides every component. */
+    animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion overrides every component. */
+    transition-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: reduced motion overrides every component. */
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Users who ask for more contrast get firmer lines and secondary text at full strength. */
+@media (prefers-contrast: more) {
+  :root {
+    --ol-color-border: var(--ol-color-border-input);
+    --ol-color-border-strong: var(--ol-color-border-input-hover);
+    --ol-color-fg-muted: var(--ol-color-fg);
+    --ol-color-fg-subtle: var(--ol-color-fg);
+  }
+}
+
+/* Windows high contrast and other forced colours: keep focus and selection visible with system colours. */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}

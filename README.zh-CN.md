@@ -5,9 +5,9 @@
   </picture>
 </h1>
 
-**OpenLinkOS 与 LinkOS 的品牌和共享站点主题。**
+**OpenLinkOS 与 LinkOS 的品牌、设计系统和共享站点主题。**
 
-[![npm](https://img.shields.io/npm/v/@openlinkos/vitepress-theme)](https://www.npmjs.com/package/@openlinkos/vitepress-theme) [![CI](https://github.com/openlinkos/design/actions/workflows/ci.yml/badge.svg)](https://github.com/openlinkos/design/actions/workflows/ci.yml)
+[![npm: ui](https://img.shields.io/npm/v/@openlinkos/ui?label=%40openlinkos%2Fui)](https://www.npmjs.com/package/@openlinkos/ui) [![npm: vitepress-theme](https://img.shields.io/npm/v/@openlinkos/vitepress-theme?label=%40openlinkos%2Fvitepress-theme)](https://www.npmjs.com/package/@openlinkos/vitepress-theme) [![CI](https://github.com/openlinkos/design/actions/workflows/ci.yml/badge.svg)](https://github.com/openlinkos/design/actions/workflows/ci.yml)
 
 [English](README.md) | 简体中文
 
@@ -15,9 +15,14 @@
 
 - **OpenLinkOS**（我们开源项目的总品牌，例如 Origin）与 **LinkOS**（我们的托管服务线，例如 LinkOS Mirrors）的品牌标志；
 - 由标志生成的品牌资产：favicon、应用图标、社交分享图和 README 头图；
+- `@openlinkos/ui`：面向应用的设计系统，包括 W3C DTCG 格式的设计变量、不依赖框架的布局和组件 CSS（支持多品牌、浅色和深色，对比度由测试保证），以及精选的 Lucide 图标；
 - `@openlinkos/vitepress-theme`：所有 OpenLinkOS 与 LinkOS 站点共用的 VitePress 主题，提供统一外观、中英双语界面、语言检测和元信息。
 
 维护者请阅读 [BRAND.md](BRAND.md)。
+
+## 使用设计系统
+
+应用引入 `@openlinkos/ui/ui.css`，在页面上设置 `data-brand`，用 `ol-` 开头的类搭建页面。详见[包说明](packages/ui/README.md)、[设计原则](packages/ui/docs/principles.md)、[组件](packages/ui/docs/components.md)和[变量参考](packages/ui/docs/tokens.md)（文档为英文）。
 
 ## 使用主题
 

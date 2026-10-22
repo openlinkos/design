@@ -1,0 +1,302 @@
+/*
+ * Feedback: alerts, banners, toasts, progress, skeletons, and empty states.
+ */
+
+/* Alerts: a message inside the page. Large tinted areas use a lighter tint than badges, mixed
+   towards the surface, so they stay calm in dark mode. .ol-alert plus a tone (-info, -success, -warning, -danger).
+   Use role="alert" only for errors that need immediate attention, role="status" for confirmations. */
+
+.ol-alert {
+  --ol-alert-bg: var(--ol-color-bg-subtle);
+  --ol-alert-border: var(--ol-color-border);
+  --ol-alert-icon: var(--ol-color-fg-muted);
+  display: flex;
+  gap: var(--ol-space-2-5);
+  padding: var(--ol-space-2-5) var(--ol-space-3-5);
+  border: 1px solid var(--ol-alert-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-alert-bg);
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-alert > .ol-icon {
+  margin-block-start: 0.125rem;
+  color: var(--ol-alert-icon);
+}
+
+.ol-alert-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ol-alert-title {
+  margin-block-end: 0.125rem;
+  font-weight: var(--ol-font-weight-semibold);
+}
+
+.ol-alert-body > p + p {
+  margin-block-start: var(--ol-space-2);
+}
+
+.ol-alert-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ol-space-2);
+  margin-block-start: var(--ol-space-2);
+}
+
+.ol-alert-info {
+  --ol-alert-bg: color-mix(in oklab, var(--ol-color-info-bg) 55%, var(--ol-color-surface));
+  --ol-alert-border: color-mix(in oklab, var(--ol-color-info-border) 55%, var(--ol-color-border));
+  --ol-alert-icon: var(--ol-color-info-text);
+}
+
+.ol-alert-success {
+  --ol-alert-bg: color-mix(in oklab, var(--ol-color-success-bg) 55%, var(--ol-color-surface));
+  --ol-alert-border: color-mix(
+    in oklab,
+    var(--ol-color-success-border) 55%,
+    var(--ol-color-border)
+  );
+  --ol-alert-icon: var(--ol-color-success-text);
+}
+
+.ol-alert-warning {
+  --ol-alert-bg: color-mix(in oklab, var(--ol-color-warning-bg) 55%, var(--ol-color-surface));
+  --ol-alert-border: color-mix(
+    in oklab,
+    var(--ol-color-warning-border) 55%,
+    var(--ol-color-border)
+  );
+  --ol-alert-icon: var(--ol-color-warning-text);
+}
+
+.ol-alert-danger {
+  --ol-alert-bg: color-mix(in oklab, var(--ol-color-danger-bg) 55%, var(--ol-color-surface));
+  --ol-alert-border: color-mix(in oklab, var(--ol-color-danger-border) 55%, var(--ol-color-border));
+  --ol-alert-icon: var(--ol-color-danger-text);
+}
+
+/* Banners: one line across the top of the page for a system-wide state. */
+.ol-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ol-space-2);
+  padding: var(--ol-space-2) var(--ol-space-4);
+  background: var(--ol-color-accent-solid);
+  color: var(--ol-color-accent-on-solid);
+  font-size: var(--ol-font-size-sm);
+  text-align: center;
+}
+
+.ol-banner a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.ol-banner-warning {
+  background: var(--ol-color-warning-solid);
+  color: var(--ol-color-warning-on-solid);
+}
+
+.ol-banner-danger {
+  background: var(--ol-color-danger-solid);
+  color: var(--ol-color-danger-on-solid);
+}
+
+/* Toasts: a transient confirmation, usually rendered by the server after a redirect.
+   <div class="ol-toaster" role="status"><div class="ol-toast">…</div></div> */
+.ol-toaster {
+  position: fixed;
+  inset-block-end: var(--ol-space-4);
+  inset-inline-end: var(--ol-space-4);
+  z-index: var(--ol-z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-2);
+  width: min(22rem, calc(100vw - 2rem));
+}
+
+.ol-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ol-space-2-5);
+  padding: var(--ol-space-3) var(--ol-space-3-5);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface-overlay);
+  box-shadow: var(--ol-shadow-lg);
+  font-size: var(--ol-font-size-sm);
+  animation: ol-toast-in var(--ol-duration-slow) var(--ol-ease-enter);
+}
+
+@keyframes ol-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+/* Progress and meters: style the native elements so assistive technology reads their values. */
+
+.ol-progress,
+.ol-meter {
+  display: block;
+  width: 100%;
+  height: 0.375rem;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-fill);
+  appearance: none;
+}
+
+.ol-progress::-webkit-progress-bar {
+  background: var(--ol-color-fill);
+}
+
+.ol-progress::-webkit-progress-value {
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-accent-solid);
+}
+
+.ol-progress::-moz-progress-bar {
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-accent-solid);
+}
+
+.ol-meter::-webkit-meter-bar {
+  height: 0.375rem;
+  border: 0;
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-fill);
+}
+
+.ol-meter::-webkit-meter-optimum-value {
+  background: var(--ol-color-success-solid);
+}
+
+.ol-meter::-webkit-meter-suboptimum-value {
+  background: var(--ol-color-warning-solid);
+}
+
+.ol-meter::-webkit-meter-even-less-good-value {
+  background: var(--ol-color-danger-solid);
+}
+
+.ol-meter:-moz-meter-optimum::-moz-meter-bar {
+  background: var(--ol-color-success-solid);
+}
+
+.ol-meter:-moz-meter-sub-optimum::-moz-meter-bar {
+  background: var(--ol-color-warning-solid);
+}
+
+.ol-meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+  background: var(--ol-color-danger-solid);
+}
+
+/* Skeletons: placeholders while content loads. Mark the region aria-busy="true". */
+.ol-skeleton {
+  display: block;
+  height: 0.875rem;
+  border-radius: var(--ol-radius-xs);
+  background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--ol-color-surface) 60%, transparent),
+      transparent
+    )
+    var(--ol-color-fill);
+  background-size: 200% 100%;
+  animation: ol-shimmer 1.4s linear infinite;
+}
+
+@keyframes ol-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+/* Empty states: what is missing, why, and the one action that fills it. The icon sits at the
+   centre of faint rings, a quiet echo of the sign-in page. */
+.ol-empty {
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ol-space-2);
+  padding: var(--ol-space-12) var(--ol-space-6) var(--ol-space-10);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-bg-subtle);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+  text-align: center;
+}
+
+.ol-empty-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-block-end: var(--ol-space-3);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface);
+  box-shadow: var(--ol-shadow-sm);
+  color: var(--ol-color-fg-muted);
+}
+
+.ol-empty-icon::before {
+  content: "";
+  position: absolute;
+  inset: -2.75rem;
+  z-index: -1;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle,
+    transparent 0 1.25rem,
+    var(--ol-color-border) 1.25rem calc(1.25rem + 1px),
+    transparent calc(1.25rem + 1px) 1.75rem
+  );
+  -webkit-mask-image: radial-gradient(circle, #000 30%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 30%, transparent 70%);
+  pointer-events: none;
+}
+
+.ol-empty-title {
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-md);
+  font-weight: var(--ol-font-weight-semibold);
+}
+
+.ol-empty-text {
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+
+.ol-empty .ol-btn {
+  margin-block-start: var(--ol-space-2);
+}
+
+@media (forced-colors: active) {
+  .ol-progress,
+  .ol-meter {
+    border: 1px solid CanvasText;
+  }
+
+  .ol-skeleton {
+    background: GrayText;
+    animation: none;
+  }
+}

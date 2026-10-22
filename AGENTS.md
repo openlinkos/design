@@ -4,22 +4,22 @@ Instructions for AI coding agents working in this repository. `CLAUDE.md` is a s
 
 ## Project
 
-The OpenLinkOS design system: the brand marks of OpenLinkOS (open-source projects such as Origin) and LinkOS (hosted services such as LinkOS Mirrors), the assets generated from them, and `@openlinkos/vitepress-theme`, the shared theme for every OpenLinkOS and LinkOS site. Sites get the brand, bilingual (English and Simplified Chinese) UI strings, language detection, metadata, and the bilingual coverage check from the theme.
+The OpenLinkOS design system: the brand marks of OpenLinkOS (open-source projects such as Origin) and LinkOS (hosted services such as LinkOS Mirrors), the assets generated from them, `@openlinkos/ui`, the design system for apps (tokens, CSS components, icons), and `@openlinkos/vitepress-theme`, the shared theme for every OpenLinkOS and LinkOS site. Sites get the brand, bilingual (English and Simplified Chinese) UI strings, language detection, metadata, and the bilingual coverage check from the theme.
 
 ## Commands
 
 ```bash
 pnpm install
 pnpm gen          # regenerate brand/out/ from brand/brands.json, brand/marks.ts, brand/wordmark.ts
-pnpm build        # build packages/vitepress-theme into dist/ (tsc, plus the CSS and brand files)
-pnpm test         # vitest: brand registry, contrast rules, generated assets, theme (unit and playground builds)
+pnpm build        # build every package: packages/ui (dist/ and docs/tokens.md) and packages/vitepress-theme
+pnpm test         # vitest: brand registry, contrast rules, generated assets, ui tokens and contrast, theme
 pnpm lint         # biome check
 pnpm lint:fix     # biome check --write
 pnpm docs:dev     # the playground site (playground/) with live reload; run pnpm build first
 pnpm docs:build   # build the playground, including the bilingual coverage check
 ```
 
-Read [BRAND.md](BRAND.md) before changing a mark, a colour, or the asset set, and [packages/vitepress-theme/README.md](packages/vitepress-theme/README.md) before changing the theme. The theme ships the generated assets, so run `pnpm build` after `pnpm gen`.
+Read [BRAND.md](BRAND.md) before changing a mark, a colour, or the asset set, [packages/ui/docs/principles.md](packages/ui/docs/principles.md) before changing a token or a component, and [packages/vitepress-theme/README.md](packages/vitepress-theme/README.md) before changing the theme. The theme ships the generated assets, so run `pnpm build` after `pnpm gen`.
 
 ## Rules
 
@@ -27,12 +27,13 @@ Read [BRAND.md](BRAND.md) before changing a mark, a colour, or the asset set, an
 - **Generated files are reproducible.** Never hand-edit `brand/out/`; change the source or the generator, run `pnpm gen`, and commit both. CI fails if the committed output differs from a fresh run on Linux or Windows.
 - **The marks are not MIT-licensed.** The code is MIT; the OpenLinkOS and LinkOS names and marks are governed by the brand guidelines on openlinkos.com/brand.
 - **Use English** for code, comments, docs, and commit messages. Keep `README.zh-CN.md` in sync with `README.md`.
+- **Tokens are the source of truth.** Change design values in `packages/ui/tokens/*.tokens.json` (DTCG format), never as literals in component CSS. Components use semantic tokens only. `pnpm build` regenerates `packages/ui/docs/tokens.md`; commit it. Contrast for every brand and mode is tested; a change that fails it needs a different value, not a weaker test.
 - **Ask before adding dependencies**, and pin every dependency to an exact version.
 - **No deployment or server configuration** in this repository.
 
 ## Releases
 
-`@openlinkos/vitepress-theme` is published to npm by `.github/workflows/release.yml`. To release, bump `version` in `packages/vitepress-theme/package.json`, commit, then tag `v<version>` and push the tag. A maintainer approves the run in the `npm` environment; npm trusted publishing attaches provenance. Never publish from a workstation.
+`@openlinkos/ui` and `@openlinkos/vitepress-theme` are published to npm by `.github/workflows/release.yml` and share one version. To release, bump `version` in both `packages/*/package.json`, commit, then tag `v<version>` and push the tag; a package whose version is already on npm is skipped. A maintainer approves the run in the `npm` environment; npm trusted publishing attaches provenance. Never publish from a workstation.
 
 ## Git
 
