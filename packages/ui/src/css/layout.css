@@ -259,6 +259,15 @@
   text-overflow: ellipsis;
 }
 
+/* The breadcrumb (often inside a <nav> landmark) may shrink so the current page truncates. */
+.ol-topbar > :first-child {
+  min-width: 0;
+}
+
+.ol-topbar .ol-search {
+  width: min(18rem, 50vw);
+}
+
 .ol-topbar-actions {
   display: flex;
   align-items: center;
@@ -315,6 +324,14 @@
   line-height: var(--ol-line-height-sm);
 }
 
+/* A title with badges after it, such as a status or a kind. */
+.ol-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-2) var(--ol-space-3);
+}
+
 .ol-page-title {
   font-size: var(--ol-font-size-2xl);
   font-weight: var(--ol-font-weight-semibold);
@@ -329,6 +346,30 @@
   margin-block-start: var(--ol-space-1-5);
   color: var(--ol-color-fg-muted);
   text-wrap: pretty;
+}
+
+/* Facts about the object a page shows: <ul class="ol-page-meta"><li>…icon… codex</li>…</ul> */
+.ol-page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ol-space-1) var(--ol-space-5);
+  margin-block-start: var(--ol-space-2);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+}
+
+.ol-page-meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-1-5);
+}
+
+/* Messages between the page header and the content. */
+.ol-notices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-2);
+  margin-block-end: var(--ol-space-6);
 }
 
 .ol-page-actions {
@@ -370,6 +411,7 @@
 
 .ol-grid {
   display: grid;
+  align-items: start;
   gap: var(--ol-space-6);
   grid-template-columns: minmax(0, 1fr);
 }
@@ -627,6 +669,7 @@
 .ol-auth-foot {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
   gap: var(--ol-space-1) var(--ol-space-4);
   color: var(--ol-color-fg-subtle);
@@ -637,11 +680,21 @@
   color: var(--ol-color-fg-muted);
 }
 
+.ol-auth-foot .ol-btn-link {
+  font-size: inherit;
+}
+
+/* Page meta icons are quieter than their text. (Placed after the sign-in rules: same element, higher specificity.) */
+.ol-page-meta li > svg {
+  color: var(--ol-color-fg-subtle);
+}
+
 /* Narrow screens: the panel becomes the page, the sidebar a bar with a menu, the brand panel a band. */
 
 @media (max-width: 860px) {
   .ol-app {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
     height: auto;
     min-height: 100dvh;
     overflow: visible;

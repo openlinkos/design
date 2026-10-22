@@ -43,6 +43,8 @@ The frame of an app: a sidebar on the shell colour, and one floating content pan
 
 `.ol-page-header` holds `.ol-page-heading` (`.ol-page-title`, `.ol-page-description`, and rarely `.ol-eyebrow` for a real parent, such as the session an event belongs to) and `.ol-page-actions`. `.ol-section` groups a region, with `.ol-section-header` (`-title`, `-description`, `-actions`). Layout primitives: `.ol-grid` with `-2`, `-3` or `-sidebar` (columns follow the container width), `.ol-stack` (vertical; `--ol-stack-gap`), `.ol-cluster` (wrapping row; `--ol-cluster-gap`), `.ol-split` (two ends).
 
+Details of the object a page shows: `.ol-title-row` puts badges after a title; `<ul class="ol-page-meta">` lists facts with icons under it; `.ol-notices` stacks alerts between the header and the content.
+
 - One `h1` per page, in `.ol-page-title`. Put at most one primary action in `.ol-page-actions`.
 - No label above every heading, no metadata joined with middle dots, no arrows appended to link text.
 - Separate sections with headings and space before reaching for frames.
@@ -111,7 +113,7 @@ States: `disabled` or `aria-disabled="true"` (for links) dims the button. `aria-
 </div>
 ```
 
-Controls: `.ol-input` (`-sm`, `-lg`, `-mono`), `.ol-select`, `.ol-textarea` (grows with its content where supported), `.ol-input-group` with `.ol-addon` or a button, `.ol-search` (leading icon), `.ol-checkbox`, `.ol-radio`, and `.ol-switch` (a checkbox with `role="switch"`), each inside a `<label class="ol-check">`. Group related checks in `<fieldset class="ol-fieldset">` with a `legend`. `.ol-form` stacks fields; `.ol-form-actions` ends a form; `.ol-toolbar` lays filters in a row (`.ol-grow` fills).
+Controls: `.ol-input` (`-sm`, `-lg`, `-mono`), `.ol-select`, `.ol-textarea` (grows with its content where supported), `.ol-input-group` with `.ol-addon` or a button, `.ol-search` (leading icon), `.ol-checkbox`, `.ol-radio`, and `.ol-switch` (a checkbox with `role="switch"`), each inside a `<label class="ol-check">`. Group related checks in `<fieldset class="ol-fieldset">` with a `legend`. `.ol-form` stacks fields; `.ol-form-actions` ends a form; `.ol-toolbar` lays filters in a row (`.ol-grow` fills; a `.ol-check` sits level with the controls; an `.ol-section` after it gets space).
 
 States: hover darkens the edge, focus shows the ring, `aria-invalid="true"` turns the edge red, `disabled` greys the control, `readonly` tints it.
 
@@ -142,7 +144,7 @@ Density: `-compact`, default, `-relaxed`. `-sticky` keeps the heading row visibl
 
 ## Description lists, feeds {#lists}
 
-`.ol-dl` lays `dt`/`dd` pairs in two columns. `.ol-feed` lists events: `.ol-feed-item` with `data-role` (`user`, `assistant`, `tool`, `system`) and optionally `data-highlight="true"`, an `.ol-feed-avatar`, `.ol-feed-meta`, and `.ol-feed-body` (pre-wrapped text; tool output in monospace).
+`.ol-dl` lays `dt`/`dd` pairs in two columns; `dt.ol-dl-sub` indents a sub-row under the one before. `.ol-feed` lists events: `.ol-feed-item` with `data-role` (`user`, `assistant`, `tool`, `system`) and optionally `data-highlight="true"`, an `.ol-feed-avatar`, `.ol-feed-meta`, and `.ol-feed-body` (pre-wrapped text; tool output in monospace).
 
 ## Badges, counts, avatars {#badges}
 
@@ -152,7 +154,7 @@ Density: `-compact`, default, `-relaxed`. `-sticky` keeps the heading row visibl
 
 ## Code and secrets {#code}
 
-`.ol-code` frames a `<pre>`, optionally with `.ol-code-label` and a copy button (`.ol-copy`, wired by the app). `.ol-mono` sets inline text in monospace; `.ol-kbd` shows a key. `.ol-secret` shows a value that is displayed once, selects entirely on click, and wraps anywhere.
+`.ol-code` frames a `<pre>`, optionally with `.ol-code-label` and a copy button (`.ol-copy`, wired by the app). `.ol-code-wrap` wraps long single lines, such as raw JSON, instead of scrolling. `.ol-quote` sets words quoted from a source; `.ol-text-pre` shows stored text whole, keeping line breaks. `.ol-mono` sets inline text in monospace; `.ol-kbd` shows a key. `.ol-secret` shows a value that is displayed once, selects entirely on click, and wraps anywhere.
 
 ## Alerts, banners, toasts {#alerts}
 

@@ -341,6 +341,17 @@
   flex: 1 1 16rem;
 }
 
+/* A checkbox in a toolbar sits level with the controls beside it. */
+.ol-toolbar .ol-check {
+  align-items: center;
+  min-height: var(--ol-size-control-md);
+}
+
+/* Results below a toolbar. */
+.ol-toolbar + .ol-section {
+  margin-block-start: var(--ol-space-8);
+}
+
 .ol-form-actions {
   display: flex;
   flex-wrap: wrap;

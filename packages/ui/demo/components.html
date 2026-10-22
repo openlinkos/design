@@ -32,6 +32,29 @@
     </div>
   </section>
 
+  <section class="ol-section" id="page-details">
+    <div class="ol-section-header"><h2 class="ol-section-title">Page details</h2><p class="ol-section-description">A title with badges, facts about the object, notices, a toolbar, quoted and stored text.</p></div>
+    <div class="ol-stack">
+      <div class="ol-title-row"><p class="ol-heading-xl">laptop</p><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Active</span><span class="ol-badge ol-badge-outline">claude-code</span></div>
+      <ul class="ol-page-meta">
+        <li><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#bot"/></svg>codex</li>
+        <li><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#folder"/></svg>demo-app</li>
+        <li><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#clock"/></svg>2026-10-20 09:00</li>
+      </ul>
+      <div class="ol-notices"><div class="ol-alert ol-alert-success" role="status"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#circle-check"/></svg><div class="ol-alert-body"><p>Entry saved.</p></div></div></div>
+      <form class="ol-toolbar">
+        <div class="ol-field ol-grow"><label class="ol-label" for="pd-q">Search</label><input class="ol-input" id="pd-q" value="login timeout"></div>
+        <label class="ol-check"><input class="ol-checkbox" type="checkbox">Include tool events</label>
+        <button class="ol-btn ol-btn-secondary" type="button">Search</button>
+      </form>
+      <blockquote class="ol-quote">Raise the login API timeout to 30 seconds.</blockquote>
+      <p class="ol-text-pre">Stored text keeps its line breaks.
+And wraps long words: sk_0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz</p>
+      <dl class="ol-dl"><dt>Parse errors</dt><dd>3</dd><dt class="ol-dl-sub">claude-code</dt><dd>3</dd><dt class="ol-dl-sub">codex</dt><dd>0</dd></dl>
+      <div class="ol-code ol-code-wrap"><pre><code>{"type":"tool_use","id":"toolu_01","name":"apply_patch","input":{"patch":"*** Begin Patch\n*** Update File: src/api/login.ts\n-  timeout: 10_000,\n+  timeout: 30_000,\n*** End Patch"},"cwd":"/home/dev/demo-app","timestamp":"2026-10-20T09:00:00Z"}</code></pre></div>
+    </div>
+  </section>
+
   <section class="ol-section" id="buttons">
     <div class="ol-section-header"><h2 class="ol-section-title">Buttons</h2></div>
     <div class="ol-stack">

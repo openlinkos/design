@@ -167,6 +167,23 @@
   inset-inline-end: var(--ol-space-1);
 }
 
+/* A code block for long single lines, such as raw JSON: wraps instead of scrolling. */
+.ol-code-wrap pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Words quoted from a source. */
+.ol-quote {
+  margin: 0;
+  padding-inline-start: var(--ol-space-3);
+  border-inline-start: 2px solid var(--ol-color-accent-border);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .ol-mono {
   font-family: var(--ol-font-family-mono);
   font-size: 0.9em;

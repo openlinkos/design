@@ -19,6 +19,13 @@
   overflow-wrap: anywhere;
 }
 
+/* Stored text shown whole: line breaks kept, long words wrapped. */
+.ol-text-pre {
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .ol-tabular {
   font-variant-numeric: tabular-nums;
 }

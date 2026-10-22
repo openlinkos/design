@@ -104,6 +104,7 @@
 
 .ol-table .ol-num {
   text-align: end;
+  white-space: nowrap;
 }
 
 .ol-table .ol-actions {
@@ -133,11 +134,12 @@
   }
 }
 
-/* Stats: one framed strip of figures divided by hairlines, not a grid of separate cards. */
+/* Stats: one framed strip of figures divided by hairlines, not a grid of separate cards. Items
+   grow to fill every row, so a short last row never shows an empty cell. */
 
 .ol-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1px;
   overflow: hidden;
   border: 1px solid var(--ol-color-border);
@@ -147,6 +149,7 @@
 
 .ol-stat {
   display: flex;
+  flex: 1 1 9.5rem;
   flex-direction: column;
   gap: var(--ol-space-1);
   min-width: 0;
@@ -236,6 +239,12 @@ a.ol-stat:hover {
 
 .ol-dl dt {
   color: var(--ol-color-fg-muted);
+}
+
+/* A sub-row of a description list, such as one source under a total. */
+.ol-dl .ol-dl-sub {
+  padding-inline-start: var(--ol-space-3);
+  color: var(--ol-color-fg-subtle);
 }
 
 .ol-dl dd {
