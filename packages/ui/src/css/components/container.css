@@ -35,6 +35,24 @@
   color: var(--ol-color-fg-subtle);
 }
 
+/* A table inside a panel loses its own frame. */
+.ol-panel > .ol-table-wrap {
+  border: 0;
+  border-radius: 0;
+}
+
+/* Whatever sits at the panel's edges (a tinted header, a table's heading row, a footer) follows
+   its rounded corners inside its 1px border. */
+.ol-panel > :first-child {
+  border-start-start-radius: calc(var(--ol-radius-container) - 1px);
+  border-start-end-radius: calc(var(--ol-radius-container) - 1px);
+}
+
+.ol-panel > :last-child {
+  border-end-start-radius: calc(var(--ol-radius-container) - 1px);
+  border-end-end-radius: calc(var(--ol-radius-container) - 1px);
+}
+
 .ol-panel-header > :last-child:not(:first-child) {
   margin-inline-start: auto;
 }
@@ -48,11 +66,6 @@
   border-block-start: 1px solid var(--ol-color-border);
   color: var(--ol-color-fg-muted);
   font-size: var(--ol-font-size-xs);
-}
-
-.ol-panel > .ol-table-wrap {
-  border: 0;
-  border-radius: 0 0 var(--ol-radius-container) var(--ol-radius-container);
 }
 
 .ol-panel-danger {
