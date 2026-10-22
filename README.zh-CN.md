@@ -1,8 +1,5 @@
 <h1>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="brand/out/openlinkos/github/readme-dark.svg">
-    <img alt="OpenLinkOS Design" src="brand/out/openlinkos/github/readme-light.svg" height="48">
-  </picture>
+  <img alt="OpenLinkOS Design" src="brand/out/openlinkos/github/readme.svg" height="56">
 </h1>
 
 **OpenLinkOS 与 LinkOS 的品牌、设计系统和共享站点主题。**

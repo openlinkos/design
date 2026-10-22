@@ -82,7 +82,7 @@ describe('generated assets', () => {
 
   it('exist for every brand', () => {
     expect(Object.keys(manifest).sort()).toEqual(brands.map((b) => b.id).sort());
-    for (const files of Object.values(manifest)) expect(files).toHaveLength(21);
+    for (const files of Object.values(manifest)) expect(files).toHaveLength(22);
   });
 
   it.each(brands.map((b) => [b.id] as const))('%s rasters have the expected sizes', (id) => {

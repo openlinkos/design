@@ -59,6 +59,24 @@ const card = (b: Brand, dark: Colours, w: number, h: number): string => {
   );
 };
 
+/**
+ * A README header that reads on any page: the dark lockup on a rounded tile. GitHub picks between
+ * `<picture>` sources by the operating system's colour scheme, not by the GitHub theme, so a
+ * light/dark pair shows dark ink on a dark page whenever the two disagree.
+ */
+const plate = (b: Brand, dark: Colours): string => {
+  const l = lockupSvg(b.mark, dark, b.word, b.descriptor);
+  const padX = 14;
+  const padY = 10;
+  const w = l.width + padX * 2;
+  const h = 48 + padY * 2;
+  const inner = l.svg.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" rx="14" fill="${TILE}"/>` +
+    `<g transform="translate(${padX} ${padY})">${inner}</g></svg>`
+  );
+};
+
 const files: Array<{ path: string; data: Buffer | string }> = [];
 const add = (b: Brand, path: string, data: Buffer | string): void => {
   files.push({ path: join(b.id, path), data });
@@ -128,6 +146,7 @@ for (const b of loadBrands()) {
   add(b, 'github/avatar.png', png(tileSvg(b.mark, dark, TILE, { bleed: true, scale: 0.62 }), 500));
   add(b, 'github/readme-light.svg', lockupSvg(b.mark, light, b.word, b.descriptor).svg);
   add(b, 'github/readme-dark.svg', lockupSvg(b.mark, dark, b.word, b.descriptor).svg);
+  add(b, 'github/readme.svg', plate(b, dark));
 
   // Kit: the mark and lockup in every colourway, plus a large raster.
   add(b, 'kit/mark.svg', markSvg(b.mark, light));

@@ -38,8 +38,10 @@ Contrast rules, also enforced by the tests: the mark accent reaches 3:1 against 
 | Folder | Files |
 | --- | --- |
 | `web/` | `favicon.svg` (follows the system colour scheme), `favicon.ico` (16, 32 and 48 px), `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `site.webmanifest`, `og.png` (1200 × 630), `logo.svg`, `logo-dark.svg` |
-| `github/` | `social-preview.png` (1280 × 640), `avatar.png` (500 × 500), `readme-light.svg`, `readme-dark.svg` |
+| `github/` | `social-preview.png` (1280 × 640), `avatar.png` (500 × 500), `readme.svg` (the README header: the lockup on a dark tile), `readme-light.svg`, `readme-dark.svg` |
 | `kit/` | `mark.svg`, `mark-dark.svg`, `mark-black.svg`, `mark-white.svg`, `lockup.svg`, `lockup-dark.svg`, `mark-1024.png` |
+
+Use `github/readme.svg` as the header of a README. GitHub picks between `<picture>` sources by the operating system's colour scheme, not by the GitHub theme, so a `readme-light.svg` / `readme-dark.svg` pair shows dark ink on a dark page for a reader who runs GitHub dark on a light system. The tile reads on either background.
 
 Raster images contain no text other than the drawn wordmark, so they are the same for every language. The output is committed and never edited by hand. CI regenerates it on Linux and Windows and fails if a single byte differs.
 

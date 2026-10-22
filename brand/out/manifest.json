@@ -71,6 +71,11 @@
       "sha256": "e33f3c4e207c1d84e31f52d1327fc3b60bb94ade6df5a4beed34cd7d7734ffc1"
     },
     {
+      "file": "github/readme.svg",
+      "bytes": 1117,
+      "sha256": "9e253d8fdad0a94ea7c9ccd4348d26865806ffe472e41535fe4f0bf2c0c9a8b0"
+    },
+    {
       "file": "kit/mark.svg",
       "bytes": 379,
       "sha256": "66550c8a4c0ee86e0b72c267b284e2214d75c500a6e1c59bb2194c50de74661c"
@@ -176,6 +181,11 @@
       "file": "github/readme-dark.svg",
       "bytes": 808,
       "sha256": "08ee13a04c2a5885cd1a22294e429457233d4577679b3aa8c2fcd84dfe735561"
+    },
+    {
+      "file": "github/readme.svg",
+      "bytes": 898,
+      "sha256": "72574f2a0d7e7bd72895c8017327278ae184abcaaeae352571c9080c2479d1af"
     },
     {
       "file": "kit/mark.svg",
@@ -285,6 +295,11 @@
       "sha256": "ff2201d087bd445149235be497c1090c73c2f59ea04920f02531a678d746ba85"
     },
     {
+      "file": "github/readme.svg",
+      "bytes": 1568,
+      "sha256": "7a5f800213a6ea289ca59243f9e9a2ed8a50d69e0c5cff711f22dd0bcfffc2c8"
+    },
+    {
       "file": "kit/mark.svg",
       "bytes": 379,
       "sha256": "b861ae0c9f8bbd62e229da699b8975990befe4bfedce3858dcee6bbfdda0e6f0"
@@ -390,6 +405,11 @@
       "file": "github/readme-dark.svg",
       "bytes": 762,
       "sha256": "a9dc2562d09de399d069cca971ea2fe0f2ffaf10d0a1ef5c5ac7044b32c48812"
+    },
+    {
+      "file": "github/readme.svg",
+      "bytes": 852,
+      "sha256": "dc6e9cdd7dcc8d8e4df78b7b67174a9456559daa73d2d46061104e56efa32017"
     },
     {
       "file": "kit/mark.svg",
@@ -499,6 +519,11 @@
       "sha256": "32d7dcadf536c934b0f6ce024f62a06eb55cdfe382c9bbe1c0dd4b8e9e0d65e1"
     },
     {
+      "file": "github/readme.svg",
+      "bytes": 1300,
+      "sha256": "6707ad28a5b3838fc0e2ff2009793b28e4a7ace51134268c4ca338cc8058aa5b"
+    },
+    {
       "file": "kit/mark.svg",
       "bytes": 379,
       "sha256": "49b115d0ac24ff6ff7e4ba621e06ac649f1899182e8345e7c7b0f2db72201041"
@@ -604,6 +629,11 @@
       "file": "github/readme-dark.svg",
       "bytes": 1297,
       "sha256": "cb4a09540fedbaf94780a8dd3c122a8b8e5564e5bda5fa69b700c1be3f3b310a"
+    },
+    {
+      "file": "github/readme.svg",
+      "bytes": 1387,
+      "sha256": "18e3ef5c77985467bcfda0d95f0e771a6753f42a4d1ffc967c4dc544a2ed68eb"
     },
     {
       "file": "kit/mark.svg",

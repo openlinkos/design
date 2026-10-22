@@ -291,7 +291,8 @@ describe('the Vite plugin', () => {
     const kit = siteFiles({ ...base, brandKit: true });
     expect(kit.get('brand/origin/kit/lockup.svg')?.type).toBe('image/svg+xml');
     expect(kit.has('brand/linkos-mirrors/github/social-preview.png')).toBe(true);
-    expect([...kit.keys()].filter((k) => k.startsWith('brand/'))).toHaveLength(6 * 21);
+    expect(kit.get('brand/linkos-mirrors/github/readme.svg')?.type).toBe('image/svg+xml');
+    expect([...kit.keys()].filter((k) => k.startsWith('brand/'))).toHaveLength(6 * 22);
   });
 });
 
