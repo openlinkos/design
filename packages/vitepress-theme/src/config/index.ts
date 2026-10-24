@@ -12,13 +12,15 @@ import type {
 import { deriveCookieDomain } from '../shared/lang.js';
 import { type Brand, findBrand, loadBrands } from './brands.js';
 import { checkSite, formatProblems } from './check.js';
+import { buildFooter, type Footer, type FooterLink, masterBrand } from './footer.js';
 import { addXDefault, pageHead, siteHead } from './head.js';
 import { englishLabels, localizeMarkdown } from './markdown.js';
 import { openlinkosPlugin, PACKAGE_NAME } from './plugin.js';
 import { openlinkosTokenize } from './search.js';
-import { COPYRIGHT, FAMILY, UI, ZH_SEARCH_TRANSLATIONS } from './strings.js';
+import { FAMILY, LINKS, UI, ZH_SEARCH_TRANSLATIONS } from './strings.js';
 
 export { sourceHash } from './check.js';
+export type { FooterLink, Localized } from './footer.js';
 
 type ThemeConfig = DefaultTheme.Config;
 type Config = UserConfig<ThemeConfig>;
@@ -40,6 +42,11 @@ export interface OpenLinkOSConfig extends Omit<Config, 'locales' | 'extends'> {
   cookieDomain?: string | false;
   /** English at the root and Simplified Chinese under /zh/; no other locales. */
   locales?: { root?: OpenLinkOSLocale; zh?: OpenLinkOSLocale };
+  /**
+   * The links in the footer's bottom row, after the copyright, such as the terms of use and the
+   * privacy notice. Defaults to the organization's privacy notice.
+   */
+  legal?: FooterLink[];
 }
 
 /** Theme config keys that the theme sets in every locale, which therefore hide top-level values. */
@@ -67,6 +74,7 @@ interface Resolved {
   markdown: MarkdownOptions | undefined;
   /** Whether the site uses the local search (the default) rather than another provider. */
   localSearch: boolean;
+  footers: Record<'en' | 'zh', Footer>;
 }
 
 const fail = (message: string): never => {
@@ -89,20 +97,27 @@ const resolveHostname = (hostname: string): string => {
   return url.origin;
 };
 
-/** The family menu: the OpenLinkOS home, its projects and the LinkOS services, from brands.json. */
+/**
+ * The family menu, named after the master brand: its home, the open-source projects and the
+ * services from brands.json, and a link to every service.
+ */
 const familyNav = (locale: 'en' | 'zh'): DefaultTheme.NavItem => {
   const brands = loadBrands();
-  const group = (nav: 'projects' | 'services'): DefaultTheme.NavItemChildren => ({
-    text: FAMILY[locale][nav],
-    items: brands.filter((b) => b.nav === nav).map((b) => ({ text: b.name, link: b.url[locale] })),
-  });
-  const home = brands.find((b) => b.tier === 'master');
+  const master = masterBrand(brands);
+  const listed = (nav: 'projects' | 'services') =>
+    brands.filter((b) => b.nav === nav).map((b) => ({ text: b.name, link: b.url[locale] }));
   return {
-    text: 'OpenLinkOS',
+    text: master.name,
     items: [
-      ...(home ? [{ text: FAMILY[locale].home, link: home.url[locale] }] : []),
-      group('projects'),
-      group('services'),
+      { text: FAMILY[locale].home(master.name), link: master.url[locale] },
+      { text: FAMILY[locale].projects, items: listed('projects') },
+      {
+        text: FAMILY[locale].services,
+        items: [
+          ...listed('services'),
+          { text: FAMILY[locale].allServices, link: LINKS.services[locale] },
+        ],
+      },
     ],
   };
 };
@@ -127,8 +142,8 @@ const baseConfig = (r: Resolved): Config => ({
   cleanUrls: true,
   head: siteHead(r.brand),
   locales: {
-    root: { ...LOCALE_META.root, themeConfig: { ...UI.en, footer: { copyright: COPYRIGHT } } },
-    zh: { ...LOCALE_META.zh, themeConfig: { ...UI.zh, footer: { copyright: COPYRIGHT } } },
+    root: { ...LOCALE_META.root, themeConfig: { ...UI.en, footer: r.footers.en } },
+    zh: { ...LOCALE_META.zh, themeConfig: { ...UI.zh, footer: r.footers.zh } },
   },
   themeConfig: {
     logo: { light: '/logo.svg', dark: '/logo-dark.svg' },
@@ -199,6 +214,7 @@ export function defineOpenLinkOSConfig(config: OpenLinkOSConfig): Config {
     brandKit = false,
     cookieDomain,
     locales = {},
+    legal,
     ...site
   } = config;
   const extra = Object.keys(locales).filter((key) => key !== 'root' && key !== 'zh');
@@ -217,13 +233,21 @@ export function defineOpenLinkOSConfig(config: OpenLinkOSConfig): Config {
   if ('extends' in site) fail('extends is set by the theme');
 
   const hostname = resolveHostname(rawHostname);
+  const brand = findBrand(brandId);
+  const year = new Date().getUTCFullYear();
+  const footer = (locale: 'en' | 'zh', description: string | undefined): Footer =>
+    buildFooter({ brand, brands: loadBrands(), hostname, locale, description, legal, year });
   const resolved: Resolved = {
-    brand: findBrand(brandId),
+    brand,
     hostname,
     brandKit,
     cookieDomain: cookieDomain === false ? null : (cookieDomain ?? deriveCookieDomain(hostname)),
     markdown: site.markdown,
     localSearch: (site.themeConfig?.search?.provider ?? 'local') === 'local',
+    footers: {
+      en: footer('en', locales.root?.description ?? site.description),
+      zh: footer('zh', locales.zh?.description),
+    },
   };
   const base = baseConfig(resolved);
 

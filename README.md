@@ -10,7 +10,7 @@ English | [简体中文](README.zh-CN.md)
 
 This repository holds:
 
-- the brand marks of **OpenLinkOS**, the umbrella brand of our open-source projects (such as Origin), and of **LinkOS**, our line of hosted services (such as LinkOS Mirrors);
+- the brand marks of **LinkOS**, the organization, with its free public services (such as LinkOS Mirrors), and of **OpenLinkOS**, its brand for open-source projects (such as Origin);
 - the generated brand assets: favicons, app icons, social images, and README headers;
 - `@openlinkos/ui`, the design system for apps: design tokens in the W3C DTCG format, framework-free CSS for layout and components (per brand, light and dark, with contrast checked by tests), and a curated Lucide icon set;
 - `@openlinkos/vitepress-theme`, the VitePress theme every OpenLinkOS and LinkOS site uses for its look, bilingual (English and Simplified Chinese) interface, language detection, and metadata.

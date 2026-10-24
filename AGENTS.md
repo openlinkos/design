@@ -4,7 +4,7 @@ Instructions for AI coding agents working in this repository. `CLAUDE.md` is a s
 
 ## Project
 
-The OpenLinkOS design system: the brand marks of OpenLinkOS (open-source projects such as Origin) and LinkOS (hosted services such as LinkOS Mirrors), the assets generated from them, `@openlinkos/ui`, the design system for apps (tokens, CSS components, icons), and `@openlinkos/vitepress-theme`, the shared theme for every OpenLinkOS and LinkOS site. Sites get the brand, bilingual (English and Simplified Chinese) UI strings, language detection, metadata, and the bilingual coverage check from the theme.
+The OpenLinkOS design system: the brand marks of LinkOS (the organization and its free public services, such as LinkOS Mirrors) and OpenLinkOS (its open-source projects, such as Origin), the assets generated from them, `@openlinkos/ui`, the design system for apps (tokens, CSS components, icons), and `@openlinkos/vitepress-theme`, the shared theme for every OpenLinkOS and LinkOS site. Sites get the brand, bilingual (English and Simplified Chinese) UI strings, language detection, metadata, and the bilingual coverage check from the theme.
 
 ## Commands
 

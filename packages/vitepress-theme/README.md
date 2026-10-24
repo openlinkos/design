@@ -2,9 +2,9 @@
 
 The shared [VitePress](https://vitepress.dev) theme of every OpenLinkOS and LinkOS site. A site names its brand and its pages; the theme brings the rest:
 
-- **Brand.** The brand's colours, logo, favicons, app icons, web manifest and Open Graph image, generated from the [OpenLinkOS design repository](https://github.com/openlinkos/design), and a family menu of OpenLinkOS projects and LinkOS services.
+- **Brand.** The brand's colours, logo, favicons, app icons, web manifest and Open Graph image, generated from the [OpenLinkOS design repository](https://github.com/openlinkos/design), a family menu of the open-source projects and services, and a shared footer (see below).
 - **Two languages.** English at the root and Simplified Chinese under `/zh/`, with complete interface strings in both, Chinese local search (with a tokenizer that understands Chinese), and Chinese titles for containers, alerts and the copy button on Chinese pages.
-- **Metadata.** A canonical URL, `hreflang` alternates (with `x-default`), Open Graph and Twitter tags on every page, a sitemap with language alternates, `robots.txt`, and `noindex` on the 404 page.
+- **Metadata.** A canonical URL, `hreflang` alternates (with `x-default`), Open Graph and Twitter tags on every page, a sitemap with language alternates, `robots.txt`, `/.well-known/security.txt`, and `noindex` on the 404 page.
 - **Language detection** that is safe behind a CDN and for search engines (see below).
 - **A bilingual coverage check** that fails `vitepress build` when the Chinese site falls behind the English one.
 
@@ -36,7 +36,6 @@ export default defineOpenLinkOSConfig({
       themeConfig: {
         nav: [{ text: 'Guide', link: '/guide/getting-started' }],
         sidebar: [/* … */],
-        footer: { message: 'Released under the MIT License.' },
       },
     },
     zh: {
@@ -44,10 +43,13 @@ export default defineOpenLinkOSConfig({
       themeConfig: {
         nav: [{ text: '指南', link: '/zh/guide/getting-started' }],
         sidebar: [/* … */],
-        footer: { message: '基于 MIT 许可证发布。' },
       },
     },
   },
+  legal: [
+    { text: { en: 'Privacy', zh: '隐私说明' }, link: { en: 'https://linkos.io/privacy', zh: 'https://linkos.io/zh/privacy' } },
+    { text: { en: 'MIT License', zh: 'MIT 许可证' }, link: 'https://github.com/openlinkos/origin/blob/master/LICENSE' },
+  ],
 });
 ```
 
@@ -60,6 +62,7 @@ export default defineOpenLinkOSConfig({
 | `brandKit` | Publish every brand's web, GitHub and kit files under `/brand/<id>/` (for openlinkos.com). Markdown can then show them, as in `![](/brand/origin/kit/lockup.svg)`. |
 | `cookieDomain` | The domain that shares the language preference across sites. Defaults to the last two labels of `hostname` (`openlinkos.com`); `false` keeps it to one host. |
 | `locales` | `root` (English) and `zh` (Simplified Chinese) only. Language, label and link are set for you. |
+| `legal` | The links in the footer's bottom row, after the copyright: `{ text, link }`, each a string or `{ en, zh }`. Defaults to the organization's privacy notice. |
 
 The site's config extends the theme's: arrays such as `head` are appended, objects are merged, and the theme's `transformHead`, `buildEnd`, `markdown.config` and `sitemap.transformItems` run before the site's own. The family menu is appended to each locale's `nav`.
 
@@ -67,8 +70,22 @@ Things to know:
 
 - **Per-locale settings.** VitePress replaces the top-level theme config with each locale's, key by key. The theme sets `nav`, `footer`, `outline`, `docFooter`, `notFound` and the interface labels in every locale, so set them per locale; values set at the top level are copied into both locales as defaults.
 - **No `head` in locales** (VitePress drops it in production). Use the top-level `head`.
-- **Reserved files.** The theme writes `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `site.webmanifest`, `og.png`, `logo.svg`, `logo-dark.svg` and `robots.txt` (and `brand/**` with `brandKit`). The build stops if the site's `public/` has one of them.
+- **Reserved files.** The theme writes `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `site.webmanifest`, `og.png`, `logo.svg`, `logo-dark.svg` `robots.txt` and `.well-known/security.txt` (and `brand/**` with `brandKit`). The build stops if the site's `public/` has one of them.
 - Sites are served from the root with clean URLs: `base` must be `/` and `cleanUrls` stays on.
+
+## Footer
+
+Every site gets the same footer, built from `brands.json`:
+
+- the site's logo and name, its description (the locale's `description`, or the brand's), and who it belongs to: "Open source by LinkOS" on the open-source sites, "Run by LinkOS" on a service, nothing on the master brand's own sites;
+- columns of the open-source projects and the services (`nav` in `brands.json`, the same as the family menu), the master brand's pages (about, news, trust and security, contact), and resources (GitHub, brand guidelines, design system);
+- a bottom row with `© <build year> <master brand>` and the site's `legal` links.
+
+Links into the site itself become paths. On pages with a sidebar, VitePress hides the footer. A site that sets its own `footer.message` replaces the columns and keeps the bottom row. VitePress renders the footer with `v-html` inside a paragraph, so the theme builds it from phrasing elements only.
+
+## security.txt
+
+The theme writes `/.well-known/security.txt` ([RFC 9116](https://www.rfc-editor.org/rfc/rfc9116)) with the security contact, the master brand's trust and security page as the policy, and the site's own URL as the canonical one. It expires a year after the build, so rebuild every site at least once a year.
 
 ## Language detection
 

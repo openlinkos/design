@@ -22,7 +22,6 @@ export default defineOpenLinkOSConfig({
             ],
           },
         ],
-        footer: { message: 'Released under the MIT License.' },
       },
     },
     zh: {
@@ -38,7 +37,6 @@ export default defineOpenLinkOSConfig({
             ],
           },
         ],
-        footer: { message: '基于 MIT 许可证发布。' },
       },
     },
   },

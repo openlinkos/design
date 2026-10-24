@@ -9,6 +9,8 @@ import { UI } from '../src/config/strings.ts';
 
 type Config = UserConfig<DefaultTheme.Config>;
 
+const YEAR = new Date().getUTCFullYear();
+
 const origin = (extra: Partial<OpenLinkOSConfig> = {}): OpenLinkOSConfig => ({
   brand: 'origin',
   hostname: 'https://origin.openlinkos.com/',
@@ -89,14 +91,11 @@ describe('defineOpenLinkOSConfig', () => {
       linkLabel: '返回首页',
       linkText: '返回首页',
     });
-    expect(root?.themeConfig?.footer).toEqual({
-      copyright: '© 2026 OpenLinkOS',
-      message: 'Released under the MIT License.',
-    });
-    expect(zh?.themeConfig?.footer).toEqual({
-      copyright: '© 2026 OpenLinkOS',
-      message: '基于 MIT 许可证发布。',
-    });
+    // The site's own footer message replaces the theme's columns; the bottom row stays.
+    expect(root?.themeConfig?.footer?.message).toBe('Released under the MIT License.');
+    expect(zh?.themeConfig?.footer?.message).toBe('基于 MIT 许可证发布。');
+    expect(root?.themeConfig?.footer?.copyright).toContain(`© ${YEAR} LinkOS`);
+    expect(zh?.themeConfig?.footer?.copyright).toContain('<a href="https://linkos.io/zh/privacy">');
     expect(config.themeConfig?.logo).toEqual({ light: '/logo.svg', dark: '/logo-dark.svg' });
     expect(config.sitemap?.hostname).toBe('https://origin.openlinkos.com');
   });
@@ -107,9 +106,9 @@ describe('defineOpenLinkOSConfig', () => {
     const zh = config.locales?.zh?.themeConfig?.nav ?? [];
     expect(en[0]).toEqual({ text: 'Guide', link: '/guide/getting-started' });
     expect(en.at(-1)).toEqual({
-      text: 'OpenLinkOS',
+      text: 'LinkOS',
       items: [
-        { text: 'OpenLinkOS home', link: 'https://openlinkos.com/' },
+        { text: 'LinkOS home', link: 'https://linkos.io/' },
         {
           text: 'Projects',
           items: [
@@ -120,22 +119,24 @@ describe('defineOpenLinkOSConfig', () => {
         {
           text: 'Services',
           items: [
-            { text: 'LinkOS Mirrors', link: 'https://github.com/openlinkos/registry-mirrors' },
+            { text: 'LinkOS Mirrors', link: 'https://linkos.org/mirrors' },
             { text: 'LinkOS Status', link: 'https://uptime.linkos.org/' },
+            { text: 'All services', link: 'https://linkos.org/' },
           ],
         },
       ],
     });
     const family = zh.at(-1) as DefaultTheme.NavItemWithChildren;
-    expect(family.text).toBe('OpenLinkOS');
+    expect(family.text).toBe('LinkOS');
     expect(family.items.map((g) => (g as DefaultTheme.NavItemChildren).text)).toEqual([
-      'OpenLinkOS 主页',
+      'LinkOS 主页',
       '开源项目',
       '服务',
     ]);
-    expect(family.items[0]).toEqual({
-      text: 'OpenLinkOS 主页',
-      link: 'https://openlinkos.com/zh/',
+    expect(family.items[0]).toEqual({ text: 'LinkOS 主页', link: 'https://linkos.io/zh/' });
+    expect((family.items[2] as DefaultTheme.NavItemChildren).items.at(-1)).toEqual({
+      text: '全部服务',
+      link: 'https://linkos.org/zh/',
     });
     expect((family.items[1] as DefaultTheme.NavItemChildren).items[0]).toEqual({
       text: 'Origin',
@@ -272,6 +273,7 @@ describe('the Vite plugin', () => {
     };
     const files = siteFiles({ ...base, brandKit: false });
     expect([...files.keys()].sort()).toEqual([
+      '.well-known/security.txt',
       'apple-touch-icon.png',
       'favicon.ico',
       'favicon.svg',
@@ -285,6 +287,7 @@ describe('the Vite plugin', () => {
       'site.webmanifest',
     ]);
     expect(files.get('robots.txt')?.source).toBe(robotsTxt('https://x.openlinkos.com'));
+    expect(files.get('.well-known/security.txt')?.type).toBe('text/plain; charset=utf-8');
     expect(robotsTxt('https://x.openlinkos.com')).toBe(
       'User-agent: *\nAllow: /\n\nSitemap: https://x.openlinkos.com/sitemap.xml\n',
     );

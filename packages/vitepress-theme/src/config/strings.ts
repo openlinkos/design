@@ -3,8 +3,6 @@
 
 import type { DefaultTheme } from 'vitepress';
 
-export const COPYRIGHT = '© 2026 OpenLinkOS';
-
 export type UiStrings = Required<
   Pick<
     DefaultTheme.Config,
@@ -61,10 +59,71 @@ export const UI: Record<'en' | 'zh', UiStrings> = {
   },
 };
 
-/** Labels of the family menu. */
+/** Labels of the family menu; `home` takes the name of the master brand. */
 export const FAMILY = {
-  en: { home: 'OpenLinkOS home', projects: 'Projects', services: 'Services' },
-  zh: { home: 'OpenLinkOS 主页', projects: '开源项目', services: '服务' },
+  en: {
+    home: (name: string) => `${name} home`,
+    projects: 'Projects',
+    services: 'Services',
+    allServices: 'All services',
+  },
+  zh: {
+    home: (name: string) => `${name} 主页`,
+    projects: '开源项目',
+    services: '服务',
+    allServices: '全部服务',
+  },
+} as const;
+
+/** Labels of the footer. The attribution lines take the name of the master brand. */
+export const FOOTER = {
+  en: {
+    projects: 'Open source',
+    services: 'Services',
+    about: 'About',
+    news: 'News',
+    trust: 'Trust & security',
+    contact: 'Contact',
+    resources: 'Resources',
+    github: 'GitHub',
+    brand: 'Brand guidelines',
+    design: 'Design system',
+    privacy: 'Privacy',
+    openSource: (name: string) => `Open source by ${name}`,
+    runBy: (name: string) => `Run by ${name}`,
+  },
+  zh: {
+    projects: '开源项目',
+    services: '服务',
+    about: '关于',
+    news: '动态',
+    trust: '信任与安全',
+    contact: '联系我们',
+    resources: '资源',
+    github: 'GitHub',
+    brand: '品牌规范',
+    design: '设计系统',
+    privacy: '隐私说明',
+    openSource: (name: string) => `${name} 发起的开源项目`,
+    runBy: (name: string) => `由 ${name} 运营`,
+  },
+} as const;
+
+/** Fixed links of the family menu and the footer, per locale. */
+export const LINKS = {
+  services: { en: 'https://linkos.org/', zh: 'https://linkos.org/zh/' },
+  brand: { en: 'https://openlinkos.com/brand', zh: 'https://openlinkos.com/zh/brand' },
+  github: 'https://github.com/openlinkos',
+  design: 'https://github.com/openlinkos/design',
+} as const;
+
+/**
+ * Contact addresses: `general` in the footer, `security` in security.txt. Switch `security` to
+ * security@linkos.io once that alias exists.
+ */
+export const CONTACT = {
+  general: 'admin@linkos.io',
+  security: 'admin@linkos.io',
 } as const;
 
 /** Local search in Chinese: the button and every key of the modal. */

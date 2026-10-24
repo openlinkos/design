@@ -1,7 +1,8 @@
 {
   "openlinkos": {
     "name": "OpenLinkOS",
-    "tier": "master",
+    "tier": "line",
+    "parent": "linkos",
     "mark": "rings",
     "word": "OpenLinkOS",
     "url": { "en": "https://openlinkos.com/", "zh": "https://openlinkos.com/zh/" },
@@ -67,14 +68,13 @@
   },
   "linkos": {
     "name": "LinkOS",
-    "tier": "line",
-    "parent": "openlinkos",
+    "tier": "master",
     "mark": "rings",
     "word": "LinkOS",
-    "url": { "en": "https://uptime.linkos.org/", "zh": "https://uptime.linkos.org/" },
+    "url": { "en": "https://linkos.io/", "zh": "https://linkos.io/zh/" },
     "description": {
-      "en": "Hosted services run by OpenLinkOS",
-      "zh": "OpenLinkOS 运营的托管服务"
+      "en": "The team behind OpenLinkOS and the LinkOS public services",
+      "zh": "OpenLinkOS 开源项目和 LinkOS 公共服务背后的团队"
     },
     "nav": null,
     "colors": {
@@ -93,10 +93,7 @@
     "mark": "rings",
     "word": "LinkOS",
     "descriptor": "Mirrors",
-    "url": {
-      "en": "https://github.com/openlinkos/registry-mirrors",
-      "zh": "https://github.com/openlinkos/registry-mirrors"
-    },
+    "url": { "en": "https://linkos.org/mirrors", "zh": "https://linkos.org/zh/mirrors" },
     "description": {
       "en": "Free mirrors of public container registries",
       "zh": "免费的公共容器镜像仓库加速服务"

@@ -5,3 +5,93 @@ html[lang^="zh"] {
     "Source Han Sans SC", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
 }
+
+/*
+ * The shared footer (config/footer.ts). VitePress centres `.message` and `.copyright` and styles
+ * their links in scoped CSS, so these rules start from `.VPFooter` to take precedence.
+ */
+.VPFooter .message:has(.olf) {
+  margin-bottom: 24px;
+}
+
+.VPFooter .olf {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) repeat(4, minmax(0, 1fr));
+  gap: 28px 24px;
+  text-align: start;
+  line-height: 1.6;
+}
+
+.VPFooter .olf-brand,
+.VPFooter .olf-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.VPFooter .olf-title,
+.VPFooter .message .olf .olf-name {
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.VPFooter .message .olf .olf-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.VPFooter .olf-logo-dark,
+.dark .VPFooter .olf-logo-light {
+  display: none;
+}
+
+.dark .VPFooter .olf-logo-dark {
+  display: inline;
+}
+
+.VPFooter .olf-desc,
+.VPFooter .olf-about {
+  max-width: 36ch;
+  font-weight: 400;
+}
+
+/* Links, in ascending specificity; each beats the scoped rule it replaces. */
+.VPFooter p.copyright a {
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+.VPFooter .message .olf a {
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+.VPFooter p.copyright a:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.VPFooter .message .olf a:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.VPFooter:has(.olf) .copyright {
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 16px;
+  text-align: start;
+  font-weight: 400;
+}
+
+@media (max-width: 959px) {
+  .VPFooter .olf {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .VPFooter .olf-brand {
+    grid-column: 1 / -1;
+  }
+}

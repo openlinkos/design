@@ -14,6 +14,8 @@ import {
   WEB_FILES,
 } from './brands.js';
 import { checkSite, formatProblem, type Problem } from './check.js';
+import { masterBrand, orgLink } from './footer.js';
+import { CONTACT } from './strings.js';
 
 /** The package name, for `ssr.noExternal` and `optimizeDeps.exclude`. */
 export const PACKAGE_NAME = '@openlinkos/vitepress-theme';
@@ -38,6 +40,8 @@ export interface PluginOptions {
   hostname: string;
   brandKit: boolean;
   cookieDomain: string | null;
+  /** The build time, which sets the expiry of security.txt; now when not set. */
+  now?: Date;
 }
 
 export interface SiteFile {
@@ -57,9 +61,25 @@ export const robotsTxt = (hostname: string): string =>
   `User-agent: *\nAllow: /\n\nSitemap: ${hostname}/sitemap.xml\n`;
 
 /**
+ * security.txt (RFC 9116): the security contact, the organization's security page as the policy,
+ * and an expiry one year after the build, so a site must be rebuilt at least once a year.
+ */
+export const securityTxt = (hostname: string, now: Date): string => {
+  const expires = new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), now.getUTCDate()));
+  return [
+    `Contact: mailto:${CONTACT.security}`,
+    `Expires: ${expires.toISOString().replace('.000Z', 'Z')}`,
+    `Policy: ${orgLink(masterBrand(loadBrands()), 'en', 'trust')}`,
+    'Preferred-Languages: zh, en',
+    `Canonical: ${hostname}/.well-known/security.txt`,
+    '',
+  ].join('\n');
+};
+
+/**
  * Every file the theme adds to a site, keyed by its path in the output: the brand's web files and
- * robots.txt at the root, and with `brandKit` every brand's web, GitHub and kit files under
- * brand/<id>/.
+ * robots.txt at the root, .well-known/security.txt, and with `brandKit` every brand's web, GitHub
+ * and kit files under brand/<id>/.
  */
 export const siteFiles = (o: PluginOptions): Map<string, SiteFile> => {
   const files = new Map<string, SiteFile>();
@@ -68,6 +88,7 @@ export const siteFiles = (o: PluginOptions): Map<string, SiteFile> => {
   };
   for (const file of WEB_FILES) add(file, readFileSync(assetPath(o.brand.id, `web/${file}`)));
   add('robots.txt', robotsTxt(o.hostname));
+  add('.well-known/security.txt', securityTxt(o.hostname, o.now ?? new Date()));
   if (o.brandKit) {
     for (const b of loadBrands()) {
       for (const group of ASSET_GROUPS) {

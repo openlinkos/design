@@ -8,16 +8,16 @@ Every brand is an entry in [`brand/brands.json`](brand/brands.json), the single 
 
 | Id | Name | Tier | Mark | Accent |
 | --- | --- | --- | --- | --- |
-| `openlinkos` | OpenLinkOS | master | interlocked rings | blue |
+| `openlinkos` | OpenLinkOS | line | interlocked rings | blue |
 | `origin` | Origin | product | ring and centre point | indigo |
 | `agent` | OpenLinkOS Agent | product | interlocked rings | violet |
-| `linkos` | LinkOS | line | interlocked rings | green |
+| `linkos` | LinkOS | master | interlocked rings | green |
 | `linkos-mirrors` | LinkOS Mirrors | service | interlocked rings | green |
 | `linkos-status` | LinkOS Status | service | interlocked rings | green |
 
-OpenLinkOS is the umbrella brand of our open-source projects. LinkOS is our line of hosted services. Both share one visual system; the tier shows in the accent colour and the wordmark, not in a different mark.
+LinkOS is the organization, at linkos.io. OpenLinkOS is its brand for open-source projects, at openlinkos.com, and the LinkOS services, listed at linkos.org, are its free public services. Every brand shares one visual system; the tier shows in the accent colour and the wordmark, not in a different mark. Exactly one brand is the master: the theme names the family menu and the footer's copyright after it and links to its pages.
 
-An entry holds the name, tier and parent, the mark, the wordmark and an optional descriptor (drawn in the accent colour, for example "LinkOS **Mirrors**"), the URL and a one-line description in English and Chinese, the navigation group (`projects`, `services` or none), and the colours. A service can reuse its line's colours by naming it (`"colors": "linkos"`).
+An entry holds the name, tier and parent, the mark, the wordmark and an optional descriptor (drawn in the accent colour, for example "LinkOS **Mirrors**"), the URL and a one-line description in English and Chinese, the navigation group (`projects`, `services` or none), and the colours. A service can reuse another brand's colours by naming it (`"colors": "linkos"`).
 
 ## Construction
 
