@@ -105,7 +105,7 @@ describe('the footer', () => {
 describe('security.txt', () => {
   it('names the contact, the policy and the canonical URL, and expires a year after the build', () => {
     expect(securityTxt('https://linkos.org', new Date('2026-10-24T09:30:00Z'))).toBe(
-      'Contact: mailto:admin@linkos.io\n' +
+      'Contact: mailto:security@linkos.io\n' +
         'Expires: 2027-10-24T00:00:00Z\n' +
         'Policy: https://linkos.io/trust\n' +
         'Preferred-Languages: zh, en\n' +

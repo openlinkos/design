@@ -117,13 +117,10 @@ export const LINKS = {
   design: 'https://github.com/openlinkos/design',
 } as const;
 
-/**
- * Contact addresses: `general` in the footer, `security` in security.txt. Switch `security` to
- * security@linkos.io once that alias exists.
- */
+/** Contact addresses: `general` in the footer, `security` in security.txt. */
 export const CONTACT = {
   general: 'admin@linkos.io',
-  security: 'admin@linkos.io',
+  security: 'security@linkos.io',
 } as const;
 
 /** Local search in Chinese: the button and every key of the modal. */
