@@ -11,6 +11,41 @@
   color: var(--ol-color-fg-subtle);
 }
 
+/* Tones for text and icons, such as counts that say how something went. Pair a tone with an icon
+   or words; never let colour alone carry the meaning. */
+.ol-tone-accent {
+  color: var(--ol-color-accent-text);
+}
+
+.ol-tone-success {
+  color: var(--ol-color-success-text);
+}
+
+.ol-tone-warning {
+  color: var(--ol-color-warning-text);
+}
+
+.ol-tone-danger {
+  color: var(--ol-color-danger-text);
+}
+
+.ol-tone-info {
+  color: var(--ol-color-info-text);
+}
+
+/* Text alignment, such as for table cells. */
+.ol-align-start {
+  text-align: start;
+}
+
+.ol-align-center {
+  text-align: center;
+}
+
+.ol-align-end {
+  text-align: end;
+}
+
 .ol-nowrap {
   white-space: nowrap;
 }

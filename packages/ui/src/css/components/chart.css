@@ -1,0 +1,225 @@
+/*
+ * Charts: the series palette, swatches and legends, and the parts of a chart that the app draws as
+ * SVG on the server (bars, lines, dots, gridlines, axes, labels). The SVG carries classes only, no
+ * colours or inline styles. Every chart comes with a legend when it shows two or more series, and
+ * with a table of its numbers.
+ */
+
+/* Series: .ol-series-<n> sets --ol-series for a mark, a swatch, a meter, or a group of them (the
+   property inherits). A slot stays with the thing it stands for, in a fixed order; never cycle. */
+.ol-series-1 {
+  --ol-series: var(--ol-color-series-1);
+}
+
+.ol-series-2 {
+  --ol-series: var(--ol-color-series-2);
+}
+
+.ol-series-3 {
+  --ol-series: var(--ol-color-series-3);
+}
+
+.ol-series-4 {
+  --ol-series: var(--ol-color-series-4);
+}
+
+.ol-series-5 {
+  --ol-series: var(--ol-color-series-5);
+}
+
+.ol-series-6 {
+  --ol-series: var(--ol-color-series-6);
+}
+
+.ol-series-7 {
+  --ol-series: var(--ol-color-series-7);
+}
+
+.ol-series-8 {
+  --ol-series: var(--ol-color-series-8);
+}
+
+/* A swatch beside the text that names a series: a square for bars and areas, -line for lines. */
+.ol-swatch {
+  display: inline-block;
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: var(--ol-radius-xs);
+  background: var(--ol-series, var(--ol-color-series-1));
+}
+
+.ol-swatch-line {
+  width: 0.875rem;
+  height: 0.125rem;
+  border-radius: var(--ol-radius-full);
+}
+
+/* Legends: <ul class="ol-legend"><li><span class="ol-swatch ol-series-2" aria-hidden="true"></span>
+   codex <span class="ol-legend-value">298</span></li></ul>. .ol-legend-item lays out one entry on
+   its own, such as a swatch and a name in a table cell. Text keeps text colours, never the series
+   colour. */
+.ol-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ol-space-1) var(--ol-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+.ol-legend > li,
+.ol-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-1-5);
+  min-width: 0;
+}
+
+.ol-legend > li {
+  color: var(--ol-color-fg-muted);
+}
+
+.ol-legend-value {
+  color: var(--ol-color-fg-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * A chart: <figure class="ol-chart"> holding an <svg class="ol-chart-svg" role="img"> with a title
+ * and a description, a <figcaption class="ol-chart-caption"> with the legend and a one-line summary,
+ * and a <details class="ol-details ol-chart-table"> with every number in a table.
+ *
+ * Inside the SVG: .ol-chart-grid (gridlines), .ol-chart-axis (the baseline), .ol-chart-tick and
+ * .ol-chart-label (axis text), .ol-chart-bar, .ol-chart-line and .ol-chart-dot (marks, coloured by
+ * a .ol-series-<n> on them or on a group), and .ol-chart-col (a column's group: a transparent
+ * .ol-chart-hit band, its marks, and a <title> the browser shows on hover).
+ */
+.ol-chart {
+  min-width: 0;
+  margin: 0;
+  padding: var(--ol-space-4) var(--ol-space-4) var(--ol-space-3);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface);
+}
+
+.ol-chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.ol-chart-grid,
+.ol-chart-axis {
+  fill: none;
+  stroke: var(--ol-color-border);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+  vector-effect: non-scaling-stroke;
+}
+
+.ol-chart-axis {
+  stroke: var(--ol-color-border-strong);
+}
+
+.ol-chart-tick,
+.ol-chart-label {
+  fill: var(--ol-color-fg-subtle);
+  font-family: var(--ol-font-family-sans);
+  font-size: var(--ol-font-size-2xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.ol-chart-bar {
+  fill: var(--ol-series, var(--ol-color-series-1));
+}
+
+.ol-chart-line {
+  fill: none;
+  stroke: var(--ol-series, var(--ol-color-series-1));
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Dots carry a ring in the surface colour, so they stay legible where they cross a line. */
+.ol-chart-dot {
+  fill: var(--ol-series, var(--ol-color-series-1));
+  stroke: var(--ol-color-surface);
+  stroke-width: 2;
+}
+
+/* A column's hit band: larger than its marks, shaded on hover and on keyboard focus. */
+.ol-chart-hit {
+  fill: transparent;
+  transition: fill var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-chart-col:hover > .ol-chart-hit,
+.ol-chart-col:focus-visible > .ol-chart-hit {
+  fill: var(--ol-color-fill);
+}
+
+.ol-chart-col:focus-visible {
+  outline: none;
+}
+
+.ol-chart-col:focus-visible > .ol-chart-hit {
+  stroke: var(--ol-color-focus-ring);
+  stroke-width: var(--ol-focus-width);
+  vector-effect: non-scaling-stroke;
+}
+
+.ol-chart-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ol-space-2) var(--ol-space-4);
+  margin-block-start: var(--ol-space-2);
+}
+
+/* The numbers behind a chart, folded under it. */
+.ol-chart-table {
+  margin-block-start: var(--ol-space-2);
+}
+
+@media (forced-colors: active) {
+  /* Colours collapse to one; the legend's words and the table carry the series. */
+  .ol-chart-bar,
+  .ol-chart-dot {
+    fill: CanvasText;
+  }
+
+  .ol-chart-line {
+    stroke: CanvasText;
+  }
+
+  .ol-chart-dot {
+    stroke: Canvas;
+  }
+
+  .ol-chart-grid,
+  .ol-chart-axis {
+    stroke: GrayText;
+  }
+
+  .ol-chart-tick,
+  .ol-chart-label {
+    fill: CanvasText;
+  }
+
+  .ol-chart-col:focus-visible > .ol-chart-hit {
+    stroke: Highlight;
+  }
+
+  .ol-swatch {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}

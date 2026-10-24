@@ -1,5 +1,5 @@
 /*
- * Data display: tables, stats, description lists, and feeds.
+ * Data display: tables, stats, description lists, compact lists, and feeds.
  */
 
 /* Tables: wrap in .ol-table-wrap for the frame and horizontal scrolling. Mark sortable column
@@ -52,7 +52,8 @@
   vertical-align: middle;
 }
 
-.ol-table tbody tr:last-child > * {
+/* Only the last body's last row drops its line, so several bodies (groups) stay separated. */
+.ol-table tbody:last-of-type > tr:last-child > * {
   border-block-end: 0;
 }
 
@@ -66,6 +67,18 @@
 
 .ol-table tbody tr[aria-selected="true"] {
   background: var(--ol-color-accent-bg);
+}
+
+/* A row that heads a group of rows, such as a day, usually first in its <tbody>:
+   <tr class="ol-table-group"><th colspan="4" scope="rowgroup">Today</th></tr> */
+.ol-table :where(.ol-table-group) > th {
+  padding-block: var(--ol-space-1-5);
+  color: var(--ol-color-fg);
+  font-weight: var(--ol-font-weight-semibold);
+}
+
+.ol-table tbody tr.ol-table-group:hover {
+  background: none;
 }
 
 .ol-table-sticky thead th {
@@ -250,6 +263,75 @@ a.ol-stat:hover {
 .ol-dl dd {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+/* Compact lists: items in one frame, each a title over a line of facts.
+   <ul class="ol-list"><li><a class="ol-list-title" href="…">…</a><span class="ol-list-meta">…</span></li></ul>
+   .ol-list-row puts a title and a value (.ol-list-value) on one line, or anything else, such as a
+   badge before the title, or a meter under it. */
+.ol-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface);
+}
+
+.ol-list > li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-1);
+  min-width: 0;
+  padding: var(--ol-space-2-5) var(--ol-space-3-5);
+}
+
+.ol-list > li + li {
+  border-block-start: 1px solid var(--ol-color-border);
+}
+
+.ol-list-title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ol-list-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-width: 0;
+}
+
+.ol-list-row > .ol-list-title {
+  flex: 1;
+}
+
+.ol-list-value {
+  flex: none;
+  margin-inline-start: auto;
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.ol-list-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-1) var(--ol-space-3);
+  min-width: 0;
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
 }
 
 /* Feeds: a conversation or event stream. Set data-role on items: user, assistant, tool, system. */

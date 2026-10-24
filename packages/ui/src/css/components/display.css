@@ -1,10 +1,11 @@
 /*
- * Display: badges, avatars, code, keys, and secrets.
+ * Display: badges, chips, avatars, code, keys, and secrets.
  */
 
 /* Badges: short status or category labels. .ol-badge plus a tone (-accent, -success, -warning,
-   -danger, -info; neutral without one) and optionally -solid or -outline; -square for tags.
-   Add .ol-dot for a status dot. Badges are not buttons: never make one the only way to act. */
+   -danger, -info; neutral without one) and optionally -solid or -outline; -square for tags; -mono
+   for identifiers. Add .ol-dot for a status dot. Badges are not buttons: never make one the only
+   way to act. */
 
 .ol-badge {
   --ol-badge-bg: var(--ol-color-fill);
@@ -75,11 +76,170 @@
   border-radius: var(--ol-radius-xs);
 }
 
+/* An identifier, such as an agent's name or a version, in monospace. */
+.ol-badge-mono {
+  font-family: var(--ol-font-family-mono);
+  font-weight: var(--ol-font-weight-regular);
+}
+
 .ol-dot {
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 50%;
   background: currentColor;
+}
+
+/*
+ * Chips: small, muted notes in a flow of content, such as a command an agent ran or context it
+ * added. <span class="ol-chip">…icon… <span class="ol-chip-label">…</span></span>. As
+ * <details class="ol-chip"> it opens to show the whole text (.ol-chip-detail, then an optional
+ * .ol-chip-foot); as <a class="ol-chip"> it is a pill link, with aria-current="true" on the current
+ * one of a set. -mono sets the label in monospace, -accent marks the chip that stands for the main
+ * item, -lg is larger.
+ */
+.ol-chip {
+  --ol-chip-height: 1.625rem;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-1-5);
+  max-width: 100%;
+  min-height: var(--ol-chip-height);
+  padding-inline: var(--ol-space-2);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-bg-subtle);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+  vertical-align: middle;
+}
+
+.ol-chip :where(.ol-icon) {
+  color: var(--ol-color-fg-subtle);
+}
+
+/* The label keeps to one line and ends with an ellipsis; open a disclosure chip for the rest. */
+.ol-chip-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ol-chip-mono .ol-chip-label {
+  font-family: var(--ol-font-family-mono);
+}
+
+/* A quiet link at the end of a chip sits inside its rounded end. */
+.ol-chip > .ol-quiet-link:last-child,
+.ol-chip > summary > .ol-quiet-link:last-child {
+  margin-inline-end: calc(-1 * var(--ol-space-1-5));
+  border-radius: var(--ol-radius-full);
+}
+
+a.ol-chip {
+  white-space: nowrap;
+  transition:
+    border-color var(--ol-duration-fast) var(--ol-ease-standard),
+    color var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+a.ol-chip:hover {
+  border-color: var(--ol-color-border-strong);
+  color: var(--ol-color-fg);
+  text-decoration: none;
+}
+
+a.ol-chip[aria-current="true"],
+a.ol-chip[aria-current="page"] {
+  border-color: var(--ol-color-accent-border);
+  background: var(--ol-color-accent-bg);
+  color: var(--ol-color-accent-text);
+}
+
+.ol-chip-accent {
+  border-color: var(--ol-color-accent-border);
+  background: var(--ol-color-accent-bg);
+  color: var(--ol-color-fg);
+}
+
+.ol-chip-accent :where(.ol-icon) {
+  color: var(--ol-color-accent-text);
+}
+
+.ol-chip-lg {
+  --ol-chip-height: var(--ol-size-control-md);
+  padding-inline: var(--ol-space-3);
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+}
+
+details.ol-chip {
+  display: inline-block;
+  padding: 0;
+}
+
+details.ol-chip > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-1-5);
+  min-height: calc(var(--ol-chip-height) - 2px);
+  padding-inline: var(--ol-space-2);
+  border-radius: inherit;
+  cursor: pointer;
+  list-style: none;
+}
+
+details.ol-chip > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.ol-chip > summary::after {
+  content: "";
+  flex: none;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  margin-inline: 0.125rem;
+  border-inline-end: 1.5px solid currentColor;
+  border-block-end: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+details.ol-chip > summary:hover {
+  color: var(--ol-color-fg);
+}
+
+/* Open, a disclosure chip takes the full width, on a line of its own in a row of chips. */
+details.ol-chip[open] {
+  display: block;
+  width: 100%;
+  border-radius: var(--ol-radius-control);
+}
+
+details.ol-chip[open] > summary::after {
+  transform: rotate(45deg);
+}
+
+.ol-chip-detail {
+  max-height: 20rem;
+  margin: 0;
+  padding: var(--ol-space-2) var(--ol-space-3);
+  overflow: auto;
+  border-block-start: 1px solid var(--ol-color-border);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ol-chip-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-2);
+  padding: 0 var(--ol-space-2) var(--ol-space-2);
 }
 
 /* A count next to a label, such as unread items. */
@@ -221,5 +381,11 @@
   .ol-count,
   .ol-avatar {
     border: 1px solid CanvasText;
+  }
+
+  a.ol-chip[aria-current="true"],
+  a.ol-chip[aria-current="page"] {
+    border-color: Highlight;
+    outline: 1px solid Highlight;
   }
 }

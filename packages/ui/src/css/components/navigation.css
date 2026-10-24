@@ -1,5 +1,5 @@
 /*
- * Navigation inside a page: tabs, segmented controls, and pagination.
+ * Navigation inside a page: tabs, segmented controls, pagination, and quiet links.
  */
 
 /* Tabs: links along a line, each a separate page or URL state. Mark the current one with
@@ -109,6 +109,45 @@
 .ol-pager-links {
   display: flex;
   gap: var(--ol-space-2);
+}
+
+/* Quiet links: a small link, often only an icon, that stays out of the way until wanted, such as
+   the source of a line. <a class="ol-quiet-link" href="…" aria-label="Open the event">…icon…</a>
+   keeps a 24px target (WCAG 2.5.8), and its icon reaches 3:1 at rest (WCAG 1.4.11). */
+.ol-quiet-link {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ol-space-1);
+  min-width: var(--ol-size-target-min);
+  min-height: var(--ol-size-target-min);
+  padding-inline: var(--ol-space-1);
+  border-radius: var(--ol-radius-sm);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background var(--ol-duration-fast) var(--ol-ease-standard),
+    color var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-quiet-link .ol-icon {
+  color: var(--ol-color-icon-subtle);
+  transition: color var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-quiet-link:hover,
+.ol-quiet-link:focus-visible {
+  background: var(--ol-color-fill-hover);
+  color: var(--ol-color-fg);
+  text-decoration: none;
+}
+
+.ol-quiet-link:hover .ol-icon,
+.ol-quiet-link:focus-visible .ol-icon {
+  color: currentColor;
 }
 
 /* The sidebar's menu button (a .ol-btn) appears only on narrow screens. It lives in the component

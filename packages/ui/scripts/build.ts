@@ -33,11 +33,13 @@ const SOURCES: Record<(typeof LAYERS)[number], string[]> = {
     'css/components/button.css',
     'css/components/form.css',
     'css/components/data.css',
+    'css/components/chart.css',
     'css/components/display.css',
     'css/components/feedback.css',
     'css/components/container.css',
     'css/components/navigation.css',
     'css/components/overlay.css',
+    'css/components/prose.css',
   ],
   utilities: ['css/utilities.css'],
 };

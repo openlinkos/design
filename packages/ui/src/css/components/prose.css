@@ -1,0 +1,147 @@
+/*
+ * Prose: running content written elsewhere, such as Markdown that a person or an agent wrote,
+ * rendered as plain HTML: headings, paragraphs, lists, quotes, code, tables, rules and links. The
+ * elements need no classes. Put each table in a .ol-prose-table, which scrolls sideways; a code
+ * block may be a .ol-code (with a label) or a bare <pre>.
+ *
+ *   <div class="ol-prose ol-prose-sm"><h4>…</h4><p>…</p><ul><li>…</li></ul>
+ *     <div class="ol-prose-table"><table>…<td class="ol-align-end">…</td>…</table></div></div>
+ */
+
+.ol-prose {
+  min-width: 0;
+  font-size: var(--ol-font-size-md);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* At the size of interface text, for prose inside a list, a feed or a card. */
+.ol-prose-sm {
+  font-size: var(--ol-font-size-sm);
+}
+
+:lang(zh) .ol-prose {
+  line-height: 1.75;
+}
+
+/* Blocks are spaced by the rules below, not by their own margins. */
+.ol-prose :where(ul, ol, pre) {
+  margin: 0;
+}
+
+.ol-prose > * + *,
+.ol-prose :is(li, blockquote) > * + * {
+  margin-block-start: var(--ol-space-3);
+}
+
+.ol-prose :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--ol-color-fg);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+/* Headings step down from the page's own: an app that renders a document inside a page can map its
+   levels to h4 and below, which keep to the prose's size. */
+.ol-prose h1 {
+  font-size: var(--ol-font-size-xl);
+}
+
+.ol-prose h2 {
+  font-size: var(--ol-font-size-lg);
+}
+
+.ol-prose :is(h3, h4) {
+  font-size: var(--ol-font-size-md);
+}
+
+.ol-prose :is(h5, h6) {
+  font-size: var(--ol-font-size-sm);
+}
+
+.ol-prose > * + :is(h1, h2, h3) {
+  margin-block-start: var(--ol-space-5);
+}
+
+.ol-prose > * + :is(h4, h5, h6) {
+  margin-block-start: var(--ol-space-4);
+}
+
+.ol-prose :is(ul, ol) {
+  padding-inline-start: 1.5em;
+}
+
+.ol-prose li + li,
+.ol-prose li > :is(ul, ol) {
+  margin-block-start: var(--ol-space-1);
+}
+
+.ol-prose li::marker {
+  color: var(--ol-color-fg-subtle);
+}
+
+.ol-prose blockquote {
+  margin-inline: 0;
+  padding-inline-start: var(--ol-space-3);
+  border-inline-start: 2px solid var(--ol-color-border-strong);
+  color: var(--ol-color-fg-muted);
+}
+
+.ol-prose hr {
+  margin-block: var(--ol-space-4);
+}
+
+/* Links in running text are underlined, so they never rely on colour alone (WCAG 1.4.1). */
+.ol-prose a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, currentColor 40%, transparent);
+}
+
+.ol-prose a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* A bare code block, or text kept as written. */
+.ol-prose pre:not(.ol-code > pre) {
+  padding: var(--ol-space-2-5) var(--ol-space-3);
+  overflow-x: auto;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-control);
+  background: var(--ol-color-bg-subtle);
+  font-size: var(--ol-font-size-xs);
+  line-height: 1.65;
+  overflow-wrap: normal;
+}
+
+/* Tables: cells keep to one line, so a wide table scrolls; .ol-cell-wrap lets a long cell wrap. */
+.ol-prose-table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.ol-prose table {
+  border-collapse: collapse;
+  font-size: var(--ol-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.55;
+}
+
+.ol-prose :is(th, td) {
+  padding: var(--ol-space-1-5) var(--ol-space-3);
+  border: 1px solid var(--ol-color-border);
+  overflow-wrap: normal;
+  text-align: start;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.ol-prose th {
+  background: var(--ol-color-bg-subtle);
+  color: var(--ol-color-fg);
+  font-weight: var(--ol-font-weight-semibold);
+}
+
+.ol-prose .ol-cell-wrap {
+  min-width: 14rem;
+  white-space: normal;
+}

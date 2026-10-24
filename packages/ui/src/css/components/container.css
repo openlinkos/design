@@ -1,5 +1,5 @@
 /*
- * Containers: panels, cards, dividers, and disclosures.
+ * Containers: panels, cards, dividers, disclosures, and folds.
  *
  * Frame only what belongs together. A page of identical framed boxes reads as noise; use sections,
  * headings and whitespace first, a panel for a group of related detail, a card for one item in a
@@ -35,8 +35,8 @@
   color: var(--ol-color-fg-subtle);
 }
 
-/* A table inside a panel loses its own frame. */
-.ol-panel > .ol-table-wrap {
+/* A table or a compact list inside a panel loses its own frame. */
+.ol-panel > :is(.ol-table-wrap, .ol-list) {
   border: 0;
   border-radius: 0;
 }
@@ -77,7 +77,8 @@
   background: var(--ol-color-danger-bg);
 }
 
-/* Cards: one item of a collection, optionally a link (.ol-card on <a>). */
+/* Cards: one item of a collection, optionally a link (.ol-card on <a>). A card that is the target
+   of the URL's #fragment is outlined, and scrolls clear of the top bar. */
 .ol-card {
   display: flex;
   flex-direction: column;
@@ -88,9 +89,16 @@
   border-radius: var(--ol-radius-container);
   background: var(--ol-color-surface);
   color: inherit;
+  scroll-margin-block-start: var(--ol-space-6);
   transition:
     border-color var(--ol-duration-fast) var(--ol-ease-standard),
     box-shadow var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+/* The card a link points at (#id in the URL) is outlined. */
+.ol-card:target {
+  border-color: var(--ol-color-accent-border);
+  box-shadow: 0 0 0 3px var(--ol-color-accent-bg);
 }
 
 a.ol-card:hover {
@@ -129,6 +137,99 @@ a.ol-card:hover {
 
 .ol-divider:empty {
   gap: 0;
+}
+
+/*
+ * Folds: a run of steps behind one summary line that says what is inside, such as counts by kind
+ * and how they went.
+ *
+ *   <details class="ol-fold">
+ *     <summary><span class="ol-fold-title">…icon… 14 tool calls</span>
+ *       <span class="ol-fold-meta">…</span><span class="ol-fold-end">2 messages</span></summary>
+ *     <div class="ol-fold-body">…</div>
+ *   </details>
+ */
+.ol-fold {
+  min-width: 0;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-control);
+  background: var(--ol-color-bg-subtle);
+}
+
+.ol-fold > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-1) var(--ol-space-3);
+  min-height: var(--ol-size-control-lg);
+  padding: var(--ol-space-1-5) var(--ol-space-3);
+  border-radius: inherit;
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+  cursor: pointer;
+  list-style: none;
+}
+
+.ol-fold > summary::-webkit-details-marker {
+  display: none;
+}
+
+.ol-fold > summary::before {
+  content: "";
+  flex: none;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-inline-end: 1.5px solid currentColor;
+  border-block-end: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-fold > summary:hover {
+  color: var(--ol-color-fg);
+}
+
+.ol-fold:where([open]) > summary {
+  border-block-end: 1px solid var(--ol-color-border);
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.ol-fold:where([open]) > summary::before {
+  transform: rotate(45deg);
+}
+
+.ol-fold-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-1-5);
+  color: var(--ol-color-fg);
+  font-weight: var(--ol-font-weight-semibold);
+}
+
+/* Facts on the summary line, each an icon and a number or a few words. */
+.ol-fold-meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-1) var(--ol-space-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.ol-fold-meta > * {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-0-5);
+}
+
+.ol-fold-end {
+  margin-inline-start: auto;
+  color: var(--ol-color-fg-subtle);
+}
+
+.ol-fold-body {
+  padding: var(--ol-space-2);
 }
 
 /* Disclosures: <details class="ol-details"><summary>…</summary>…</details>.

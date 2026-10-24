@@ -199,6 +199,21 @@
   background: var(--ol-color-danger-solid);
 }
 
+/* A meter in a series colour, such as one value's share of the largest in a list:
+   <meter class="ol-meter ol-meter-series ol-series-1" max="14026" value="526">526 events</meter>.
+   It ignores low, high and optimum; slot 1 by default. */
+.ol-meter.ol-meter-series::-webkit-meter-optimum-value,
+.ol-meter.ol-meter-series::-webkit-meter-suboptimum-value,
+.ol-meter.ol-meter-series::-webkit-meter-even-less-good-value {
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-series, var(--ol-color-series-1));
+}
+
+.ol-meter.ol-meter-series::-moz-meter-bar {
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-series, var(--ol-color-series-1));
+}
+
 /* Skeletons: placeholders while content loads. Mark the region aria-busy="true". */
 .ol-skeleton {
   display: block;
