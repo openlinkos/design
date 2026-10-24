@@ -6,7 +6,7 @@ How `@openlinkos/ui` is built, and which practice of an established design syste
 
 **One quiet frame, one memorable moment.** The app is a sidebar on a soft shell colour and a single floating content panel that scrolls on its own. Navigation stays put, and the page reads as one object instead of a stack of boxes. The kit spends its boldness in one place: the sign-in page, where the brand's mark is drawn large as an origin point with rings spreading from it at widening intervals. The same rings return faintly behind empty states. Everything else stays disciplined.
 
-**Hierarchy before decoration.** Frames are earned: sections and headings come first, a panel groups related detail, and a card is one item of a collection. Radii differ by role (6px controls, 10px containers, 14px for the content panel and dialogs) instead of one radius on everything. The brand accent marks what matters (the current page, the primary action, focus, selection, links, stat icons) and nothing else.
+**Hierarchy before decoration.** Frames are earned: sections and headings come first, a panel groups related detail, and a card is one item of a collection. Radii differ by role (6px controls, 10px containers, 14px for the content panel and dialogs) instead of one radius on everything. The brand accent marks what matters (the current page, the primary action, focus, selection, links, stat icons, the first series of a chart) and nothing else.
 
 **Type with character, set solid.** Latin text uses [Geist](https://github.com/vercel/geist-font) and Geist Mono (SIL Open Font License, bundled, no CDN); monospace is reserved for real code, ids and tokens. Chinese falls back to the platform's own fonts.
 
@@ -51,12 +51,25 @@ Dark scales are designed separately, not inverted, as in Radix.
 - text on every surface: 4.5:1;
 - every tone's text on its own tint and on every surface: 4.5:1;
 - text on solid fills: 4.5:1;
-- control edges and the focus ring on every surface: 3:1;
-- the brand panel's text (4.5:1) and mark (3:1).
+- control edges, quiet icons (`icon-subtle`) and the focus ring on every surface: 3:1;
+- the brand panel's text (4.5:1) and mark (3:1);
+- the chart series, as [below](#chart-series).
 
 WCAG 2 is the measure, since APCA is not adopted and WCAG 3's contrast method is not settled.
 
 **Brands share everything but the accent.** `data-brand="<id>"` swaps the accent scale for any brand in `brand/brands.json`; neutral and status colours stay common.
+
+### Chart series {#chart-series}
+
+**A categorical palette in a fixed order.** Charts colour their series from eight slots, `--ol-color-series-1` to `-8`: the brand accent first, then orange, cyan, pink, green, purple, gold and red. Each slot has its own light and dark value, chosen for its mode rather than inverted. A slot stays with the thing it stands for, so a filter that hides one series does not repaint the others, and colours are never cycled: past eight series, fold the smallest into one "Other" series or split the chart. As in [Carbon's categorical palettes](https://carbondesignsystem.com/data-visualization/color-palettes/), the order is part of the design: a stacked bar or a line chart puts neighbouring series next to each other, and a small chart shows its first few series together, so those are the pairs that must stand apart, for colour-blind readers too.
+
+**Separation is computed, then tested.** Distances are measured in OKLab (ΔE ×100, where about 2 is just noticeable), for normal vision and for protanopia and deuteranopia simulated at full severity with the model of [Machado, Oliveira and Fernandes (2009)](https://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html), applied to linear sRGB. Red–green deficiencies, which these model at their most severe, affect about one man in twelve. The tests check every brand in both modes:
+
+- every series against the surface and the page: 3:1 (WCAG 1.4.11), with no exceptions;
+- neighbouring series, and every pair among the first four: ΔE 15 for normal vision and 8 under both simulations;
+- the accent against every other series: ΔE 15, so no brand's accent has a twin in the palette.
+
+Pairs further apart than neighbours can still be close for a colour-blind reader (green and red, for one), so colour is never the only channel: a chart with two or more series has a legend, its text stays in text colours rather than series colours, and its numbers are in a table (WCAG 1.4.1). Series colours mean identity, not status: a series that means good or bad takes the status tones, with an icon and words.
 
 ## Scales {#scales}
 
@@ -76,8 +89,9 @@ The kit is built to [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA and meets these
 
 | Criterion | How the kit meets it |
 | --- | --- |
+| 1.4.1 Use of colour | Charts come with a legend and a table, links in prose are underlined, and states pair colour with an icon or words. |
 | 1.4.3 Contrast | Text reaches 4.5:1, enforced by tests. |
-| 1.4.11 Non-text contrast | Form controls, the focus ring and status dots reach 3:1. |
+| 1.4.11 Non-text contrast | Form controls, the focus ring, status dots, quiet icons and chart series reach 3:1. |
 | 2.4.7 Focus visible, 2.4.13 Focus appearance | One focus style everywhere: a solid 2px ring (`:focus-visible`) with an offset, 3:1 against every surface. Inputs add a soft halo around it. |
 | 2.4.11 Focus not obscured | The scrolling panel sets `scroll-padding` for its sticky top bar. |
 | 2.5.8 Target size | Controls are at least 24px; `size-target-min` sets the floor. |

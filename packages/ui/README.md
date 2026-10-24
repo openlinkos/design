@@ -30,10 +30,10 @@ Copy the files into your app's static assets at build time, keeping `fonts/` nex
 The sources are [W3C Design Tokens Community Group](https://www.designtokens.org/) files in [`tokens/`](tokens), in three tiers:
 
 1. **Palette**: 12-step colour scales (neutral, the brand accent, success, warning, danger, info), generated in OKLCH from one solid colour each, with the step semantics of Radix Colors. Variables `--ol-palette-<scale>-<step>`.
-2. **Semantic tokens**: what a value is for, such as `--ol-color-fg-muted`, `--ol-color-accent-solid-hover`, `--ol-space-4`, `--ol-radius-control`, `--ol-shadow-lg`, `--ol-duration-fast`. Components use only these.
+2. **Semantic tokens**: what a value is for, such as `--ol-color-fg-muted`, `--ol-color-accent-solid-hover`, `--ol-space-4`, `--ol-radius-control`, `--ol-shadow-lg`, `--ol-duration-fast`, and the chart palette, `--ol-color-series-1` to `-8`, whose first slot is the brand accent. Components use only these.
 3. **Component variables**: a few knobs inside components, such as `--ol-btn-height` or `--ol-stack-gap`.
 
-Text tokens reach 4.5:1 on every surface, and control edges and the focus ring 3:1, for every brand in both modes; the tests check every pair.
+Text tokens reach 4.5:1 on every surface, and control edges, quiet icons, the focus ring and every chart series 3:1, for every brand in both modes; neighbouring chart series also stay apart for colour-blind readers. The tests check every pair.
 
 ## Brand, theme, density
 
@@ -65,7 +65,7 @@ The kit targets current Chrome, Edge, Firefox and Safari. It relies on `light-da
 
 ```bash
 pnpm build   # writes dist/ and docs/tokens.md
-pnpm test    # contrast for every brand and mode, variables, icons, demo pages
+pnpm test    # contrast and chart palette for every brand and mode, variables, icons, demo pages
 ```
 
 ## Licence

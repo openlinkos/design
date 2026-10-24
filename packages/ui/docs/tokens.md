@@ -21,6 +21,7 @@ Every token of `@openlinkos/ui` 0.2.1, resolved for light and dark mode with the
 | `--ol-color-fg-muted` | `#62636c` | `#b2b3ba` | Secondary text: descriptions, labels, table headings. |
 | `--ol-color-fg-subtle` | `#6b6d76` | `#999ba5` | Tertiary text: meta, placeholders (still 4.5:1). |
 | `--ol-color-fg-disabled` | `#b9bbc6` | `#5e606a` | Disabled text; exempt from contrast requirements. |
+| `--ol-color-icon-subtle` | `#888a94` | `#696b76` | Icons that stay out of the way until wanted, such as a quiet link (3:1, WCAG 1.4.11). Never text. |
 | `--ol-color-border` | `#d8d9e0` | `#38393f` | Separators and container edges. |
 | `--ol-color-border-strong` | `#cdced6` | `#46474f` | Edges that need more weight: secondary buttons, badges. |
 | `--ol-color-border-input` | `#888a94` | `#696b76` | Edges of form controls (3:1, WCAG 1.4.11). |
@@ -111,6 +112,19 @@ Every token of `@openlinkos/ui` 0.2.1, resolved for light and dark mode with the
 | `--ol-color-info-text` | `#245bd3` | `#8fb6ff` | Text and icons on the page or a tint (4.5:1). |
 | `--ol-color-info-text-strong` | `#152e61` | `#d3e2ff` | High-contrast text (7:1). |
 | `--ol-color-info-on-solid` | `#ffffff` | = | Text on the solid fill (4.5:1). |
+
+## Colour: chart series
+
+| Token | Light | Dark | Use |
+| --- | --- | --- | --- |
+| `--ol-color-series-1` | `#2563eb` | `#3a74f1` | The brand accent. |
+| `--ol-color-series-2` | `#eb6200` | `#f57323` | Orange. |
+| `--ol-color-series-3` | `#0f9cd0` | `#21b3ed` | Cyan. |
+| `--ol-color-series-4` | `#e04a99` | `#eb5ca4` | Pink. |
+| `--ol-color-series-5` | `#4ea200` | `#5bb832` | Green. |
+| `--ol-color-series-6` | `#c06ada` | `#c978e2` | Purple. |
+| `--ol-color-series-7` | `#b88a00` | `#dca81c` | Gold. |
+| `--ol-color-series-8` | `#cc3430` | `#e94646` | Red. |
 
 ## Elevation
 

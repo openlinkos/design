@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { loadBrands } from '../../../brand/brands.ts';
-import { composite, contrast, hexToOklch, scale } from '../src/color.ts';
+import { composite, contrast, deltaE, hexToOklch, scale } from '../src/color.ts';
 import { ICONS } from '../src/icons.ts';
 
 const pkg = new URL('../', import.meta.url);
@@ -75,6 +75,19 @@ describe('scales', () => {
   });
 });
 
+describe('colour difference', () => {
+  it('measures distance in OKLab and simulates colour vision deficiency', () => {
+    expect(deltaE('#ffffff', '#000000')).toBeCloseTo(100, 3);
+    // Greys look the same to everyone.
+    for (const vision of ['protan', 'deutan'] as const) {
+      expect(deltaE('#777777', '#333333', vision)).toBeCloseTo(deltaE('#777777', '#333333'), 3);
+    }
+    // A red and a green far apart for most readers merge for a deuteranope.
+    expect(deltaE('#d62728', '#2ca02c')).toBeGreaterThan(30);
+    expect(deltaE('#d62728', '#2ca02c', 'deutan')).toBeLessThan(5);
+  });
+});
+
 describe('colour contrast for every brand and mode', () => {
   const brands = loadBrands().map((b) => b.id);
   const modes = ['light', 'dark'] as const;
@@ -118,10 +131,46 @@ describe('colour contrast for every brand and mode', () => {
         expect(ratio('mark-inverse', 'brand-panel')).toBeGreaterThanOrEqual(3);
       });
 
-      it(`${brand} ${mode}: control edges and the focus ring reach 3:1`, () => {
+      it(`${brand} ${mode}: control edges, quiet icons and the focus ring reach 3:1`, () => {
         for (const s of surfaces) {
           expect(ratio('border-input', s), `border-input on ${s}`).toBeGreaterThanOrEqual(3);
+          expect(ratio('icon-subtle', s), `icon-subtle on ${s}`).toBeGreaterThanOrEqual(3);
           expect(ratio('focus-ring', s), `focus-ring on ${s}`).toBeGreaterThanOrEqual(3);
+        }
+      });
+
+      // The chart palette. Distances are OKLab ×100 (deltaE); colour-blind readers are simulated
+      // with protanopia and deuteranopia at full severity. Charts draw on the surface, inside a
+      // frame that sits on the page.
+      const series = (): string[] => [1, 2, 3, 4, 5, 6, 7, 8].map((n) => c(`series-${n}`));
+      const apart = (a: number, b: number): void => {
+        const [x, y] = [series()[a] as string, series()[b] as string];
+        const pair = `series ${a + 1} and ${b + 1}`;
+        expect(deltaE(x, y), `${pair}, normal vision`).toBeGreaterThanOrEqual(15);
+        for (const vision of ['protan', 'deutan'] as const) {
+          expect(deltaE(x, y, vision), `${pair}, ${vision}`).toBeGreaterThanOrEqual(8);
+        }
+      };
+
+      it(`${brand} ${mode}: every chart series reaches 3:1 where charts are drawn`, () => {
+        for (const [i, colour] of series().entries()) {
+          for (const s of ['surface', 'bg']) {
+            expect(contrast(colour, c(s)), `series ${i + 1} on ${s}`).toBeGreaterThanOrEqual(3);
+          }
+        }
+      });
+
+      it(`${brand} ${mode}: neighbouring series, and the first four, stay apart for every reader`, () => {
+        for (let i = 0; i < 7; i++) apart(i, i + 1);
+        for (let i = 0; i < 4; i++) for (let j = i + 2; j < 4; j++) apart(i, j);
+      });
+
+      it(`${brand} ${mode}: the accent has no twin among the other series`, () => {
+        const [accent, ...others] = series();
+        for (const [i, colour] of others.entries()) {
+          expect(deltaE(accent as string, colour), `series 1 and ${i + 2}`).toBeGreaterThanOrEqual(
+            15,
+          );
         }
       });
     }

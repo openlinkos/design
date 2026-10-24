@@ -173,6 +173,7 @@ function tokenReference(all: ResolvedToken[]): string {
     'color.warning': 'Colour: warning',
     'color.danger': 'Colour: danger',
     'color.info': 'Colour: info',
+    'color.series': 'Colour: chart series',
     space: 'Space',
     size: 'Size',
     radius: 'Radius',

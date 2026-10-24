@@ -1,5 +1,6 @@
-// Colour science for the token build: sRGB <-> OKLab/OKLCH, gamut mapping, WCAG 2 contrast, and
-// 12-step scales. Scales follow the step semantics of Radix Colors (MIT, https://www.radix-ui.com/colors):
+// Colour science for the token build: sRGB <-> OKLab/OKLCH, gamut mapping, WCAG 2 contrast, colour
+// difference under simulated colour vision deficiency, and 12-step scales. Scales follow the step
+// semantics of Radix Colors (MIT, https://www.radix-ui.com/colors):
 //
 //   1  app background          2  subtle background
 //   3  UI element background   4  hovered UI element      5  pressed or selected UI element
@@ -56,9 +57,8 @@ const toLinear = (v: number): number => (v <= 0.04045 ? v / 12.92 : ((v + 0.055)
 const fromLinear = (v: number): number =>
   v <= 0.0031308 ? v * 12.92 : 1.055 * v ** (1 / 2.4) - 0.055;
 
-/** OKLab from gamma-encoded sRGB (Björn Ottosson's matrices). */
-function rgbToOklab([r, g, b]: Rgb): [number, number, number] {
-  const [lr, lg, lb] = [toLinear(r), toLinear(g), toLinear(b)];
+/** OKLab from linear sRGB (Björn Ottosson's matrices). */
+function linearToOklab([lr, lg, lb]: Rgb): [number, number, number] {
   const l = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb);
   const m = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb);
   const s = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb);
@@ -68,6 +68,9 @@ function rgbToOklab([r, g, b]: Rgb): [number, number, number] {
     0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
   ];
 }
+
+/** OKLab from gamma-encoded sRGB. */
+const rgbToOklab = (rgb: Rgb): [number, number, number] => linearToOklab(rgb.map(toLinear) as Rgb);
 
 /** Linear sRGB from OKLab; values outside [0, 1] are out of gamut. */
 function oklabToLinear([L, a, b]: [number, number, number]): Rgb {
@@ -124,6 +127,42 @@ export function luminance(hex: string): number {
 export function contrast(a: string, b: string): number {
   const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x) as [number, number];
   return (hi + 0.05) / (lo + 0.05);
+}
+
+/**
+ * Simulations of colour vision deficiency at full severity (Machado, Oliveira and Fernandes 2009),
+ * applied to linear sRGB: protanopia and deuteranopia, the most severe forms of the red–green
+ * deficiencies that affect about one man in twelve.
+ */
+const CVD = {
+  protan: [
+    [0.152286, 1.052583, -0.204868],
+    [0.114503, 0.786281, 0.099216],
+    [-0.003882, -0.048116, 1.051998],
+  ],
+  deutan: [
+    [0.367322, 0.860646, -0.227968],
+    [0.280085, 0.672501, 0.047413],
+    [-0.01182, 0.04294, 0.968881],
+  ],
+} as const;
+export type Vision = 'normal' | keyof typeof CVD;
+
+function seen(hex: string, vision: Vision): Rgb {
+  const rgb = hexToRgb(hex).map(toLinear) as Rgb;
+  if (vision === 'normal') return rgb;
+  return CVD[vision].map((row) =>
+    clamp01(row[0] * rgb[0] + row[1] * rgb[1] + row[2] * rgb[2]),
+  ) as Rgb;
+}
+
+/**
+ * How far apart two colours look: the distance in OKLab, times 100, as seen with normal vision or
+ * with a colour vision deficiency. About 2 is a just-noticeable difference.
+ */
+export function deltaE(a: string, b: string, vision: Vision = 'normal'): number {
+  const [x, y] = [linearToOklab(seen(a, vision)), linearToOklab(seen(b, vision))];
+  return 100 * Math.hypot(x[0] - y[0], x[1] - y[1], x[2] - y[2]);
 }
 
 /** A colour with alpha composited over an opaque background, as #rrggbb. */
