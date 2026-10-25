@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@openlinkos/ui components</title>
   <link rel="stylesheet" href="../dist/ui.css">
+  <!-- Demo scaffolding only, not part of the kit: frames as wide as a sidebar's foot. -->
+  <style>
+    .demo-sidebar { inline-size: 12.75rem; }
+    .demo-narrow { inline-size: 9rem; }
+  </style>
 </head>
 <!-- Every component with its variants, sizes and states. Serve the package over HTTP:
      node demo/serve.ts, then open http://127.0.0.1:4321/demo/components.html. -->
@@ -233,7 +238,7 @@ And wraps long words: sk_0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghi
       <div class="ol-grid ol-grid-2">
         <figure class="ol-chart">
           <svg class="ol-chart-svg" viewBox="0 0 540 160" role="img" aria-labelledby="line-title" focusable="false">
-            <title id="line-title">Sessions per week: claude-code rose from 12 to 36, codex from 4 to 16.</title>
+            <title id="line-title">Sessions per week: claude-code rose from 12 to 36, codex from 4 to 16; at most 3 failed.</title>
             <line class="ol-chart-grid" x1="32" x2="532" y1="138" y2="138"/><text class="ol-chart-tick" x="26" y="141.5" text-anchor="end">0</text>
             <line class="ol-chart-grid" x1="32" x2="532" y1="74" y2="74"/><text class="ol-chart-tick" x="26" y="77.5" text-anchor="end">20</text>
             <line class="ol-chart-grid" x1="32" x2="532" y1="10" y2="10"/><text class="ol-chart-tick" x="26" y="13.5" text-anchor="end">40</text>
@@ -242,11 +247,12 @@ And wraps long words: sk_0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghi
             <text class="ol-chart-label" x="246.3" y="154" text-anchor="middle">W39</text>
             <text class="ol-chart-label" x="389.1" y="154" text-anchor="middle">W41</text>
             <text class="ol-chart-label" x="532" y="154" text-anchor="end">W43</text>
-            <g class="ol-series-1"><polyline class="ol-chart-line" points="32,99.6 103.4,80.4 174.9,90 246.3,67.6 317.7,51.6 389.1,61.2 460.6,38.8 532,22.8"/><circle class="ol-chart-dot" cx="532" cy="22.8" r="4"/></g>
+            <g class="ol-series-1"><polygon class="ol-chart-area" points="32,138 32,99.6 103.4,80.4 174.9,90 246.3,67.6 317.7,51.6 389.1,61.2 460.6,38.8 532,22.8 532,138"/><polyline class="ol-chart-line" points="32,99.6 103.4,80.4 174.9,90 246.3,67.6 317.7,51.6 389.1,61.2 460.6,38.8 532,22.8"/><circle class="ol-chart-dot" cx="532" cy="22.8" r="4"/></g>
             <g class="ol-series-2"><polyline class="ol-chart-line" points="32,125.2 103.4,118.8 174.9,109.2 246.3,115.6 317.7,102.8 389.1,93.2 460.6,99.6 532,86.8"/><circle class="ol-chart-dot" cx="532" cy="86.8" r="4"/></g>
+            <g class="ol-series-danger"><polyline class="ol-chart-line" points="32,134.8 103.4,138 174.9,131.6 246.3,138 317.7,135.4 389.1,138 460.6,128.4 532,134.8"/></g>
           </svg>
           <figcaption class="ol-chart-caption">
-            <ul class="ol-legend"><li><span class="ol-swatch ol-swatch-line ol-series-1" aria-hidden="true"></span>claude-code</li><li><span class="ol-swatch ol-swatch-line ol-series-2" aria-hidden="true"></span>codex</li></ul>
+            <ul class="ol-legend"><li><span class="ol-swatch ol-swatch-line ol-series-1" aria-hidden="true"></span>claude-code</li><li><span class="ol-swatch ol-swatch-line ol-series-2" aria-hidden="true"></span>codex</li><li><span class="ol-swatch ol-swatch-line ol-series-danger" aria-hidden="true"></span>Failed sessions</li></ul>
           </figcaption>
         </figure>
         <ul class="ol-list">
@@ -381,6 +387,104 @@ And wraps long words: sk_0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghi
     </div>
   </section>
 
+  <section class="ol-section" id="status">
+    <div class="ol-section-header"><h2 class="ol-section-title">Status, uptime and steps</h2><p class="ol-section-description">Status pills in each tone, a live dot, uptime strips with a period per cell, and numbered steps.</p></div>
+    <div class="ol-stack">
+      <div class="ol-cluster">
+        <a class="ol-status ol-status-success" href="#status"><span class="ol-dot ol-dot-live"></span>All mirrors are up</a>
+        <span class="ol-status ol-status-warning"><span class="ol-dot"></span>1 mirror is slow</span>
+        <span class="ol-status ol-status-danger"><span class="ol-dot"></span>Docker Hub is down</span>
+        <span class="ol-status ol-status-info"><span class="ol-dot"></span>Maintenance at 02:00</span>
+        <span class="ol-status"><span class="ol-dot"></span>No checks yet</span>
+      </div>
+      <div class="ol-grid ol-grid-2">
+        <div class="ol-stack">
+          <p class="ol-text-label">Last 24 hours</p>
+          <div class="ol-uptime" role="img" aria-label="Last 24 hours: no data until 22:00, degraded at 14:00, down at 15:00, otherwise up"><span></span><span></span><span></span><span></span><span></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-degraded"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-down"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span></div>
+          <p class="ol-hint">99.2% available. Point at a cell for its hour.</p>
+        </div>
+        <div class="ol-stack">
+          <p class="ol-text-label">Last 30 days, large</p>
+          <div class="ol-uptime ol-uptime-lg" role="img" aria-label="Last 30 days: degraded on day 21, down on day 30, otherwise up"><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-degraded"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-ok"></span><span class="ol-uptime-down"></span></div>
+          <p class="ol-hint">98.9% available.</p>
+        </div>
+      </div>
+      <ol class="ol-steps">
+        <li><h3 class="ol-step-title">Create a token</h3><p class="ol-muted ol-text-sm">One per device, named after it.</p></li>
+        <li><h3 class="ol-step-title">Connect the device</h3><p class="ol-muted ol-text-sm">Run the command shown next to the token.</p><div class="ol-code"><pre><code>origin hub connect https://memory.example.com --device laptop</code></pre></div></li>
+        <li><h3 class="ol-step-title">Push</h3><p class="ol-muted ol-text-sm">The device sends its sessions every few minutes.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="ol-section" id="people">
+    <div class="ol-section-header"><h2 class="ol-section-title">Entities and rows that link</h2><p class="ol-section-description">A name with an avatar in a series colour and a second line; rows whose name links the whole row, with a menu of actions.</p></div>
+    <div class="ol-stack">
+      <div class="ol-cluster">
+        <span class="ol-avatar ol-series-1">AL</span><span class="ol-avatar ol-series-2">BO</span><span class="ol-avatar ol-series-3">CI</span><span class="ol-avatar ol-series-4">DE</span><span class="ol-avatar ol-series-5">ED</span><span class="ol-avatar ol-series-6">FA</span><span class="ol-avatar ol-series-7">GO</span><span class="ol-avatar ol-series-8">HA</span>
+      </div>
+      <div class="ol-table-wrap">
+        <table class="ol-table">
+          <thead><tr><th scope="col">Account</th><th scope="col">Status</th><th scope="col">Limits</th><th scope="col">Last used</th><th scope="col"><span class="ol-sr-only">Actions</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ol-entity"><span class="ol-avatar ol-avatar-sm ol-series-3">CI</span><span class="ol-entity-text"><a class="ol-entity-title ol-row-link" href="#people">ci-runner</a><span class="ol-entity-sub">Build machines in the office</span></span></span></td><td><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Active</span></td><td><span class="ol-cluster"><span class="ol-chip">20 manifests/s</span><span class="ol-chip">8 downloads</span></span></td><td><time datetime="2026-10-25T09:12:00Z" title="2026-10-25 09:12">3 min ago</time></td><td class="ol-actions"><button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon" type="button" popovertarget="row-ci" aria-label="Actions for ci-runner"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#ellipsis"/></svg></button><div class="ol-menu ol-menu-end" id="row-ci" popover><a class="ol-menu-item" href="#people"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#pencil"/></svg>Edit</a><button class="ol-menu-item" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#user-x"/></svg>Disable</button><hr class="ol-menu-separator"><button class="ol-menu-item ol-menu-item-danger" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#trash-2"/></svg>Delete</button></div></td></tr>
+            <tr><td><span class="ol-entity"><span class="ol-avatar ol-avatar-sm ol-series-6">LA</span><span class="ol-entity-text"><a class="ol-entity-title ol-row-link" href="#people">laptop-hz</a><span class="ol-entity-sub">Default limits</span></span></span></td><td><span class="ol-badge ol-badge-warning"><span class="ol-dot"></span>Disabled</span></td><td><span class="ol-subtle">Defaults</span></td><td><time datetime="2026-10-19T21:40:00Z" title="2026-10-19 21:40">6 days ago</time></td><td class="ol-actions"><button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon" type="button" popovertarget="row-la" aria-label="Actions for laptop-hz"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#ellipsis"/></svg></button><div class="ol-menu ol-menu-end" id="row-la" popover><a class="ol-menu-item" href="#people"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#pencil"/></svg>Edit</a><button class="ol-menu-item" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#user-check"/></svg>Enable</button><hr class="ol-menu-separator"><button class="ol-menu-item ol-menu-item-danger" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#trash-2"/></svg>Delete</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ol-grid ol-grid-sidebar">
+        <div class="ol-title-row"><span class="ol-entity"><span class="ol-avatar ol-avatar-lg ol-series-3">CI</span><span class="ol-entity-text"><span class="ol-heading-lg">ci-runner</span><span class="ol-entity-sub">Created 2026-10-02 by admin</span></span></span><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Active</span></div>
+        <div class="ol-panel">
+          <div class="ol-panel-header"><h3 class="ol-panel-title">About</h3></div>
+          <div class="ol-panel-body"><dl class="ol-dl ol-dl-stack"><dt>Source</dt><dd>Console</dd><dt>Last used</dt><dd>3 min ago from 203.0.113.7</dd><dt>Limits</dt><dd>20 manifests a second, 8 downloads at once</dd></dl></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ol-section" id="settings">
+    <div class="ol-section-header"><h2 class="ol-section-title">Settings</h2><p class="ol-section-description">Settings edited where they are used: one per row in a panel that saves, and a long form in sections.</p></div>
+    <div class="ol-stack">
+      <form class="ol-panel">
+        <div class="ol-panel-header"><h3 class="ol-panel-title"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#gauge"/></svg>Default limits</h3></div>
+        <div class="ol-settings">
+          <div class="ol-setting">
+            <div class="ol-setting-text"><label class="ol-setting-title" for="set-rate">Manifests a second</label><p class="ol-setting-description" id="set-rate-hint">Per client address. 0 turns the limit off.</p></div>
+            <div class="ol-setting-control"><input class="ol-input ol-input-mono" id="set-rate" value="20" inputmode="decimal" aria-describedby="set-rate-hint"></div>
+          </div>
+          <div class="ol-setting">
+            <div class="ol-setting-text"><label class="ol-setting-title" for="set-mode">When a client is over its limit</label><p class="ol-setting-description" id="set-mode-hint">Waiting is kinder to CI; refusing protects the upstream.</p></div>
+            <div class="ol-setting-control"><select class="ol-select" id="set-mode" aria-describedby="set-mode-hint"><option>Make it wait</option><option>Refuse with 429</option></select></div>
+          </div>
+          <div class="ol-setting">
+            <div class="ol-setting-text"><label class="ol-setting-title" for="set-anon">Limit anonymous pulls harder</label><p class="ol-setting-description" id="set-anon-hint">Signed-in clients keep their own limits.</p></div>
+            <div class="ol-setting-control">
+              <!-- biome-ignore lint/a11y/useAriaPropsForRole: native checkboxes expose their state -->
+              <input type="checkbox" role="switch" class="ol-switch" id="set-anon" aria-describedby="set-anon-hint" checked>
+            </div>
+          </div>
+        </div>
+        <div class="ol-panel-footer"><span>Changes apply at once and are kept in the console's overrides.</span><button class="ol-btn ol-btn-ghost ol-btn-sm" type="reset">Reset</button><button class="ol-btn ol-btn-primary ol-btn-sm" type="submit">Save limits</button></div>
+      </form>
+      <form>
+        <section class="ol-form-section" aria-labelledby="fs-site">
+          <div class="ol-form-section-header"><h3 class="ol-form-section-title" id="fs-site">Site</h3><p class="ol-form-section-description">The name and operator shown at the top of the usage page.</p></div>
+          <div class="ol-form-section-body">
+            <div class="ol-field"><label class="ol-label" for="fs-name">Name</label><input class="ol-input" id="fs-name" value="LinkOS Mirrors"></div>
+            <div class="ol-field"><label class="ol-label" for="fs-operator">Operator</label><input class="ol-input" id="fs-operator" value="LinkOS"></div>
+          </div>
+        </section>
+        <section class="ol-form-section" aria-labelledby="fs-links">
+          <div class="ol-form-section-header"><h3 class="ol-form-section-title" id="fs-links">Links</h3><p class="ol-form-section-description">Shown in the footer. Leave one empty to hide it.</p></div>
+          <div class="ol-form-section-body">
+            <div class="ol-field"><label class="ol-label" for="fs-home">Home</label><input class="ol-input" id="fs-home" value="https://linkos.io"></div>
+            <div class="ol-form-actions"><button class="ol-btn ol-btn-primary" type="submit">Save the usage page</button></div>
+          </div>
+        </section>
+      </form>
+    </div>
+  </section>
+
   <section class="ol-section" id="feedback">
     <div class="ol-section-header"><h2 class="ol-section-title">Feedback</h2></div>
     <div class="ol-stack">
@@ -396,7 +500,16 @@ And wraps long words: sk_0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghi
         <div class="ol-stack"><progress class="ol-progress" value="70" max="100">70%</progress><meter class="ol-meter" min="0" max="100" low="20" high="80" optimum="100" value="15">15%</meter></div>
         <div class="ol-cluster"><span class="ol-spinner" aria-hidden="true"></span><span class="ol-muted ol-text-sm">Syncing…</span></div>
       </div>
-      <div class="ol-toast"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#circle-check"/></svg><span>Toast: entry saved.</span></div>
+      <div class="ol-grid ol-grid-2">
+        <div class="ol-stack">
+          <div class="ol-toast ol-toast-success"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#circle-check"/></svg><span>Entry saved.</span></div>
+          <div class="ol-toast ol-toast-danger"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#circle-alert"/></svg><span>The token could not be revoked. Try again.</span></div>
+          <div class="ol-toast ol-toast-auto"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#info"/></svg><span>This one leaves after six seconds; point at it to keep it.</span></div>
+        </div>
+        <div class="ol-stack">
+          <p class="ol-text-sm ol-muted">A live figure that just changed: <span class="ol-stat-value ol-flash">48,214</span></p>
+        </div>
+      </div>
       <div class="ol-empty"><span class="ol-empty-icon"><svg class="ol-icon ol-icon-lg" aria-hidden="true"><use href="../dist/icons.svg#inbox"/></svg></span><p class="ol-empty-title">No entries yet</p><p class="ol-empty-text">Agents add entries with remember. You can also add one from any event.</p><a class="ol-btn ol-btn-secondary ol-btn-sm" href="#demo">Browse events</a></div>
     </div>
   </section>
@@ -405,7 +518,7 @@ And wraps long words: sk_0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghi
     <div class="ol-section-header"><h2 class="ol-section-title">Containers</h2></div>
     <div class="ol-grid ol-grid-3">
       <div class="ol-panel"><div class="ol-panel-header"><h3 class="ol-panel-title"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#activity"/></svg>Panel</h3><span class="ol-badge ol-badge-success">OK</span></div><div class="ol-panel-body ol-text-sm">Grouped detail with a header.</div><div class="ol-panel-footer">Footer</div></div>
-      <a class="ol-card" href="#demo"><span class="ol-card-title">Card as a link</span><span class="ol-muted ol-text-sm">One item of a collection.</span><span class="ol-card-meta">Updated 2 h ago</span></a>
+      <a class="ol-card" href="#demo"><span class="ol-card-row"><span class="ol-card-title">Card as a link</span><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Up</span></span><span class="ol-muted ol-text-sm">One item of a collection; it lifts towards the pointer.</span><span class="ol-card-row"><span class="ol-card-meta">Updated 2 h ago</span><span class="ol-card-meta">55 ms</span></span></a>
       <div class="ol-panel ol-panel-danger"><div class="ol-panel-header"><h3 class="ol-panel-title">Danger zone</h3></div><div class="ol-panel-body ol-stack"><p class="ol-text-sm ol-muted">Forgetting cannot be undone.</p><button class="ol-btn ol-btn-danger ol-btn-sm" type="button">Forget</button></div></div>
     </div>
     <div class="ol-divider">or</div>
@@ -423,23 +536,77 @@ And wraps long words: sk_0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghi
       <a class="ol-tab" href="#demo">With tool events</a>
       <a class="ol-tab" href="#demo">Entries citing it</a>
     </nav>
-    <div class="ol-cluster">
-      <fieldset class="ol-segmented"><legend class="ol-sr-only">Theme</legend>
-        <button type="button" aria-pressed="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg>Auto</button>
-        <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg>Light</button>
-        <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg>Dark</button>
-      </fieldset>
-      <button class="ol-btn ol-btn-secondary" type="button" popovertarget="menu"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#settings"/></svg>Menu<svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-down"/></svg></button>
-      <div class="ol-menu" id="menu" popover>
-        <div class="ol-menu-label">Token laptop</div>
-        <a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#eye"/></svg>View device</a>
-        <a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg>Copy connect command</a>
-        <hr class="ol-menu-separator">
-        <button class="ol-menu-item ol-menu-item-danger" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#ban"/></svg>Revoke</button>
+    <div class="ol-stack">
+      <div class="ol-tabs" role="tablist" aria-label="Runtime">
+        <button class="ol-tab" type="button" role="tab" id="demo-tab-1" aria-controls="demo-panel-1" aria-selected="true">Docker</button>
+        <button class="ol-tab" type="button" role="tab" id="demo-tab-2" aria-controls="demo-panel-2" aria-selected="false" tabindex="-1">containerd</button>
+        <button class="ol-tab" type="button" role="tab" id="demo-tab-3" aria-controls="demo-panel-3" aria-selected="false" tabindex="-1">Podman</button>
       </div>
-      <button class="ol-btn ol-btn-secondary" type="button" popovertarget="pop">Popover</button>
-      <div class="ol-popover" id="pop" popover><p class="ol-heading-sm">About tokens</p><p class="ol-text-sm ol-muted">Each device gets its own token, shown once.</p></div>
-      <button class="ol-btn ol-btn-danger-soft" type="button" commandfor="dialog" command="show-modal">Open dialog</button>
+      <div class="ol-tab-panel" role="tabpanel" id="demo-panel-1" aria-labelledby="demo-tab-1"><p class="ol-text-sm ol-muted">ARIA tabs switch panels by script; the kit styles the selected tab like the current link tab.</p></div>
+      <div class="ol-tab-panel" role="tabpanel" id="demo-panel-2" aria-labelledby="demo-tab-2" hidden></div>
+      <div class="ol-tab-panel" role="tabpanel" id="demo-panel-3" aria-labelledby="demo-tab-3" hidden></div>
+      <div class="ol-cluster">
+        <fieldset class="ol-segmented"><legend class="ol-sr-only">Theme</legend>
+          <button type="button" aria-pressed="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg><span>Auto</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg><span>Light</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg><span>Dark</span></button>
+        </fieldset>
+        <fieldset class="ol-segmented ol-segmented-icons"><legend class="ol-sr-only">Theme</legend>
+          <button type="button" aria-pressed="true" aria-label="Auto" title="Auto"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg></button>
+          <button type="button" aria-pressed="false" aria-label="Light" title="Light"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg></button>
+          <button type="button" aria-pressed="false" aria-label="Dark" title="Dark"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg></button>
+        </fieldset>
+        <fieldset class="ol-segmented"><legend class="ol-sr-only">Status</legend>
+          <a href="#navigation" aria-current="true"><span>All</span></a>
+          <a href="#navigation"><span>Active</span></a>
+          <a href="#navigation"><span>Disabled</span></a>
+        </fieldset>
+      </div>
+      <div class="ol-cluster">
+        <fieldset class="demo-sidebar ol-segmented ol-segmented-block"><legend class="ol-sr-only">Theme</legend>
+          <button type="button" aria-pressed="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg><span>Auto</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg><span>Light</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg><span>Dark</span></button>
+        </fieldset>
+        <fieldset class="demo-sidebar ol-segmented ol-segmented-block" lang="zh-CN"><legend class="ol-sr-only">配色</legend>
+          <button type="button" aria-pressed="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg><span>自动</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg><span>浅色</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg><span>深色</span></button>
+        </fieldset>
+        <fieldset class="demo-sidebar ol-segmented ol-segmented-block" lang="zh-CN"><legend class="ol-sr-only">配色</legend>
+          <button type="button" aria-pressed="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg><span>跟随系统</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg><span>浅色模式</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg><span>深色模式</span></button>
+        </fieldset>
+        <fieldset class="demo-narrow ol-segmented ol-segmented-block"><legend class="ol-sr-only">Theme</legend>
+          <button type="button" aria-pressed="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg><span>Auto</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg><span>Light</span></button>
+          <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg><span>Dark</span></button>
+        </fieldset>
+      </div>
+      <div class="ol-cluster">
+        <button class="ol-btn ol-btn-ghost ol-btn-sm" type="button" popovertarget="lang-menu"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#languages"/></svg>English<svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-down"/></svg></button>
+        <div class="ol-menu" id="lang-menu" popover>
+          <a class="ol-menu-item" href="#navigation" lang="en" hreflang="en" aria-current="true">English</a>
+          <a class="ol-menu-item" href="#navigation" lang="zh-CN" hreflang="zh-CN">简体中文</a>
+        </div>
+        <button class="ol-btn ol-btn-ghost ol-btn-sm" type="button" popovertarget="lang-menu-zh" lang="zh-CN"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#languages"/></svg>简体中文<svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-down"/></svg></button>
+        <div class="ol-menu" id="lang-menu-zh" popover>
+          <a class="ol-menu-item" href="#navigation" lang="zh-CN" hreflang="zh-CN" aria-current="true">简体中文</a>
+          <a class="ol-menu-item" href="#navigation" lang="en" hreflang="en">English</a>
+        </div>
+        <button class="ol-btn ol-btn-secondary" type="button" popovertarget="menu"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#settings"/></svg>Menu<svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-down"/></svg></button>
+        <div class="ol-menu" id="menu" popover>
+          <div class="ol-menu-header"><span class="ol-entity"><span class="ol-avatar ol-avatar-sm ol-series-1">LA</span><span class="ol-entity-text"><span class="ol-entity-title">Token laptop</span><span class="ol-entity-sub">Last push 4 min ago</span></span></span></div>
+          <a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#eye"/></svg>View device</a>
+          <a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg>Copy connect command<span class="ol-menu-item-end">Ctrl C</span></a>
+          <hr class="ol-menu-separator">
+          <button class="ol-menu-item ol-menu-item-danger" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#ban"/></svg>Revoke</button>
+        </div>
+        <button class="ol-btn ol-btn-secondary" type="button" popovertarget="pop">Popover</button>
+        <div class="ol-popover" id="pop" popover><p class="ol-heading-sm">About tokens</p><p class="ol-text-sm ol-muted">Each device gets its own token, shown once.</p></div>
+        <button class="ol-btn ol-btn-danger-soft" type="button" commandfor="dialog" command="show-modal">Open dialog</button>
+      </div>
     </div>
     <dialog class="ol-dialog" id="dialog" aria-labelledby="dialog-title">
       <div class="ol-dialog-header"><h3 class="ol-dialog-title" id="dialog-title">Revoke token laptop?</h3><button class="ol-btn ol-btn-ghost ol-btn-icon ol-btn-sm" type="button" commandfor="dialog" command="close" aria-label="Close"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#x"/></svg></button></div>

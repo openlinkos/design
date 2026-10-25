@@ -83,10 +83,94 @@
 }
 
 .ol-dot {
+  flex: none;
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 50%;
   background: currentColor;
+}
+
+/* A dot for a state that is being watched live: a ring leaves it every few seconds. */
+.ol-dot-live {
+  position: relative;
+}
+
+.ol-dot-live::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ol-dot-live::after {
+    animation: ol-ping 2.4s var(--ol-ease-standard) infinite;
+  }
+}
+
+@keyframes ol-ping {
+  0% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(3);
+  }
+}
+
+/*
+ * Status pills: the overall state of a service in a few words, such as at the top of a status
+ * section or a hero. A dot in the tone's colour, then the words; a link to the detail is fine.
+ * <a class="ol-status ol-status-success" href="#status"><span class="ol-dot ol-dot-live"></span>All mirrors are up</a>
+ */
+.ol-status {
+  --ol-status-dot: var(--ol-color-fg-subtle);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-height: var(--ol-size-control-sm);
+  padding-inline: var(--ol-space-2-5) var(--ol-space-3);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-surface);
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-sm);
+  white-space: nowrap;
+  transition: border-color var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-status > .ol-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  color: var(--ol-status-dot);
+}
+
+a.ol-status:hover {
+  border-color: var(--ol-color-border-strong);
+  text-decoration: none;
+}
+
+.ol-status-success {
+  --ol-status-dot: var(--ol-color-success-solid);
+}
+
+.ol-status-warning {
+  --ol-status-dot: var(--ol-color-warning-solid);
+}
+
+.ol-status-danger {
+  --ol-status-dot: var(--ol-color-danger-solid);
+}
+
+.ol-status-info {
+  --ol-status-dot: var(--ol-color-info-solid);
 }
 
 /*
@@ -293,6 +377,123 @@ details.ol-chip[open] > summary::after {
   object-fit: cover;
 }
 
+/* An avatar in a series colour tells people apart in a list: give each person a slot from their
+   name, such as a hash of it, and keep it. The initials stay in the text colour. */
+.ol-avatar:is(
+  .ol-series-1,
+  .ol-series-2,
+  .ol-series-3,
+  .ol-series-4,
+  .ol-series-5,
+  .ol-series-6,
+  .ol-series-7,
+  .ol-series-8
+) {
+  background: color-mix(in srgb, var(--ol-series) 22%, var(--ol-color-surface));
+  color: var(--ol-color-fg);
+}
+
+/*
+ * Entities: someone or something named, with an avatar or icon, its name and a second line, such
+ * as an account in a table, a menu's header or a page's title row.
+ * <span class="ol-entity"><span class="ol-avatar">CI</span><span class="ol-entity-text">
+ *   <a class="ol-entity-title" href="…">ci-runner</a><span class="ol-entity-sub">Build machines</span></span></span>
+ */
+.ol-entity {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-2-5);
+  min-width: 0;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.ol-entity-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ol-entity-title,
+.ol-entity-sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ol-entity-title {
+  color: var(--ol-color-fg);
+  font-weight: var(--ol-font-weight-medium);
+}
+
+.ol-entity-sub {
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+/*
+ * Steps: what to do, in order, each with a number on a line that joins them.
+ * <ol class="ol-steps"><li><h3 class="ol-step-title">Point Docker at the mirror</h3><p>…</p>…</li></ol>
+ */
+.ol-steps {
+  counter-reset: ol-step;
+  display: flex;
+  flex-direction: column;
+}
+
+.ol-steps > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  gap: var(--ol-space-2) var(--ol-space-4);
+  padding-block-end: var(--ol-space-8);
+  counter-increment: ol-step;
+}
+
+.ol-steps > li:last-child {
+  padding-block-end: 0;
+}
+
+.ol-steps > li > * {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.ol-steps > li::before {
+  content: counter(ol-step);
+  display: grid;
+  grid-row: 1 / span 2;
+  grid-column: 1;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--ol-color-accent-border);
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-accent-bg);
+  color: var(--ol-color-accent-text);
+  font-size: var(--ol-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--ol-font-weight-semibold);
+}
+
+/* The line from one number to the next. */
+.ol-steps > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-block: 2.25rem var(--ol-space-1);
+  inset-inline-start: calc(0.875rem - 0.5px);
+  width: 1px;
+  background: var(--ol-color-border);
+}
+
+.ol-step-title {
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-md);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: 1.75rem;
+}
+
 /* Code blocks, with an optional label and a copy button (.ol-copy). */
 .ol-code {
   position: relative;
@@ -379,8 +580,15 @@ details.ol-chip[open] > summary::after {
 @media (forced-colors: active) {
   .ol-badge,
   .ol-count,
-  .ol-avatar {
+  .ol-avatar,
+  .ol-status,
+  .ol-steps > li::before {
     border: 1px solid CanvasText;
+  }
+
+  .ol-dot {
+    forced-color-adjust: none;
+    background: CanvasText;
   }
 
   a.ol-chip[aria-current="true"],

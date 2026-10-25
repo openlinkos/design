@@ -11,8 +11,14 @@
  *
  * The invoker is the popover's implicit anchor, so where CSS anchor positioning is supported the
  * menu opens below its button with no inline style (strict CSP forbids style attributes); elsewhere
- * it opens centred in the viewport. Dialogs use <dialog class="ol-dialog">, opened by
- * command="show-modal" commandfor="id" or by script.
+ * it opens centred in the viewport. -end aligns a menu to its button's end, -above opens it above
+ * the button (a menu at the foot of the sidebar), and either way it flips when there is no room.
+ * Dialogs use <dialog class="ol-dialog">, opened by command="show-modal" commandfor="id" or by
+ * script.
+ *
+ * A choice among options, such as the language, marks the chosen item with aria-current="true" (a
+ * link or a button in a plain menu) or aria-checked="true" (role="menuitemradio", in a role="menu"
+ * that script drives with the arrow keys); either way it gets a check mark at its end.
  */
 
 .ol-popover,
@@ -24,13 +30,16 @@
   background: var(--ol-color-surface-overlay);
   box-shadow: var(--ol-shadow-lg);
   color: var(--ol-color-fg);
+  /* Where the menu comes from: it slides out of its button. */
+  --ol-popover-from: translateY(-0.25rem) scale(0.98);
   opacity: 0;
-  transform: translateY(-0.25rem);
+  transform: var(--ol-popover-from);
+  transform-origin: top;
   transition:
-    opacity var(--ol-duration-fast) var(--ol-ease-enter),
-    transform var(--ol-duration-fast) var(--ol-ease-enter),
-    overlay var(--ol-duration-fast) allow-discrete,
-    display var(--ol-duration-fast) allow-discrete;
+    opacity var(--ol-duration-normal) var(--ol-ease-enter),
+    transform var(--ol-duration-normal) var(--ol-ease-enter),
+    overlay var(--ol-duration-normal) allow-discrete,
+    display var(--ol-duration-normal) allow-discrete;
 }
 
 .ol-popover:popover-open,
@@ -43,8 +52,20 @@
   .ol-popover:popover-open,
   .ol-menu:popover-open {
     opacity: 0;
-    transform: translateY(-0.25rem);
+    transform: var(--ol-popover-from);
   }
+}
+
+/* Closing is quicker than opening. */
+.ol-popover:not(:popover-open),
+.ol-menu:not(:popover-open) {
+  transition-duration: var(--ol-duration-fast);
+  transition-timing-function: var(--ol-ease-exit);
+}
+
+.ol-menu-above {
+  --ol-popover-from: translateY(0.25rem) scale(0.98);
+  transform-origin: bottom;
 }
 
 .ol-popover {
@@ -67,6 +88,18 @@
 
   .ol-menu-end {
     position-area: block-end span-inline-start;
+  }
+
+  .ol-menu-above {
+    position-area: block-start span-inline-end;
+    margin: 0 0 var(--ol-space-1);
+  }
+}
+
+/* A menu is at least as wide as its button. */
+@supports (width: anchor-size(width)) {
+  .ol-menu {
+    min-width: max(11rem, anchor-size(width));
   }
 }
 
@@ -100,6 +133,34 @@
 .ol-menu-item[aria-current="true"],
 .ol-menu-item[aria-checked="true"] {
   font-weight: var(--ol-font-weight-medium);
+}
+
+/* The check mark of the chosen option, drawn with two borders. It is not mirrored in
+   right-to-left text, so it uses physical sides. */
+.ol-menu-item[aria-current="true"]::after,
+.ol-menu-item[aria-checked="true"]::after {
+  content: "";
+  flex: none;
+  width: 0.3125rem;
+  height: 0.625rem;
+  margin-inline: auto 0.375rem;
+  border-right: 2px solid var(--ol-color-accent-text);
+  border-bottom: 2px solid var(--ol-color-accent-text);
+  transform: translateY(-0.0625rem) rotate(45deg);
+}
+
+/* Text at the end of an item: a shortcut, or the current value of a setting. */
+.ol-menu-item-end {
+  margin-inline-start: auto;
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+}
+
+/* Who or what a menu is about, at its top: <div class="ol-menu-header"><span class="ol-entity">…</span></div> */
+.ol-menu-header {
+  margin: calc(var(--ol-space-1) * -1) calc(var(--ol-space-1) * -1) var(--ol-space-1);
+  padding: var(--ol-space-3);
+  border-block-end: 1px solid var(--ol-color-border);
 }
 
 .ol-menu-item-danger,
@@ -161,6 +222,21 @@
 
 .ol-dialog::backdrop {
   background: var(--ol-color-overlay);
+  opacity: 0;
+  transition:
+    opacity var(--ol-duration-normal) var(--ol-ease-standard),
+    overlay var(--ol-duration-normal) allow-discrete,
+    display var(--ol-duration-normal) allow-discrete;
+}
+
+.ol-dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .ol-dialog[open]::backdrop {
+    opacity: 0;
+  }
 }
 
 .ol-dialog-header {
@@ -202,5 +278,10 @@
   .ol-menu-item:hover,
   .ol-menu-item:focus-visible {
     outline: 2px solid Highlight;
+  }
+
+  .ol-menu-item[aria-current="true"]::after,
+  .ol-menu-item[aria-checked="true"]::after {
+    border-color: CanvasText;
   }
 }

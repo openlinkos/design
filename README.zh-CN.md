@@ -12,7 +12,7 @@
 
 - **LinkOS**（组织，以及它的免费公共服务，例如 LinkOS Mirrors）与 **OpenLinkOS**（LinkOS 的开源项目品牌，例如 Origin）的品牌标志；
 - 由标志生成的品牌资产：favicon、应用图标、社交分享图和 README 头图；
-- `@openlinkos/ui`：面向应用的设计系统，包括 W3C DTCG 格式的设计变量、不依赖框架的布局和组件 CSS（支持多品牌、浅色和深色，对比度由测试保证），以及精选的 Lucide 图标；
+- `@openlinkos/ui`：面向应用的设计系统，包括 W3C DTCG 格式的设计变量、不依赖框架的 CSS（应用框架、登录页、单页服务站点及其组件；支持多品牌、浅色和深色，对比度由测试保证，动效在用户要求减少动态时停止），以及精选的 Lucide 图标；
 - `@openlinkos/vitepress-theme`：所有 OpenLinkOS 与 LinkOS 站点共用的 VitePress 主题，提供统一外观、中英双语界面、语言检测和元信息。
 
 维护者请阅读 [BRAND.md](BRAND.md)。

@@ -1,0 +1,21 @@
+/*
+ * At-rules that stay outside the cascade layers, at the top level of ui.css.
+ *
+ * Same-origin navigations between pages that load ui.css become cross-document view transitions
+ * (CSS View Transitions 2) where the browser supports them, unless the user prefers reduced motion;
+ * layout.css says what moves. An app that wants plain navigations adds
+ * @view-transition { navigation: none; } to its own stylesheet.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+/* A chart column's place among its siblings, inherited by its marks, so they can rise one after
+   another (chart.css). */
+@property --ol-index {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}

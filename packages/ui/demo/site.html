@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LinkOS Mirrors</title>
+  <link rel="stylesheet" href="../dist/ui.css">
+</head>
+<!-- A service site: one public page about one service, here a container registry mirror. The
+     header, the hero with the brand's rings, sections and the footer come from site.css; what is
+     inside the sections is ordinary components. Script would switch the tabs, convert the image
+     reference and fetch the status; the page reads whole without it. -->
+<body data-brand="linkos-mirrors">
+<a class="ol-skip-link" href="#main">Skip to content</a>
+<header class="ol-site-header">
+  <a class="ol-brand" href="#main">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M26.227 20.144A10 10 0 1 1 20.662 14.695" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/><path class="ol-brand-accent-line" d="M21.773 27.856A10 10 0 1 1 27.338 33.305" fill="none" stroke-width="5.5" stroke-linecap="round"/></svg>
+    <span>LinkOS Mirrors</span>
+  </a>
+  <nav class="ol-site-nav" aria-label="On this page">
+    <a href="#start" aria-current="true">Get started</a>
+    <a href="#convert">Convert</a>
+    <a href="#mirrors">Mirrors</a>
+    <a href="#status">Status</a>
+    <a href="#faq">Questions</a>
+  </nav>
+  <div class="ol-site-tools">
+    <button class="ol-btn ol-btn-ghost ol-btn-sm" type="button" popovertarget="language"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#languages"/></svg>English<svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-down"/></svg></button>
+    <div class="ol-menu ol-menu-end" id="language" popover>
+      <a class="ol-menu-item" href="#main" lang="en" hreflang="en" aria-current="true">English</a>
+      <a class="ol-menu-item" href="#main" lang="zh-CN" hreflang="zh-CN">简体中文</a>
+    </div>
+    <fieldset class="ol-segmented ol-segmented-icons"><legend class="ol-sr-only">Theme</legend>
+      <button type="button" aria-pressed="true" aria-label="Auto" title="Auto"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg></button>
+      <button type="button" aria-pressed="false" aria-label="Light" title="Light"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg></button>
+      <button type="button" aria-pressed="false" aria-label="Dark" title="Dark"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg></button>
+    </fieldset>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <section class="ol-hero" aria-labelledby="hero-title">
+    <div class="ol-hero-rings" aria-hidden="true">
+      <svg class="ol-rings-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M25.912 19.463A10 10 0 1 1 21.349 14.995" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path class="ol-brand-accent-line" d="M22.088 28.537A10 10 0 1 1 26.651 33.005" fill="none" stroke-width="4" stroke-linecap="round"/></svg>
+    </div>
+    <div class="ol-hero-body">
+      <a class="ol-status ol-status-success" href="#status"><span class="ol-dot ol-dot-live"></span>All mirrors are up</a>
+      <h1 class="ol-hero-title" id="hero-title">Container images, pulled through a mirror</h1>
+      <p class="ol-hero-lead">Docker Hub, GitHub, Quay, Google and Kubernetes registries through one address each. Pull only; nothing is stored.</p>
+      <div class="ol-hero-actions">
+        <a class="ol-btn ol-btn-primary ol-btn-lg" href="#start">Get started</a>
+        <a class="ol-btn ol-btn-secondary ol-btn-lg" href="#convert"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#arrow-right-left"/></svg>Convert an image</a>
+      </div>
+      <p class="ol-hero-meta">Free, run by LinkOS.</p>
+    </div>
+  </section>
+
+  <section class="ol-site-section" id="start" aria-labelledby="start-title">
+    <div class="ol-site-section-header">
+      <h2 class="ol-site-section-title" id="start-title">Get started</h2>
+      <p class="ol-site-section-description">Point your container runtime at the mirror once; pulls from Docker Hub then go through it without changing a single image name.</p>
+    </div>
+    <div class="ol-tabs" role="tablist" aria-label="Runtime">
+      <button class="ol-tab" type="button" role="tab" id="tab-docker" aria-controls="panel-docker" aria-selected="true">Docker</button>
+      <button class="ol-tab" type="button" role="tab" id="tab-containerd" aria-controls="panel-containerd" aria-selected="false" tabindex="-1">containerd</button>
+      <button class="ol-tab" type="button" role="tab" id="tab-k3s" aria-controls="panel-k3s" aria-selected="false" tabindex="-1">k3s</button>
+      <button class="ol-tab" type="button" role="tab" id="tab-podman" aria-controls="panel-podman" aria-selected="false" tabindex="-1">Podman</button>
+      <button class="ol-tab" type="button" role="tab" id="tab-k8s" aria-controls="panel-k8s" aria-selected="false" tabindex="-1">Kubernetes</button>
+    </div>
+    <div class="ol-tab-panel" role="tabpanel" id="panel-docker" aria-labelledby="tab-docker">
+      <ol class="ol-steps">
+        <li>
+          <h3 class="ol-step-title">Add the mirror to the Docker daemon</h3>
+          <p class="ol-muted">In <code>/etc/docker/daemon.json</code>; merge it into what is already there.</p>
+          <div class="ol-code">
+            <div class="ol-code-label"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#file-text"/></svg>/etc/docker/daemon.json</div>
+            <pre><code>{
+  "registry-mirrors": ["https://docker.linkos.io"]
+}</code></pre>
+            <button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon ol-copy" type="button" aria-label="Copy"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg></button>
+          </div>
+        </li>
+        <li>
+          <h3 class="ol-step-title">Restart Docker</h3>
+          <p class="ol-muted">Running containers restart with it, unless <code>live-restore</code> is on.</p>
+          <div class="ol-code"><pre><code>sudo systemctl restart docker</code></pre><button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon ol-copy" type="button" aria-label="Copy"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg></button></div>
+        </li>
+        <li>
+          <h3 class="ol-step-title">Pull as usual</h3>
+          <p class="ol-muted">Images from other registries need the mirror's address in their name; <a href="#convert">convert one</a>.</p>
+          <div class="ol-code"><pre><code>docker pull nginx:1.27</code></pre><button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon ol-copy" type="button" aria-label="Copy"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg></button></div>
+        </li>
+      </ol>
+    </div>
+    <div class="ol-tab-panel" role="tabpanel" id="panel-containerd" aria-labelledby="tab-containerd" hidden></div>
+    <div class="ol-tab-panel" role="tabpanel" id="panel-k3s" aria-labelledby="tab-k3s" hidden></div>
+    <div class="ol-tab-panel" role="tabpanel" id="panel-podman" aria-labelledby="tab-podman" hidden></div>
+    <div class="ol-tab-panel" role="tabpanel" id="panel-k8s" aria-labelledby="tab-k8s" hidden></div>
+  </section>
+
+  <section class="ol-site-section ol-site-section-band" id="convert" aria-labelledby="convert-title">
+    <div class="ol-site-section-header">
+      <h2 class="ol-site-section-title" id="convert-title">Convert an image</h2>
+      <p class="ol-site-section-description">Paste an image from any of the registries below to get the name to pull through the mirror.</p>
+    </div>
+    <div class="ol-panel">
+      <div class="ol-panel-body ol-stack">
+        <form class="ol-input-group" aria-label="Convert an image">
+          <input class="ol-input ol-input-lg ol-input-mono" id="ref" value="ghcr.io/containerd/busybox:1.36" spellcheck="false" autocomplete="off" aria-label="Image">
+          <button class="ol-btn ol-btn-primary ol-btn-lg" type="submit"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#arrow-right-left"/></svg>Convert</button>
+        </form>
+        <div class="ol-code"><pre><code>docker pull ghcr.linkos.io/containerd/busybox:1.36</code></pre><button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon ol-copy" type="button" aria-label="Copy"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg></button></div>
+      </div>
+      <div class="ol-panel-footer">
+        <span>Try</span>
+        <a class="ol-chip ol-chip-mono" href="#convert">nginx:1.27</a>
+        <a class="ol-chip ol-chip-mono" href="#convert">quay.io/coreos/etcd:v3.5.0</a>
+        <a class="ol-chip ol-chip-mono" href="#convert">registry.k8s.io/pause:3.10</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ol-site-section" id="mirrors" aria-labelledby="mirrors-title">
+    <div class="ol-site-section-header">
+      <h2 class="ol-site-section-title" id="mirrors-title">Mirrors</h2>
+      <p class="ol-site-section-description">One address per registry. Docker Hub's official images need <code>library/</code> before their name.</p>
+    </div>
+    <ul class="ol-grid ol-grid-3">
+      <li class="ol-card">
+        <div class="ol-card-row"><span class="ol-card-title ol-mono">docker.linkos.io</span><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Up</span></div>
+        <span class="ol-muted ol-text-sm">Docker Hub (docker.io)</span>
+        <div class="ol-card-row"><span class="ol-card-meta">55 ms</span><span class="ol-badge ol-badge-outline">Sign-in needed</span></div>
+      </li>
+      <li class="ol-card">
+        <div class="ol-card-row"><span class="ol-card-title ol-mono">ghcr.linkos.io</span><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Up</span></div>
+        <span class="ol-muted ol-text-sm">GitHub (ghcr.io)</span>
+        <div class="ol-card-row"><span class="ol-card-meta">62 ms</span></div>
+      </li>
+      <li class="ol-card">
+        <div class="ol-card-row"><span class="ol-card-title ol-mono">quay.linkos.io</span><span class="ol-badge ol-badge-warning"><span class="ol-dot"></span>Slow</span></div>
+        <span class="ol-muted ol-text-sm">Quay (quay.io)</span>
+        <div class="ol-card-row"><span class="ol-card-meta">1.2 s</span></div>
+      </li>
+      <li class="ol-card">
+        <div class="ol-card-row"><span class="ol-card-title ol-mono">gcr.linkos.io</span><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Up</span></div>
+        <span class="ol-muted ol-text-sm">Google (gcr.io)</span>
+        <div class="ol-card-row"><span class="ol-card-meta">25 ms</span></div>
+      </li>
+      <li class="ol-card">
+        <div class="ol-card-row"><span class="ol-card-title ol-mono">k8s.linkos.io</span><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Up</span></div>
+        <span class="ol-muted ol-text-sm">Kubernetes (registry.k8s.io)</span>
+        <div class="ol-card-row"><span class="ol-card-meta">23 ms</span></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="ol-site-section" id="status" aria-labelledby="status-title">
+    <div class="ol-site-section-header">
+      <h2 class="ol-site-section-title" id="status-title">Status</h2>
+      <p class="ol-site-section-description">Each registry is checked every minute. Bars show the last 24 hours, an hour each.</p>
+    </div>
+    <div class="ol-panel">
+      <div class="ol-panel-header"><span class="ol-status ol-status-success"><span class="ol-dot ol-dot-live"></span>All mirrors are up</span><span class="ol-hint">Version 0.6.0, up 4 days, checked 40 s ago</span></div>
+      <div class="ol-table-wrap">
+        <table class="ol-table">
+          <thead><tr><th scope="col">Registry</th><th scope="col">Now</th><th scope="col" class="ol-num">Latency</th><th scope="col">Last 24 hours</th><th scope="col" class="ol-num">Available</th></tr></thead>
+          <tbody>
+            <tr><td>Docker Hub</td><td><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Up</span></td><td class="ol-num">55 ms</td><td><div class="ol-uptime" role="img" aria-label="Up for all of the last 24 hours except 14:00, when 96% of checks passed"><span class="ol-uptime-ok" title="Yesterday 17:00 100%"></span><span class="ol-uptime-ok" title="18:00 100%"></span><span class="ol-uptime-ok" title="19:00 100%"></span><span class="ol-uptime-ok" title="20:00 100%"></span><span class="ol-uptime-ok" title="21:00 100%"></span><span class="ol-uptime-ok" title="22:00 100%"></span><span class="ol-uptime-ok" title="23:00 100%"></span><span class="ol-uptime-ok" title="00:00 100%"></span><span class="ol-uptime-ok" title="01:00 100%"></span><span class="ol-uptime-ok" title="02:00 100%"></span><span class="ol-uptime-ok" title="03:00 100%"></span><span class="ol-uptime-ok" title="04:00 100%"></span><span class="ol-uptime-ok" title="05:00 100%"></span><span class="ol-uptime-ok" title="06:00 100%"></span><span class="ol-uptime-ok" title="07:00 100%"></span><span class="ol-uptime-ok" title="08:00 100%"></span><span class="ol-uptime-ok" title="09:00 100%"></span><span class="ol-uptime-ok" title="10:00 100%"></span><span class="ol-uptime-ok" title="11:00 100%"></span><span class="ol-uptime-ok" title="12:00 100%"></span><span class="ol-uptime-ok" title="13:00 100%"></span><span class="ol-uptime-degraded" title="14:00 96%"></span><span class="ol-uptime-ok" title="15:00 100%"></span><span class="ol-uptime-ok" title="16:00 100%"></span></div></td><td class="ol-num">99.8%</td></tr>
+            <tr><td>Quay</td><td><span class="ol-badge ol-badge-warning"><span class="ol-dot"></span>Slow</span></td><td class="ol-num">1.2 s</td><td><div class="ol-uptime" role="img" aria-label="Down at 03:00, otherwise up; no data before 22:00 yesterday"><span title="Yesterday 17:00 no data"></span><span title="18:00 no data"></span><span title="19:00 no data"></span><span title="20:00 no data"></span><span title="21:00 no data"></span><span class="ol-uptime-ok" title="22:00 100%"></span><span class="ol-uptime-ok" title="23:00 100%"></span><span class="ol-uptime-ok" title="00:00 100%"></span><span class="ol-uptime-ok" title="01:00 100%"></span><span class="ol-uptime-ok" title="02:00 100%"></span><span class="ol-uptime-down" title="03:00 40%"></span><span class="ol-uptime-ok" title="04:00 100%"></span><span class="ol-uptime-ok" title="05:00 100%"></span><span class="ol-uptime-ok" title="06:00 100%"></span><span class="ol-uptime-ok" title="07:00 100%"></span><span class="ol-uptime-ok" title="08:00 100%"></span><span class="ol-uptime-ok" title="09:00 100%"></span><span class="ol-uptime-ok" title="10:00 100%"></span><span class="ol-uptime-ok" title="11:00 100%"></span><span class="ol-uptime-ok" title="12:00 100%"></span><span class="ol-uptime-ok" title="13:00 100%"></span><span class="ol-uptime-ok" title="14:00 100%"></span><span class="ol-uptime-degraded" title="15:00 97%"></span><span class="ol-uptime-ok" title="16:00 100%"></span></div></td><td class="ol-num">97.1%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ol-site-section" id="faq" aria-labelledby="faq-title">
+    <div class="ol-site-section-header">
+      <h2 class="ol-site-section-title" id="faq-title">Questions</h2>
+    </div>
+    <div>
+      <details class="ol-accordion" name="faq" open><summary>A pull fails with 404 or "manifest unknown"</summary><p>Check the image name. Docker Hub's official images need <code>library/</code> before their name, as in <code>library/nginx</code>.</p></details>
+      <details class="ol-accordion" name="faq"><summary>Are images cached?</summary><p>No. Every pull goes to the registry; the mirror stores nothing.</p></details>
+      <details class="ol-accordion" name="faq"><summary>Can I push or search?</summary><p>No. The mirror only pulls.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="ol-site-footer">
+  <div>
+    <a class="ol-brand" href="#main"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M26.227 20.144A10 10 0 1 1 20.662 14.695" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/><path class="ol-brand-accent-line" d="M21.773 27.856A10 10 0 1 1 27.338 33.305" fill="none" stroke-width="5.5" stroke-linecap="round"/></svg><span>LinkOS Mirrors</span></a>
+    <p class="ol-site-footer-note">Docker, Kubernetes, GitHub, Google and Red Hat names and marks belong to their owners; this service is not affiliated with them.</p>
+  </div>
+  <div class="ol-site-footer-links">
+    <a href="#main">Source code</a>
+    <a href="#main">LinkOS</a>
+    <a href="#status">Status</a>
+  </div>
+</footer>
+</body>
+</html>

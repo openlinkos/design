@@ -62,10 +62,24 @@
 }
 
 .ol-panel-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-2) var(--ol-space-3);
   padding: var(--ol-space-3) var(--ol-space-4);
   border-block-start: 1px solid var(--ol-color-border);
   color: var(--ol-color-fg-muted);
   font-size: var(--ol-font-size-xs);
+}
+
+/* A footer that saves the panel: a note at the start, the buttons at the end. */
+.ol-panel-footer:has(> .ol-btn) {
+  background: var(--ol-color-bg-subtle);
+}
+
+.ol-panel-footer > .ol-btn:first-child,
+.ol-panel-footer > :not(.ol-btn) + .ol-btn {
+  margin-inline-start: auto;
 }
 
 .ol-panel-danger {
@@ -101,10 +115,39 @@
   box-shadow: 0 0 0 3px var(--ol-color-accent-bg);
 }
 
+a.ol-card {
+  transition:
+    border-color var(--ol-duration-fast) var(--ol-ease-standard),
+    box-shadow var(--ol-duration-normal) var(--ol-ease-standard),
+    translate var(--ol-duration-normal) var(--ol-ease-standard);
+}
+
+/* A linked card lifts towards the pointer. */
 a.ol-card:hover {
   border-color: var(--ol-color-border-strong);
-  box-shadow: var(--ol-shadow-sm);
+  box-shadow: var(--ol-shadow-md);
   text-decoration: none;
+  translate: 0 -1px;
+}
+
+a.ol-card:active {
+  box-shadow: var(--ol-shadow-sm);
+  translate: none;
+}
+
+/* A row at the top or the foot of a card: a title with a badge, or facts at both ends. */
+.ol-card-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ol-space-1) var(--ol-space-3);
+  min-width: 0;
+}
+
+.ol-card-row + .ol-card-row:last-child {
+  margin-block-start: auto;
+  padding-block-start: var(--ol-space-1);
 }
 
 .ol-card-title {
@@ -294,4 +337,25 @@ a.ol-card:hover {
 .ol-accordion > :not(summary) {
   padding-block-end: var(--ol-space-4);
   color: var(--ol-color-fg-muted);
+}
+
+/* Disclosures, accordions and folds open and close smoothly where the browser can animate to
+   their content's height. The clip leaves room for focus rings. */
+@supports selector(::details-content) {
+  :is(.ol-details, .ol-accordion, .ol-fold) {
+    interpolate-size: allow-keywords;
+  }
+
+  :is(.ol-details, .ol-accordion, .ol-fold)::details-content {
+    block-size: 0;
+    overflow: clip;
+    overflow-clip-margin: calc(var(--ol-focus-width) + var(--ol-focus-offset));
+    transition:
+      block-size var(--ol-duration-slow) var(--ol-ease-standard),
+      content-visibility var(--ol-duration-slow) allow-discrete;
+  }
+
+  :is(.ol-details, .ol-accordion, .ol-fold)[open]::details-content {
+    block-size: auto;
+  }
 }

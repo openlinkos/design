@@ -12,7 +12,7 @@ This repository holds:
 
 - the brand marks of **LinkOS**, the organization, with its free public services (such as LinkOS Mirrors), and of **OpenLinkOS**, its brand for open-source projects (such as Origin);
 - the generated brand assets: favicons, app icons, social images, and README headers;
-- `@openlinkos/ui`, the design system for apps: design tokens in the W3C DTCG format, framework-free CSS for layout and components (per brand, light and dark, with contrast checked by tests), and a curated Lucide icon set;
+- `@openlinkos/ui`, the design system for apps: design tokens in the W3C DTCG format, framework-free CSS for app shells, sign-in pages, one-page service sites and their components (per brand, light and dark, with contrast checked by tests, and motion that stops for users who prefer less), and a curated Lucide icon set;
 - `@openlinkos/vitepress-theme`, the VitePress theme every OpenLinkOS and LinkOS site uses for its look, bilingual (English and Simplified Chinese) interface, language detection, and metadata.
 
 Maintainers: see [BRAND.md](BRAND.md).

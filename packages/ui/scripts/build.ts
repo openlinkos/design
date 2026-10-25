@@ -28,7 +28,7 @@ const SOURCES: Record<(typeof LAYERS)[number], string[]> = {
   reset: ['css/reset.css'],
   tokens: [],
   base: ['css/base.css'],
-  layout: ['css/layout.css'],
+  layout: ['css/layout.css', 'css/site.css'],
   components: [
     'css/components/button.css',
     'css/components/form.css',
@@ -40,6 +40,7 @@ const SOURCES: Record<(typeof LAYERS)[number], string[]> = {
     'css/components/navigation.css',
     'css/components/overlay.css',
     'css/components/prose.css',
+    'css/components/context.css',
   ],
   utilities: ['css/utilities.css'],
 };
@@ -75,9 +76,14 @@ const order = `@layer ${LAYERS.map((l) => `ol.${l}`).join(', ')};`;
 const layers = LAYERS.map((l) =>
   layer(l, l === 'tokens' ? tokens : SOURCES[l].map(read).join('\n\n')),
 );
-// Font faces stay outside the layers; the font files sit next to the stylesheet.
+// Font faces and the global at-rules stay outside the layers; the font files sit next to the
+// stylesheet.
 const fonts = read('css/fonts.css');
-writeFileSync(join(dist, 'ui.css'), `${[header, order, fonts, ...layers].join('\n\n')}\n`);
+const globalRules = read('css/global.css');
+writeFileSync(
+  join(dist, 'ui.css'),
+  `${[header, order, fonts, globalRules, ...layers].join('\n\n')}\n`,
+);
 mkdirSync(join(dist, 'fonts'));
 for (const file of ['Geist-Variable.woff2', 'GeistMono-Variable.woff2', 'LICENSE-geist.txt']) {
   copyFileSync(join(pkg, 'fonts', file), join(dist, 'fonts', file));

@@ -360,6 +360,61 @@
   padding-block-start: var(--ol-space-1);
 }
 
+/*
+ * Form sections: a long form in parts, each with its name and what it is for beside its fields
+ * (above them in a narrow column). Sections are divided by a line.
+ *
+ *   <section class="ol-form-section" aria-labelledby="links-title">
+ *     <div class="ol-form-section-header"><h2 class="ol-form-section-title" id="links-title">Links</h2>
+ *       <p class="ol-form-section-description">Shown in the footer of the usage page.</p></div>
+ *     <div class="ol-form-section-body">…fields, or a panel…</div>
+ *   </section>
+ */
+.ol-form-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ol-space-4) var(--ol-space-10);
+}
+
+.ol-form-section + .ol-form-section {
+  margin-block-start: var(--ol-space-8);
+  padding-block-start: var(--ol-space-8);
+  border-block-start: 1px solid var(--ol-color-border);
+}
+
+@container (min-width: 48rem) {
+  .ol-form-section {
+    grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr);
+  }
+}
+
+.ol-form-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-1);
+}
+
+.ol-form-section-title {
+  font-size: var(--ol-font-size-md);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: var(--ol-line-height-md);
+}
+
+.ol-form-section-description {
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+  text-wrap: pretty;
+}
+
+.ol-form-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-5);
+  min-width: 0;
+  max-width: 40rem;
+}
+
 @media (forced-colors: active) {
   .ol-checkbox,
   .ol-radio,

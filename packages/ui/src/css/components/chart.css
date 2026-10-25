@@ -39,6 +39,19 @@
   --ol-series: var(--ol-color-series-8);
 }
 
+/* A series that means good or bad, such as errors, takes a status tone instead of a slot. */
+.ol-series-success {
+  --ol-series: var(--ol-color-success-solid);
+}
+
+.ol-series-warning {
+  --ol-series: var(--ol-color-warning-solid);
+}
+
+.ol-series-danger {
+  --ol-series: var(--ol-color-danger-solid);
+}
+
 /* A swatch beside the text that names a series: a square for bars and areas, -line for lines. */
 .ol-swatch {
   display: inline-block;
@@ -147,6 +160,12 @@
   vector-effect: non-scaling-stroke;
 }
 
+/* The area under a line: a tint of its series, drawn before the line. */
+.ol-chart-area {
+  fill: color-mix(in srgb, var(--ol-series, var(--ol-color-series-1)) 14%, transparent);
+  stroke: none;
+}
+
 /* Dots carry a ring in the surface colour, so they stay legible where they cross a line. */
 .ol-chart-dot {
   fill: var(--ol-series, var(--ol-color-series-1));
@@ -175,6 +194,52 @@
   vector-effect: non-scaling-stroke;
 }
 
+/* Drawing in: bars rise from the baseline, column after column where the browser can count them;
+   lines draw from the start; dots follow. */
+@media (prefers-reduced-motion: no-preference) {
+  .ol-chart-bar {
+    transform-box: fill-box;
+    transform-origin: bottom;
+    animation: ol-grow-y var(--ol-duration-slower) var(--ol-ease-enter) backwards;
+  }
+
+  .ol-chart-line,
+  .ol-chart-area {
+    animation: ol-draw calc(var(--ol-duration-slower) * 2) var(--ol-ease-standard) backwards;
+  }
+
+  .ol-chart-dot {
+    animation: ol-fade-in var(--ol-duration-slow) var(--ol-ease-enter)
+      calc(var(--ol-duration-slower) * 1.5) backwards;
+  }
+
+  @supports (animation-delay: calc(sibling-index() * 1ms)) {
+    .ol-chart-col {
+      --ol-index: sibling-index();
+    }
+
+    .ol-chart-col > .ol-chart-bar {
+      animation-delay: calc(var(--ol-index) * 14ms);
+    }
+  }
+}
+
+@keyframes ol-draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes ol-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
 .ol-chart-caption {
   display: flex;
   flex-wrap: wrap;
@@ -189,6 +254,78 @@
   margin-block-start: var(--ol-space-2);
 }
 
+/*
+ * Uptime strips: how something did over time, one cell per period (an hour, a day), oldest first.
+ * The strip is one image to assistive technology, so its label says what it shows in words; each
+ * cell's title gives its period and figure to pointer users.
+ *
+ *   <div class="ol-uptime" role="img" aria-label="Last 24 hours: 99.7% available, degraded at 14:00">
+ *     <span class="ol-uptime-ok" title="13:00 100%"></span><span class="ol-uptime-degraded" title="14:00 96%"></span>…
+ *   </div>
+ *
+ * Cells: -ok, -degraded, -down; a cell without a class is a period without data.
+ */
+.ol-uptime {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  min-width: 0;
+  height: var(--ol-uptime-height, 1.5rem);
+}
+
+.ol-uptime > * {
+  flex: 1 1 0;
+  min-width: 2px;
+  max-width: var(--ol-uptime-cell, 0.5rem);
+  border-radius: 2px;
+  background: var(--ol-color-border);
+  transform-origin: bottom;
+  transition: opacity var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-uptime > .ol-uptime-ok {
+  background: var(--ol-color-success-solid);
+}
+
+.ol-uptime > .ol-uptime-degraded {
+  background: var(--ol-color-warning-solid);
+}
+
+.ol-uptime > .ol-uptime-down {
+  background: var(--ol-color-danger-solid);
+}
+
+/* Pointing at a cell brings it forward. */
+.ol-uptime:hover > :not(:hover) {
+  opacity: 0.45;
+}
+
+/* Taller, with cells that grow to fill a wide column. */
+.ol-uptime-lg {
+  --ol-uptime-height: 2.25rem;
+  --ol-uptime-cell: 1rem;
+  gap: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ol-uptime > * {
+    animation: ol-grow-y var(--ol-duration-slower) var(--ol-ease-enter) backwards;
+  }
+
+  @supports (animation-delay: calc(sibling-index() * 1ms)) {
+    .ol-uptime > * {
+      animation-delay: calc((sibling-index() - 1) * 12ms);
+    }
+  }
+}
+
+@keyframes ol-grow-y {
+  from {
+    opacity: 0;
+    transform: scaleY(0.15);
+  }
+}
+
 @media (forced-colors: active) {
   /* Colours collapse to one; the legend's words and the table carry the series. */
   .ol-chart-bar,
@@ -198,6 +335,10 @@
 
   .ol-chart-line {
     stroke: CanvasText;
+  }
+
+  .ol-chart-area {
+    fill: none;
   }
 
   .ol-chart-dot {
@@ -221,5 +362,18 @@
   .ol-swatch {
     forced-color-adjust: none;
     background: CanvasText;
+  }
+
+  .ol-uptime > * {
+    forced-color-adjust: none;
+    background: GrayText;
+  }
+
+  .ol-uptime > :is(.ol-uptime-ok, .ol-uptime-degraded) {
+    background: CanvasText;
+  }
+
+  .ol-uptime > .ol-uptime-down {
+    background: Highlight;
   }
 }

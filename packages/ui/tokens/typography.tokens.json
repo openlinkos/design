@@ -116,6 +116,13 @@
           "value": 2.25,
           "unit": "rem"
         }
+      },
+      "4xl": {
+        "$value": {
+          "value": 3.0,
+          "unit": "rem"
+        },
+        "$description": "The hero title of a service page; nowhere in an app."
       }
     }
   },
@@ -166,6 +173,12 @@
     "3xl": {
       "$value": {
         "value": 2.75,
+        "unit": "rem"
+      }
+    },
+    "4xl": {
+      "$value": {
+        "value": 3.5,
         "unit": "rem"
       }
     }

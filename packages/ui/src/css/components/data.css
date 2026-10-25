@@ -139,6 +139,25 @@
   line-height: var(--ol-line-height-xs);
 }
 
+/* A row that leads somewhere: the one link marked .ol-row-link (usually the name) makes the whole
+   row its target. Other links and buttons in the row stay on top and work as before. */
+.ol-table tr:has(.ol-row-link) {
+  position: relative;
+}
+
+.ol-row-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.ol-table
+  tr:has(.ol-row-link)
+  :is(a, button, input, select, textarea, summary, label):not(.ol-row-link) {
+  position: relative;
+  z-index: 1;
+}
+
 @media (max-width: 860px) {
   /* Tables scroll sideways rather than squeezing every cell into a column of words. */
   .ol-table th,
@@ -263,6 +282,100 @@ a.ol-stat:hover {
 .ol-dl dd {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+/* Each term above its value, for a narrow column such as a detail page's side panel. */
+.ol-dl-stack {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.ol-dl-stack dt {
+  margin-block-end: var(--ol-space-0-5);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+.ol-dl-stack dd + dt {
+  margin-block-start: var(--ol-space-3);
+}
+
+/*
+ * Settings: one setting per row, its name and what it does on one side and its control on the
+ * other, often in a panel whose footer holds the save button.
+ *
+ *   <div class="ol-settings">
+ *     <div class="ol-setting">
+ *       <div class="ol-setting-text"><label class="ol-setting-title" for="status">Show the status</label>
+ *         <p class="ol-setting-description" id="status-hint">…</p></div>
+ *       <div class="ol-setting-control"><input type="checkbox" role="switch" class="ol-switch" id="status" aria-describedby="status-hint"></div>
+ *     </div>
+ *   </div>
+ */
+.ol-settings {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface);
+}
+
+.ol-panel > .ol-settings {
+  border: 0;
+}
+
+.ol-setting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-3) var(--ol-space-8);
+  padding: var(--ol-space-4);
+}
+
+.ol-setting + .ol-setting {
+  border-block-start: 1px solid var(--ol-color-border);
+}
+
+.ol-setting-text {
+  display: flex;
+  flex: 1 1 18rem;
+  flex-direction: column;
+  gap: var(--ol-space-0-5);
+  min-width: 0;
+}
+
+.ol-setting-title {
+  color: var(--ol-color-fg);
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-setting-description {
+  max-width: 60ch;
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+  text-wrap: pretty;
+}
+
+.ol-setting-control {
+  display: flex;
+  flex: 0 1 18rem;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ol-space-2);
+  min-width: 0;
+}
+
+.ol-setting-control > :is(.ol-input, .ol-select, .ol-input-group) {
+  width: 100%;
+}
+
+/* A switch or a button needs no width of its own. */
+.ol-setting-control:not(:has(.ol-input, .ol-select, .ol-textarea)) {
+  flex-basis: auto;
 }
 
 /* Compact lists: items in one frame, each a title over a line of facts.

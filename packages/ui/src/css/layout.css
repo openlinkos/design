@@ -13,7 +13,7 @@
  *       <input type="checkbox" id="nav" class="ol-nav-toggle">
  *       <div class="ol-sidebar-head">brand … <label for="nav" class="ol-nav-toggle-button">…</label></div>
  *       <nav class="ol-nav">.ol-nav-group > .ol-nav-label + .ol-nav-item…</nav>
- *       <div class="ol-sidebar-foot">…</div>
+ *       <div class="ol-sidebar-foot">theme switch, <button class="ol-sidebar-account">…</div>
  *     </aside>
  *     <div class="ol-main">
  *       <header class="ol-topbar">…</header>
@@ -88,9 +88,14 @@
   height: 1.5rem;
 }
 
-/* The accent shape of an inline SVG mark. */
+/* The accent shape of an inline SVG mark: a filled shape, or a line (-line) for marks drawn with
+   strokes. */
 .ol-brand-accent {
   fill: var(--ol-color-mark);
+}
+
+.ol-brand-accent-line {
+  stroke: var(--ol-color-mark);
 }
 
 .ol-brand-tag {
@@ -179,6 +184,70 @@
   margin-block-start: auto;
   padding: var(--ol-space-3) var(--ol-space-1) 0;
   border-block-start: 1px solid var(--ol-color-border);
+}
+
+/*
+ * The signed-in account at the foot of the sidebar: a button that opens the account's menu (its
+ * page, the language, signing out) above it.
+ *
+ *   <button class="ol-sidebar-account" type="button" popovertarget="account">
+ *     <span class="ol-avatar ol-avatar-sm">A</span>
+ *     <span class="ol-sidebar-account-text"><span class="ol-sidebar-account-name">admin</span>
+ *       <span class="ol-sidebar-account-meta">Administrator</span></span>
+ *     …chevrons-up-down icon…
+ *   </button>
+ *   <div class="ol-menu ol-menu-above" id="account" popover>…</div>
+ */
+.ol-sidebar-account {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2-5);
+  width: calc(100% + var(--ol-space-2));
+  min-height: var(--ol-size-control-lg);
+  margin-inline: calc(var(--ol-space-1) * -1);
+  padding: var(--ol-space-1) var(--ol-space-2) var(--ol-space-1) var(--ol-space-1);
+  border: 0;
+  border-radius: var(--ol-radius-control);
+  background: none;
+  color: var(--ol-color-fg);
+  text-align: start;
+  cursor: pointer;
+  transition: background var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-sidebar-account:hover,
+.ol-sidebar-foot:has(> .ol-menu:popover-open) > .ol-sidebar-account {
+  background: var(--ol-color-fill-hover);
+}
+
+.ol-sidebar-account > svg:last-child {
+  margin-inline-start: auto;
+  color: var(--ol-color-fg-subtle);
+}
+
+.ol-sidebar-account-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ol-sidebar-account-name,
+.ol-sidebar-account-meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ol-sidebar-account-name {
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-sidebar-account-meta {
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
 }
 
 .ol-nav-toggle {
@@ -286,6 +355,52 @@
 
 .ol-content:focus {
   outline: none;
+}
+
+/*
+ * Motion between pages. ui.css opts same-origin navigations into cross-document view transitions
+ * (where supported, and unless the user prefers reduced motion): the sidebar holds still, and the
+ * content panel cross-fades, so moving between pages feels like one app rather than a reload. The
+ * page's content then rises into place, its first blocks one after another.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .ol-sidebar {
+    view-transition-name: ol-sidebar;
+  }
+
+  .ol-main {
+    view-transition-name: ol-main;
+  }
+
+  .ol-content > :not(.ol-toaster),
+  .ol-auth-card {
+    /* Only before and during the animation: a lasting transform would hold fixed descendants. */
+    animation: ol-rise var(--ol-duration-slower) var(--ol-ease-enter) backwards;
+  }
+
+  .ol-content > :nth-child(2) {
+    animation-delay: 40ms;
+  }
+
+  .ol-content > :nth-child(3) {
+    animation-delay: 80ms;
+  }
+
+  .ol-content > :nth-child(n + 4) {
+    animation-delay: 120ms;
+  }
+}
+
+::view-transition-group(*) {
+  animation-duration: var(--ol-duration-slow);
+  animation-timing-function: var(--ol-ease-standard);
+}
+
+@keyframes ol-rise {
+  from {
+    opacity: 0;
+    translate: 0 0.5rem;
+  }
 }
 
 .ol-footer {
@@ -511,16 +626,19 @@
   color: var(--ol-color-on-brand-panel);
 }
 
-.ol-auth-rings,
-.ol-auth-rings::before,
-.ol-auth-rings::after {
+/* The rings are drawn the same way behind a service page's hero (site.css), which sets the same
+   variables. */
+:is(.ol-auth-rings, .ol-hero-rings),
+:is(.ol-auth-rings, .ol-hero-rings)::before,
+:is(.ol-auth-rings, .ol-hero-rings)::after {
   position: absolute;
   inset: 0;
   z-index: -1;
 }
 
 /* A soft light around the origin, under everything. */
-.ol-auth-rings {
+:is(.ol-auth-rings, .ol-hero-rings) {
+  overflow: clip;
   background: radial-gradient(
     circle at var(--ol-origin-x) var(--ol-origin-y),
     color-mix(in srgb, var(--ol-color-mark-inverse) 22%, transparent),
@@ -529,7 +647,7 @@
 }
 
 /* The ripples: rings at widening intervals (×1.42), fading with distance. */
-.ol-auth-rings::before {
+:is(.ol-auth-rings, .ol-hero-rings)::before {
   --ol-ripple: color-mix(in srgb, var(--ol-color-mark-inverse) 42%, transparent);
   content: "";
   background: radial-gradient(
@@ -566,7 +684,7 @@
 
 /* The mark itself at the origin: a ring and its centre, in the mark's proportions (r 17 and 6,
    stroke 5.5 on its 48-unit grid). */
-.ol-auth-rings::after {
+:is(.ol-auth-rings, .ol-hero-rings)::after {
   content: "";
   background:
     radial-gradient(
@@ -580,6 +698,23 @@
       var(--ol-color-on-brand-panel) calc(47 * var(--ol-ring) + 0.5px) calc(65 * var(--ol-ring)),
       transparent calc(65 * var(--ol-ring) + 0.5px)
     );
+}
+
+/* The brand's own mark at the origin, in place of the drawn one: an <img class="ol-rings-mark">
+   (the mark for dark backgrounds) inside the rings. */
+.ol-rings-mark {
+  position: absolute;
+  /* A point in the drawing, measured from the left like the drawing itself. */
+  top: var(--ol-origin-y);
+  left: var(--ol-origin-x);
+  width: calc(176 * var(--ol-ring));
+  height: calc(176 * var(--ol-ring));
+  max-width: none;
+  translate: -50% -50%;
+}
+
+:is(.ol-auth-rings, .ol-hero-rings):has(> .ol-rings-mark)::after {
+  content: none;
 }
 
 @keyframes ol-ripple-in {
@@ -611,8 +746,14 @@
   height: 1.5rem;
 }
 
-.ol-auth-brand .ol-brand-accent {
+.ol-auth-brand .ol-brand-accent,
+.ol-rings-mark .ol-brand-accent {
   fill: var(--ol-color-mark-inverse);
+}
+
+.ol-auth-brand .ol-brand-accent-line,
+.ol-rings-mark .ol-brand-accent-line {
+  stroke: var(--ol-color-mark-inverse);
 }
 
 .ol-auth-statement {
@@ -685,10 +826,6 @@
   color: var(--ol-color-fg-muted);
 }
 
-.ol-auth-foot .ol-btn-link {
-  font-size: inherit;
-}
-
 /* Page meta icons are quieter than their text. (Placed after the sign-in rules: same element, higher specificity.) */
 .ol-page-meta li > svg {
   color: var(--ol-color-fg-subtle);
@@ -709,6 +846,7 @@
     position: sticky;
     inset-block-start: 0;
     z-index: var(--ol-z-sticky);
+    view-transition-name: none;
     gap: var(--ol-space-3);
     padding: var(--ol-space-2) var(--ol-space-3);
     overflow: visible;
@@ -737,6 +875,7 @@
     border: 0;
     border-radius: 0;
     box-shadow: none;
+    view-transition-name: none;
   }
 
   .ol-topbar {
@@ -798,7 +937,8 @@
     border-color: CanvasText;
   }
 
-  .ol-auth-rings {
+  .ol-auth-rings,
+  .ol-hero-rings {
     display: none;
   }
 }

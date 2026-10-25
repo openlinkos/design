@@ -4,13 +4,15 @@ How `@openlinkos/ui` is built, and which practice of an established design syste
 
 ## Look and feel {#look}
 
-**One quiet frame, one memorable moment.** The app is a sidebar on a soft shell colour and a single floating content panel that scrolls on its own. Navigation stays put, and the page reads as one object instead of a stack of boxes. The kit spends its boldness in one place: the sign-in page, where the brand's mark is drawn large as an origin point with rings spreading from it at widening intervals. The same rings return faintly behind empty states. Everything else stays disciplined.
+**One quiet frame, one memorable moment.** The app is a sidebar on a soft shell colour and a single floating content panel that scrolls on its own. Navigation stays put, and the page reads as one object instead of a stack of boxes. The kit spends its boldness in one place per surface: an app's sign-in page, and a service site's hero. There the brand's mark is drawn large as an origin point, with rings spreading from it at widening intervals; on a service site, a new ring leaves the mark every few seconds, so the page is visibly alive. The same rings return faintly behind empty states. Everything else stays disciplined: a service site's sections are headings, text and the components an app uses.
 
 **Hierarchy before decoration.** Frames are earned: sections and headings come first, a panel groups related detail, and a card is one item of a collection. Radii differ by role (6px controls, 10px containers, 14px for the content panel and dialogs) instead of one radius on everything. The brand accent marks what matters (the current page, the primary action, focus, selection, links, stat icons, the first series of a chart) and nothing else.
 
 **Type with character, set solid.** Latin text uses [Geist](https://github.com/vercel/geist-font) and Geist Mono (SIL Open Font License, bundled, no CDN); monospace is reserved for real code, ids and tokens. Chinese falls back to the platform's own fonts.
 
 **No template chrome.** The kit has no uppercase label style, does not join metadata with middle dots, does not append arrows to link text, and gives every button a verb and its object. Write sentence case.
+
+**Every language in its own words.** A language switch shows the language in use and lists every language in that language (English, 简体中文), the same way in every app and site: [language menus](components.md#language).
 
 ## Tokens {#tokens}
 
@@ -75,13 +77,25 @@ Pairs further apart than neighbours can still be close for a colour-blind reader
 
 | Scale | Values | Comparable |
 | --- | --- | --- |
-| Type | 11, 12, 13, 14 (body), 16, 20, 24, 36 px with line heights 14, 16, 20, 22, 24, 28, 32, 44 | Carbon body-01 14/20, Ant Design and TDesign 14/22, Geist copy 14/20 |
+| Type | 11, 12, 13, 14 (body), 16, 20, 24, 36 px with line heights 14, 16, 20, 22, 24, 28, 32, 44; 48/56 for a service site's hero only | Carbon body-01 14/20, Ant Design and TDesign 14/22, Geist copy 14/20 |
 | Space | a 4px grid, named by multiples of 4px (`space-4` = 16px) | Polaris `space-100` = 4px, Atlassian `space.100` = 8px |
 | Controls | 24, 28, 32 (default), 40 px; 36 and 44 in comfortable density | Primer 24/28/32/40/48, shadcn 32/36/40 |
 | Radius | 3, 4, 6, 10, 14 px and full, by role | Primer 3/6/12, Fluent 2/4/6/8 |
 | Elevation | xs, sm, md, lg, xl | Primer resting and floating shadows, Fluent shadow2–64 |
-| Motion | 100, 160, 240 ms; standard (0.2, 0, 0, 1), enter, exit | Material 3 standard easing, Carbon productive durations |
+| Motion | 100, 160, 240, 400 ms; standard (0.2, 0, 0, 1), enter, exit | Material 3 standard easing, Carbon productive and expressive durations |
 | Stacking | sticky 100, dropdown 1000, overlay 1100, toast 1300 | Primer, Fluent; overlays use the top layer instead |
+
+## Motion {#motion}
+
+**Motion explains change.** It shows where something came from (a menu from its button, a toast from the corner), what just changed (a value that flashes), and that a service is alive (a ring leaving the hero's mark, a live dot). It never stands between the reader and the content: entrances last at most 400 ms, nothing that is being read moves, and closing is quicker than opening, as in [Material's](https://m3.material.io/styles/motion/easing-and-duration) and [Carbon's](https://carbondesignsystem.com/elements/motion/overview/) motion guidance.
+
+**Durations and curves are tokens.** 100 ms for hover and press, 160 ms for small elements entering, 240 ms for larger ones, 400 ms for content and data arriving; a standard curve for movement within the screen, a decelerating one for what enters and an accelerating one for what leaves. Animations move opacity and transforms, which the browser composites without laying out the page again.
+
+**Pages are one app.** Same-origin navigations between pages that load `ui.css` are cross-document [view transitions](https://www.w3.org/TR/css-view-transitions-2/): the sidebar holds still and the content panel cross-fades, so a server-rendered app moves between pages the way a client-rendered one would, with no script. The page's content then rises into place, its first blocks one after another.
+
+**Less motion means none.** Entrances, page transitions and loops are only declared inside `@media (prefers-reduced-motion: no-preference)`, and a test checks it; every other transition and animation runs in an instant for users who ask for less motion (WCAG 2.3.3). The kit's loops are decorative, and stop with them.
+
+The [motion table](components.md#motion) lists what moves and how.
 
 ## Accessibility {#accessibility}
 
@@ -95,13 +109,16 @@ The kit is built to [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA and meets these
 | 2.4.7 Focus visible, 2.4.13 Focus appearance | One focus style everywhere: a solid 2px ring (`:focus-visible`) with an offset, 3:1 against every surface. Inputs add a soft halo around it. |
 | 2.4.11 Focus not obscured | The scrolling panel sets `scroll-padding` for its sticky top bar. |
 | 2.5.8 Target size | Controls are at least 24px; `size-target-min` sets the floor. |
+| 2.2.2 Pause, stop, hide | Toasts that leave by themselves stay while pointed at or focused. The only loops are decorative (the hero's rings, a live dot) and pending work, and they stop for reduced motion. |
+| 2.3.3 Animation from interactions | Users who prefer reduced motion get no entrances, page transitions or loops; see [motion](#motion). |
+| 3.1.2 Language of parts | The language menu names each language in that language and marks it with `lang`. |
 
 **State by ARIA.** Components style `aria-current`, `aria-pressed`, `aria-selected`, `aria-invalid`, `aria-busy`, `aria-disabled` and `aria-sort`, so the visual state and the state assistive technology reads cannot drift apart.
 
 **Native first.** Forms style native controls. Progress and meters are `<progress>` and `<meter>`. Disclosures are `<details>`, with `name` for accordions. Menus and popovers use the Popover API, and dialogs are `<dialog>`. Browsers supply keyboard handling, light dismiss and focus return.
 
 **Preferences.**
-- **`prefers-reduced-motion`:** removes animation.
+- **`prefers-reduced-motion`:** removes animation; see [motion](#motion).
 - **`prefers-contrast: more`:** firms up lines and secondary text.
 - **`forced-colors`:** focus, current items, segmented choices and frames switch to system colours (Highlight, CanvasText). Shadows disappear in forced colours, so state never relies on a shadow alone. Checkboxes, radios, switches and selects fall back to the platform's controls.
 
@@ -117,7 +134,7 @@ Following the W3C [clreq](https://www.w3.org/TR/clreq/) requirements:
 
 ## CSS architecture {#css}
 
-**Cascade layers.** `ui.css` declares `@layer ol.reset, ol.tokens, ol.base, ol.layout, ol.components, ol.utilities`, as Tailwind v4 and daisyUI 5 do. App CSS outside the layers always wins, without specificity games.
+**Cascade layers.** `ui.css` declares `@layer ol.reset, ol.tokens, ol.base, ol.layout, ol.components, ol.utilities`, as Tailwind v4 and daisyUI 5 do. App CSS outside the layers always wins, without specificity games. Font faces and the global at-rules (`@view-transition`, `@property`) come first, outside the layers. A layout that changes a component inside it, such as the buttons on a hero, does so in the component layer, since a rule in an earlier layer cannot override a later one.
 
 **No JavaScript, strict CSP.** Every component works with server-rendered HTML and no script: the narrow-screen menu is a checkbox, menus use `popovertarget`, dialogs use `command`/`commandfor`, disclosures use `<details>`. No inline styles are needed, and fonts, icons and styles are files the app serves itself.
 
@@ -132,6 +149,10 @@ Following the W3C [clreq](https://www.w3.org/TR/clreq/) requirements:
 | `light-dark()` | colour modes | Widely available from November 2026 |
 | Popover API | menus and popovers | Newly available |
 | `@starting-style` | entry transitions | Newly available |
+| Cross-document view transitions | moving between pages | Enhancement; elsewhere pages load as before |
+| `::details-content`, `interpolate-size` | disclosures that open smoothly | Enhancement; elsewhere they open at once |
+| Scroll-driven animations | a site header that takes its frame as the page scrolls | Enhancement; elsewhere it keeps its frame |
+| `sibling-index()`, `@property` | bars and cells rising one after another | Enhancement; elsewhere they rise together |
 | Anchor positioning | menus beside their button | Enhancement; elsewhere they open centred |
 | Invoker commands | dialogs without script | Enhancement; elsewhere use `showModal()` |
 | `field-sizing` | textareas that grow | Enhancement; elsewhere the text area keeps its rows |

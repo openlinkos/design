@@ -1,0 +1,427 @@
+/*
+ * Service sites: one public page about one service, such as a mirror's usage page. A header with
+ * the brand, links to the page's sections and its tools (language, theme); a hero, the page's one
+ * bold moment, where the brand's mark sends rings across a dark panel; sections; and a footer. The
+ * header, sections and footer span the page and keep their content to one column, so a section can
+ * take a band of colour; the hero is a framed panel in that column.
+ *
+ *   <header class="ol-site-header">
+ *     <a class="ol-brand" href="/">…mark… LinkOS Mirrors</a>
+ *     <nav class="ol-site-nav" aria-label="On this page"><a href="#start">Get started</a>…</nav>
+ *     <div class="ol-site-tools">…language menu, theme switch…</div>
+ *   </header>
+ *   <main id="main">
+ *     <section class="ol-hero" aria-labelledby="hero-title">
+ *       <div class="ol-hero-rings" aria-hidden="true"></div>
+ *       <div class="ol-hero-body">
+ *         <a class="ol-status ol-status-success" href="#status"><span class="ol-dot ol-dot-live"></span>All mirrors are up</a>
+ *         <h1 class="ol-hero-title" id="hero-title">…</h1>
+ *         <p class="ol-hero-lead">…</p>
+ *         <div class="ol-hero-actions">…buttons…</div>
+ *       </div>
+ *     </section>
+ *     <section class="ol-site-section" id="start" aria-labelledby="start-title">
+ *       <div class="ol-site-section-header"><h2 class="ol-site-section-title" id="start-title">…</h2>
+ *         <p class="ol-site-section-description">…</p></div>
+ *       …
+ *     </section>
+ *   </main>
+ *   <footer class="ol-site-footer">…</footer>
+ *
+ * --ol-site-width (68rem) sets the column and --ol-site-gutter the space beside it on small screens.
+ */
+
+.ol-site-header,
+.ol-site-section,
+.ol-site-footer {
+  /* The column, centred by padding so the element itself can span the page. */
+  padding-inline: max(
+    var(--ol-site-gutter, var(--ol-space-6)),
+    calc((100% - var(--ol-site-width, 68rem)) / 2)
+  );
+}
+
+/* Anchors land clear of the sticky header (WCAG 2.4.11), and scroll there smoothly. */
+html:has(.ol-site-header) {
+  scroll-padding-block-start: 4.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.ol-site-header) {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Header */
+
+.ol-site-header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--ol-z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2) var(--ol-space-8);
+  min-height: 3.5rem;
+  border-block-end: 1px solid var(--ol-color-border);
+  background: color-mix(in srgb, var(--ol-color-bg) 85%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  backdrop-filter: blur(10px) saturate(1.4);
+}
+
+/* At the top of the page the header sits on the page; it takes its frame as the page scrolls. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ol-site-header {
+      animation: ol-header-frame linear both;
+      animation-timeline: scroll();
+      animation-range: 0 4rem;
+    }
+  }
+}
+
+@keyframes ol-header-frame {
+  from {
+    border-block-end-color: transparent;
+    background-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+.ol-site-header > .ol-brand {
+  flex: none;
+}
+
+.ol-site-nav {
+  display: flex;
+  gap: var(--ol-space-1);
+  min-width: 0;
+}
+
+.ol-site-nav a {
+  padding: var(--ol-space-1-5) var(--ol-space-2-5);
+  border-radius: var(--ol-radius-control);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-sm);
+  white-space: nowrap;
+  transition:
+    background var(--ol-duration-fast) var(--ol-ease-standard),
+    color var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-site-nav a:hover {
+  background: var(--ol-color-fill-hover);
+  color: var(--ol-color-fg);
+  text-decoration: none;
+}
+
+/* The section in view, when a script marks it. */
+.ol-site-nav a[aria-current="true"] {
+  background: var(--ol-color-fill);
+  color: var(--ol-color-fg);
+}
+
+.ol-site-tools {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--ol-space-2);
+  margin-inline-start: auto;
+}
+
+/* Hero */
+
+.ol-hero {
+  /* Where the mark sits, and the length of one unit of the drawing, as on the sign-in page. */
+  --ol-origin-x: 78%;
+  --ol-origin-y: 50%;
+  --ol-ring: 1px;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 28rem;
+  margin: var(--ol-space-6)
+    max(var(--ol-site-gutter, var(--ol-space-6)), calc((100% - var(--ol-site-width, 68rem)) / 2)) 0;
+  padding: var(--ol-space-16) clamp(var(--ol-space-6), 6vw, var(--ol-space-16));
+  overflow: hidden;
+  border-radius: var(--ol-radius-frame);
+  background: var(--ol-color-brand-panel);
+  /* A faint rim, so the panel keeps its edge on a dark page. */
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ol-color-on-brand-panel) 8%, transparent);
+  color: var(--ol-color-on-brand-panel);
+}
+
+/* Every few seconds a ring leaves the mark and fades as it spreads: the page is alive. */
+.ol-hero::before {
+  content: "";
+  position: absolute;
+  /* The origin is a point in the drawing, measured from the left like the drawing itself. */
+  top: var(--ol-origin-y);
+  left: var(--ol-origin-x);
+  z-index: -1;
+  width: calc(1100 * var(--ol-ring));
+  aspect-ratio: 1;
+  border: 1.5px solid color-mix(in srgb, var(--ol-color-mark-inverse) 60%, transparent);
+  border-radius: 50%;
+  opacity: 0;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ol-hero::before {
+    animation: ol-pulse 5.6s var(--ol-ease-standard) 1.6s infinite;
+  }
+
+  .ol-hero-body {
+    animation: ol-rise var(--ol-duration-slower) var(--ol-ease-enter) backwards;
+  }
+}
+
+@keyframes ol-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.05);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+.ol-hero-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ol-space-5);
+  max-width: 34rem;
+}
+
+.ol-hero-title {
+  font-size: clamp(var(--ol-font-size-3xl), 4.6vw, var(--ol-font-size-4xl));
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: calc(var(--ol-tracking-tight) * 2);
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.ol-hero-lead {
+  max-width: 32em;
+  color: var(--ol-color-on-brand-panel-muted);
+  font-size: var(--ol-font-size-xl);
+  line-height: var(--ol-line-height-xl);
+  text-wrap: pretty;
+}
+
+.ol-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ol-space-3);
+  margin-block-start: var(--ol-space-2);
+}
+
+.ol-hero-meta {
+  color: var(--ol-color-on-brand-panel-muted);
+  font-size: var(--ol-font-size-sm);
+}
+
+/* On the dark panel, links and focus take the panel's own colours; buttons and status pills too
+   (components/context.css). */
+.ol-hero a:not(.ol-btn, .ol-status) {
+  color: var(--ol-color-on-brand-panel);
+  text-decoration: underline;
+}
+
+.ol-hero :focus-visible {
+  outline-color: var(--ol-color-on-brand-panel);
+}
+
+/* Sections */
+
+.ol-site-section {
+  /* Grids inside respond to the column's width, as they do in an app's content. */
+  container-type: inline-size;
+  padding-block: var(--ol-space-16) 0;
+}
+
+/* A band of colour behind a section, to set it apart. */
+.ol-site-section-band {
+  margin-block-start: var(--ol-space-16);
+  padding-block: var(--ol-space-16);
+  border-block: 1px solid var(--ol-color-border);
+  background: var(--ol-color-bg-subtle);
+}
+
+.ol-site-section-band + .ol-site-section {
+  padding-block-start: var(--ol-space-16);
+}
+
+.ol-site-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-2);
+  max-width: 44rem;
+  margin-block-end: var(--ol-space-8);
+}
+
+.ol-site-section-title {
+  font-size: var(--ol-font-size-2xl);
+  font-weight: var(--ol-font-weight-semibold);
+  letter-spacing: var(--ol-tracking-tight);
+  line-height: var(--ol-line-height-2xl);
+  text-wrap: balance;
+}
+
+.ol-site-section-description {
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-lg);
+  line-height: var(--ol-line-height-lg);
+  text-wrap: pretty;
+}
+
+/* Footer */
+
+.ol-site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--ol-space-4) var(--ol-space-8);
+  margin-block-start: var(--ol-space-16);
+  padding-block: var(--ol-space-8) var(--ol-space-10);
+  border-block-start: 1px solid var(--ol-color-border);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-site-footer > * {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ol-space-2);
+}
+
+.ol-site-footer .ol-brand {
+  font-size: var(--ol-font-size-md);
+}
+
+.ol-site-footer a:not(.ol-brand) {
+  color: var(--ol-color-fg-muted);
+}
+
+.ol-site-footer-links {
+  flex-flow: row wrap;
+  gap: var(--ol-space-2) var(--ol-space-5);
+}
+
+.ol-site-footer-note {
+  max-width: 56ch;
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+/* Narrow screens: the section links scroll on a row of their own, and the drawing moves to the
+   corner, behind the words. */
+
+@media (max-width: 860px) {
+  html:has(.ol-site-header) {
+    scroll-padding-block-start: 6rem;
+  }
+
+  /* Two rows: the brand and the first tool (the language), then the section links, scrolling
+     sideways, with the other tools (the theme) at their end. */
+  .ol-site-header {
+    --ol-site-gutter: var(--ol-space-4);
+    flex-wrap: wrap;
+    gap: var(--ol-space-2) var(--ol-space-3);
+    padding-block: var(--ol-space-2);
+  }
+
+  /* The line break between the rows. */
+  .ol-site-header::after {
+    content: "";
+    order: 1;
+    flex-basis: 100%;
+    margin-block-start: calc(var(--ol-space-2) * -1);
+  }
+
+  .ol-site-tools {
+    display: contents;
+  }
+
+  .ol-site-tools > :first-child {
+    margin-inline-start: auto;
+  }
+
+  .ol-site-tools > :not(:first-child) {
+    order: 3;
+  }
+
+  .ol-site-nav {
+    order: 2;
+    flex: 1 1 0;
+    margin-inline-start: calc(var(--ol-space-4) * -1);
+    padding-inline: var(--ol-space-4);
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Links that run on fade out at the end: a hint that the row scrolls. */
+    -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--ol-space-4));
+    mask-image: linear-gradient(to left, transparent, #000 var(--ol-space-4));
+  }
+
+  .ol-site-nav:dir(rtl) {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--ol-space-4));
+    mask-image: linear-gradient(to right, transparent, #000 var(--ol-space-4));
+  }
+
+  .ol-site-section,
+  .ol-site-footer,
+  .ol-hero {
+    --ol-site-gutter: var(--ol-space-4);
+  }
+
+  .ol-hero {
+    --ol-origin-x: 88%;
+    --ol-origin-y: 14%;
+    --ol-ring: 0.62px;
+    align-items: flex-end;
+    min-height: 0;
+    margin-block-start: var(--ol-space-4);
+    padding: 9rem var(--ol-space-5) var(--ol-space-6);
+  }
+
+  .ol-hero-lead {
+    font-size: var(--ol-font-size-lg);
+    line-height: var(--ol-line-height-lg);
+  }
+
+  .ol-site-section {
+    padding-block-start: var(--ol-space-12);
+  }
+
+  .ol-site-section-band {
+    margin-block-start: var(--ol-space-12);
+    padding-block: var(--ol-space-12);
+  }
+}
+
+@media (forced-colors: active) {
+  .ol-hero {
+    border: 1px solid CanvasText;
+  }
+
+  .ol-hero::before {
+    display: none;
+  }
+
+  .ol-site-nav a[aria-current="true"] {
+    outline: 2px solid Highlight;
+  }
+}

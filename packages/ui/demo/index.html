@@ -45,14 +45,24 @@
       </div>
     </nav>
     <div class="ol-sidebar-foot">
-      <form class="ol-segmented ol-segmented-block" aria-label="Theme">
-        <button type="button" aria-pressed="true" title="System"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg>Auto</button>
-        <button type="button" aria-pressed="false" title="Light"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg>Light</button>
-        <button type="button" aria-pressed="false" title="Dark"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg>Dark</button>
-      </form>
-      <div class="ol-cluster">
-        <a class="ol-btn ol-btn-ghost ol-btn-sm" href="#demo"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#languages"/></svg>中文</a>
-        <button class="ol-btn ol-btn-ghost ol-btn-sm" type="button"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#log-out"/></svg>Sign out</button>
+      <fieldset class="ol-segmented ol-segmented-block"><legend class="ol-sr-only">Theme</legend>
+        <button type="button" aria-pressed="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg><span>Auto</span></button>
+        <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg><span>Light</span></button>
+        <button type="button" aria-pressed="false"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg><span>Dark</span></button>
+      </fieldset>
+      <button class="ol-sidebar-account" type="button" popovertarget="account">
+        <span class="ol-avatar ol-avatar-sm">OA</span>
+        <span class="ol-sidebar-account-text"><span class="ol-sidebar-account-name">origin-admin</span><span class="ol-sidebar-account-meta">Administrator</span></span>
+        <svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevrons-up-down"/></svg>
+      </button>
+      <div class="ol-menu ol-menu-above" id="account" popover>
+        <a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#user-cog"/></svg>Account and password</a>
+        <hr class="ol-menu-separator">
+        <div class="ol-menu-label">Language</div>
+        <a class="ol-menu-item" href="#demo" lang="en" hreflang="en" aria-current="true">English</a>
+        <a class="ol-menu-item" href="#demo" lang="zh-CN" hreflang="zh-CN">简体中文</a>
+        <hr class="ol-menu-separator">
+        <button class="ol-menu-item" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#log-out"/></svg>Sign out</button>
       </div>
     </div>
   </aside>
@@ -101,11 +111,14 @@
           </div>
           <div class="ol-table-wrap">
             <table class="ol-table">
-              <thead><tr><th>Device</th><th>Sources</th><th>Last push</th><th class="ol-num">Events</th><th>Status</th></tr></thead>
+              <thead><tr><th>Device</th><th>Sources</th><th>Last push</th><th class="ol-num">Events</th><th>Status</th><th><span class="ol-sr-only">Actions</span></th></tr></thead>
               <tbody>
-                <tr><td><span class="ol-cell-title">laptop</span><span class="ol-cell-sub">token laptop</span></td><td>claude-code, codex</td><td>4 min ago</td><td class="ol-num">31,980</td><td><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Healthy</span></td></tr>
-                <tr><td><span class="ol-cell-title">workstation</span><span class="ol-cell-sub">token workstation</span></td><td>claude-code</td><td>2 h ago</td><td class="ol-num">14,077</td><td><span class="ol-badge ol-badge-warning"><span class="ol-dot"></span>3 parse errors</span></td></tr>
-                <tr><td><span class="ol-cell-title">ci-runner</span><span class="ol-cell-sub">token ci-runner</span></td><td>codex</td><td>6 days ago</td><td class="ol-num">2,156</td><td><span class="ol-badge"><span class="ol-dot"></span>Idle</span></td></tr>
+                <tr><td><span class="ol-entity"><span class="ol-avatar ol-avatar-sm ol-series-1">LA</span><span class="ol-entity-text"><a class="ol-entity-title ol-row-link" href="#demo">laptop</a><span class="ol-entity-sub">token laptop</span></span></span></td><td>claude-code, codex</td><td>4 min ago</td><td class="ol-num">31,980</td><td><span class="ol-badge ol-badge-success"><span class="ol-dot"></span>Healthy</span></td><td class="ol-actions"><button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon" type="button" popovertarget="device-laptop" aria-label="Actions for laptop"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#ellipsis"/></svg></button>
+                  <div class="ol-menu ol-menu-end" id="device-laptop" popover><a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#eye"/></svg>View device</a><a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg>Copy connect command</a><hr class="ol-menu-separator"><button class="ol-menu-item ol-menu-item-danger" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#ban"/></svg>Revoke token</button></div></td></tr>
+                <tr><td><span class="ol-entity"><span class="ol-avatar ol-avatar-sm ol-series-3">WO</span><span class="ol-entity-text"><a class="ol-entity-title ol-row-link" href="#demo">workstation</a><span class="ol-entity-sub">token workstation</span></span></span></td><td>claude-code</td><td>2 h ago</td><td class="ol-num">14,077</td><td><span class="ol-badge ol-badge-warning"><span class="ol-dot"></span>3 parse errors</span></td><td class="ol-actions"><button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon" type="button" popovertarget="device-workstation" aria-label="Actions for workstation"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#ellipsis"/></svg></button>
+                  <div class="ol-menu ol-menu-end" id="device-workstation" popover><a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#eye"/></svg>View device</a><a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg>Copy connect command</a><hr class="ol-menu-separator"><button class="ol-menu-item ol-menu-item-danger" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#ban"/></svg>Revoke token</button></div></td></tr>
+                <tr><td><span class="ol-entity"><span class="ol-avatar ol-avatar-sm ol-series-6">CI</span><span class="ol-entity-text"><a class="ol-entity-title ol-row-link" href="#demo">ci-runner</a><span class="ol-entity-sub">token ci-runner</span></span></span></td><td>codex</td><td>6 days ago</td><td class="ol-num">2,156</td><td><span class="ol-badge"><span class="ol-dot"></span>Idle</span></td><td class="ol-actions"><button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon" type="button" popovertarget="device-ci" aria-label="Actions for ci-runner"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#ellipsis"/></svg></button>
+                  <div class="ol-menu ol-menu-end" id="device-ci" popover><a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#eye"/></svg>View device</a><a class="ol-menu-item" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#copy"/></svg>Copy connect command</a><hr class="ol-menu-separator"><button class="ol-menu-item ol-menu-item-danger" type="button"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#ban"/></svg>Revoke token</button></div></td></tr>
               </tbody>
             </table>
           </div>
@@ -219,6 +232,7 @@ origin push</code></pre>
         </div>
       </section>
     </main>
+    <div class="ol-toaster" role="status"><div class="ol-toast ol-toast-success ol-toast-auto"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#circle-check"/></svg><span>Token <span class="ol-mono">laptop</span> created.</span></div></div>
     <footer class="ol-footer"><span>Origin 0.1.0</span><a href="#demo">Documentation</a><a href="#demo">OpenLinkOS</a></footer>
   </div>
 </div>

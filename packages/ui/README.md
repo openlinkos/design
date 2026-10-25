@@ -1,6 +1,6 @@
 # @openlinkos/ui
 
-The OpenLinkOS design system for apps: design tokens, a framework-free stylesheet of layout and components, and a curated set of [Lucide](https://lucide.dev) icons. It needs no JavaScript and no build step, so it suits server-rendered pages under a strict Content-Security-Policy. The admin UI of [Origin](https://github.com/openlinkos/origin) uses it.
+The OpenLinkOS design system for apps: design tokens, a framework-free stylesheet of layout and components, and a curated set of [Lucide](https://lucide.dev) icons. It lays out app shells, sign-in pages and one-page service sites, with motion that explains change and stops for users who prefer less of it. It needs no JavaScript and no build step, so it suits server-rendered pages under a strict Content-Security-Policy. The admin UIs of [Origin](https://github.com/openlinkos/origin) and [registry-mirrors-relay](https://github.com/openlinkos/registry-mirrors-relay) use it.
 
 ```bash
 pnpm add -D @openlinkos/ui
@@ -23,7 +23,7 @@ Copy the files into your app's static assets at build time, keeping `fonts/` nex
 - [Principles](docs/principles.md): how the system is built and why, with the practices it takes from other design systems.
 - [Components](docs/components.md): markup, variants, states, accessibility and guidance for each component.
 - [Token reference](docs/tokens.md): every token with its light and dark value, generated from [`tokens/`](tokens).
-- [`demo/`](demo): an app page, every component, and a sign-in page. Run `node demo/serve.ts` here and open http://127.0.0.1:4321/demo/.
+- [`demo/`](demo): an app page, every component, a sign-in page, and a service site. Run `node demo/serve.ts` here and open http://127.0.0.1:4321/demo/.
 
 ## Tokens
 
@@ -59,7 +59,9 @@ Icons take their colour from `currentColor` and their stroke from `.ol-icon`; si
 
 ## Browser support
 
-The kit targets current Chrome, Edge, Firefox and Safari. It relies on `light-dark()`, `color-mix()`, cascade layers, container queries, `:has()`, logical properties and the Popover API. Newer features are progressive: CSS anchor positioning places menus next to their button (elsewhere they open centred), invoker commands open dialogs without script, `field-sizing` grows text areas, and `text-autospace` and `text-spacing-trim` refine Chinese typography.
+The kit targets current Chrome, Edge, Firefox and Safari. It relies on `light-dark()`, `color-mix()`, cascade layers, container queries, `:has()`, logical properties and the Popover API. Newer features are progressive: CSS anchor positioning places menus next to their button (elsewhere they open centred), invoker commands open dialogs without script, `field-sizing` grows text areas, `text-autospace` and `text-spacing-trim` refine Chinese typography, cross-document view transitions carry the app from page to page, `::details-content` opens disclosures smoothly, scroll-driven animations frame a site's header as the page scrolls, and `sibling-index()` lets bars rise one after another.
+
+`ui.css` opts same-origin navigations into view transitions. An app that wants plain navigations adds `@view-transition { navigation: none; }` to its own stylesheet.
 
 ## Building
 

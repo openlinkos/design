@@ -108,7 +108,10 @@
 }
 
 /* Toasts: a transient confirmation, usually rendered by the server after a redirect.
-   <div class="ol-toaster" role="status"><div class="ol-toast">…</div></div> */
+   <div class="ol-toaster" role="status"><div class="ol-toast ol-toast-success ol-toast-auto">…icon… Saved.</div></div>
+   A tone (-success, -info, -warning, -danger) colours the icon. -auto leaves by itself after six
+   seconds, with no script; pointing at it or focusing inside it holds it. Keep anything the reader
+   must act on out of a toast that leaves: use an alert. */
 .ol-toaster {
   position: fixed;
   inset-block-end: var(--ol-space-4);
@@ -133,10 +136,72 @@
   animation: ol-toast-in var(--ol-duration-slow) var(--ol-ease-enter);
 }
 
+.ol-toast > .ol-icon {
+  margin-block-start: 0.125rem;
+  color: var(--ol-color-fg-muted);
+}
+
+.ol-toast-success > .ol-icon {
+  color: var(--ol-color-success-text);
+}
+
+.ol-toast-info > .ol-icon {
+  color: var(--ol-color-info-text);
+}
+
+.ol-toast-warning > .ol-icon {
+  color: var(--ol-color-warning-text);
+}
+
+.ol-toast-danger > .ol-icon {
+  color: var(--ol-color-danger-text);
+}
+
+.ol-toast-auto {
+  animation:
+    ol-toast-in var(--ol-duration-slow) var(--ol-ease-enter),
+    ol-toast-out var(--ol-duration-slow) var(--ol-ease-exit) 6s forwards;
+}
+
+.ol-toast-auto:is(:hover, :focus-within) {
+  animation-play-state: paused;
+}
+
 @keyframes ol-toast-in {
   from {
     opacity: 0;
-    transform: translateY(0.5rem);
+    transform: translateY(0.5rem) scale(0.98);
+  }
+}
+
+/* Hidden before the very end, so a duration cut to almost nothing (reduced motion) still ends
+   hidden. */
+@keyframes ol-toast-out {
+  80%,
+  to {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+}
+
+/* A value that has just changed, such as a live figure: add .ol-flash when it changes, and remove
+   it on animationend so it can flash again. */
+.ol-flash {
+  border-radius: var(--ol-radius-xs);
+  animation: ol-flash calc(var(--ol-duration-slower) * 3) var(--ol-ease-standard);
+}
+
+@keyframes ol-flash {
+  from {
+    background-color: var(--ol-color-accent-bg-active);
+    box-shadow: 0 0 0 0.25rem var(--ol-color-accent-bg-active);
+  }
+
+  to {
+    background-color: transparent;
+    box-shadow: 0 0 0 0.25rem transparent;
   }
 }
 
@@ -212,6 +277,39 @@
 .ol-meter.ol-meter-series::-moz-meter-bar {
   border-radius: var(--ol-radius-full);
   background: var(--ol-series, var(--ol-color-series-1));
+}
+
+/* Meters and progress bars fill in from the start when the page draws them. */
+@media (prefers-reduced-motion: no-preference) {
+  .ol-progress,
+  .ol-meter {
+    animation: ol-fill-in var(--ol-duration-slower) var(--ol-ease-enter) backwards;
+  }
+
+  .ol-progress:dir(rtl),
+  .ol-meter:dir(rtl) {
+    animation-name: ol-fill-in-rtl;
+  }
+}
+
+@keyframes ol-fill-in {
+  from {
+    clip-path: inset(0 100% 0 0 round var(--ol-radius-full));
+  }
+
+  to {
+    clip-path: inset(0 0 0 0 round var(--ol-radius-full));
+  }
+}
+
+@keyframes ol-fill-in-rtl {
+  from {
+    clip-path: inset(0 0 0 100% round var(--ol-radius-full));
+  }
+
+  to {
+    clip-path: inset(0 0 0 0 round var(--ol-radius-full));
+  }
 }
 
 /* Skeletons: placeholders while content loads. Mark the region aria-busy="true". */

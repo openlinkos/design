@@ -1,0 +1,41 @@
+/*
+ * Components inside the layouts that change them. These rules sit in the component layer, after
+ * the components themselves, because a rule in the layout layer cannot override a component.
+ */
+
+/* The sign-in page's footer: a link-style button reads as one of its links. */
+.ol-auth-foot .ol-btn-link {
+  font-size: inherit;
+}
+
+/* The hero's dark panel: buttons other than the primary one, and status pills, take the panel's
+   own colours. The primary button keeps the brand's solid colour. */
+.ol-hero .ol-btn-secondary,
+.ol-hero .ol-btn-ghost {
+  --ol-btn-bg: color-mix(in srgb, var(--ol-color-on-brand-panel) 8%, transparent);
+  --ol-btn-bg-hover: color-mix(in srgb, var(--ol-color-on-brand-panel) 14%, transparent);
+  --ol-btn-bg-active: color-mix(in srgb, var(--ol-color-on-brand-panel) 20%, transparent);
+  --ol-btn-fg: var(--ol-color-on-brand-panel);
+  --ol-btn-border: color-mix(in srgb, var(--ol-color-on-brand-panel) 22%, transparent);
+  --ol-btn-shadow: none;
+}
+
+.ol-hero .ol-btn-ghost {
+  --ol-btn-bg: transparent;
+  --ol-btn-border: transparent;
+}
+
+.ol-hero .ol-status {
+  border-color: color-mix(in srgb, var(--ol-color-on-brand-panel) 20%, transparent);
+  background: color-mix(in srgb, var(--ol-color-on-brand-panel) 8%, transparent);
+  color: var(--ol-color-on-brand-panel);
+}
+
+.ol-hero a.ol-status:hover {
+  border-color: color-mix(in srgb, var(--ol-color-on-brand-panel) 36%, transparent);
+}
+
+/* A status dot keeps its tone on the dark panel, lightened to stay visible. */
+.ol-hero .ol-status > .ol-dot {
+  color: color-mix(in oklab, var(--ol-status-dot) 65%, var(--ol-color-on-brand-panel));
+}

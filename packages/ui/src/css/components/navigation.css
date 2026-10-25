@@ -36,13 +36,37 @@
   text-decoration: none;
 }
 
-.ol-tab[aria-current="page"] {
+.ol-tab[aria-current="page"],
+.ol-tab[aria-selected="true"] {
   border-block-end-color: var(--ol-color-accent-solid);
   color: var(--ol-color-fg);
 }
 
+/* The ARIA tabs pattern, for panels switched by script: buttons with role="tab" in a
+   role="tablist", each controlling a role="tabpanel". */
+button.ol-tab {
+  padding-block: 0;
+  border-inline: 0;
+  border-block-start: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.ol-tab:focus-visible {
+  outline-offset: calc(var(--ol-focus-width) * -1);
+  border-radius: var(--ol-radius-control) var(--ol-radius-control) 0 0;
+}
+
+.ol-tab-panel:focus-visible {
+  outline-offset: var(--ol-space-1);
+  border-radius: var(--ol-radius-xs);
+}
+
 /* Segmented controls: mutually exclusive options. Buttons mark the chosen one with
-   aria-pressed="true", links with aria-current="true". */
+   aria-pressed="true", links with aria-current="true". Put each label in a <span>: where the
+   options do not fit, an option with an icon shows only its icon (screen readers still read the
+   label), and one without ends its label with an ellipsis. -icons shows only the icons always;
+   give each option an aria-label then. */
 .ol-segmented {
   display: inline-flex;
   box-shadow: inset 0 0 0 1px var(--ol-color-border);
@@ -58,10 +82,11 @@
 .ol-segmented > a,
 .ol-segmented > button {
   display: inline-flex;
-  flex: 1 1 0;
+  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
   gap: var(--ol-space-1);
+  min-width: 0;
   min-height: var(--ol-size-target-min);
   padding-inline: var(--ol-space-2-5);
   border: 0;
@@ -90,8 +115,38 @@
   color: var(--ol-color-fg);
 }
 
+.ol-segmented > :is(a, button) > span:not(.ol-sr-only) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* With an icon, a label that does not fit beside it wraps onto a second line, which the option
+   clips: the icon stays, alone and centred. */
+.ol-segmented > :is(a, button):has(> .ol-icon) {
+  flex-wrap: wrap;
+  align-content: flex-start;
+  height: var(--ol-size-target-min);
+  overflow: hidden;
+}
+
+.ol-segmented > :is(a, button):has(> .ol-icon) > span {
+  line-height: var(--ol-size-target-min);
+}
+
+.ol-segmented > :is(a, button) > svg {
+  margin-block: calc((var(--ol-size-target-min) - var(--ol-size-icon-sm)) / 2);
+}
+
 .ol-segmented-block {
   display: flex;
+}
+
+.ol-segmented-icons > a,
+.ol-segmented-icons > button {
+  flex: none;
+  width: var(--ol-size-control-sm);
+  padding-inline: 0;
 }
 
 /* Pagination: a summary and previous/next links. */
@@ -169,7 +224,8 @@
     outline: 2px solid Highlight;
   }
 
-  .ol-tab[aria-current="page"] {
+  .ol-tab[aria-current="page"],
+  .ol-tab[aria-selected="true"] {
     border-block-end-color: Highlight;
   }
 }

@@ -129,6 +129,22 @@ describe('colour contrast for every brand and mode', () => {
         expect(ratio('on-brand-panel', 'brand-panel')).toBeGreaterThanOrEqual(4.5);
         expect(ratio('on-brand-panel-muted', 'brand-panel')).toBeGreaterThanOrEqual(4.5);
         expect(ratio('mark-inverse', 'brand-panel')).toBeGreaterThanOrEqual(3);
+        // Buttons and status pills on a service page's hero: the panel's text over a tint of
+        // itself, up to the pressed button's 20% (components/context.css).
+        const panel = opaque(c('brand-panel'), c('bg'));
+        const text = opaque(c('on-brand-panel'), panel);
+        expect(contrast(text, composite(text, 0.2, panel))).toBeGreaterThanOrEqual(4.5);
+      });
+
+      it(`${brand} ${mode}: initials read on avatars in every series colour`, () => {
+        // .ol-avatar.ol-series-<n>: color-mix(in srgb, series 22%, surface), initials in fg.
+        const surface = opaque(c('surface'), c('bg'));
+        for (let n = 1; n <= 8; n++) {
+          const tint = composite(c(`series-${n}`), 0.22, surface);
+          expect(contrast(opaque(c('fg'), surface), tint), `series ${n}`).toBeGreaterThanOrEqual(
+            4.5,
+          );
+        }
       });
 
       it(`${brand} ${mode}: control edges, quiet icons and the focus ring reach 3:1`, () => {
@@ -195,6 +211,47 @@ describe('build', () => {
       expect(defined, m[1]).toContain(m[1]);
     }
     for (const name of Object.keys(tokens)) expect(defined, name).toContain(name);
+  });
+
+  it('defines every animation it names', () => {
+    const defined = new Set([...css.matchAll(/@keyframes ([a-z0-9-]+)/g)].map((m) => m[1]));
+    const used = new Set<string>();
+    for (const [, value] of css.matchAll(/animation(?:-name)?:\s*([^;]+);/g)) {
+      for (const name of (value ?? '').matchAll(/(?<![\w-])ol-[a-z0-9-]+/g)) used.add(name[0]);
+    }
+    expect(used.size).toBeGreaterThan(10);
+    for (const name of used) expect(defined, name).toContain(name);
+  });
+
+  it('moves between pages and draws data in only for users who have not asked for less motion', () => {
+    // The ranges of every block that follows a marker, found by matching braces.
+    const blocks = (marker: string): [number, number][] => {
+      const out: [number, number][] = [];
+      for (let at = css.indexOf(marker); at >= 0; at = css.indexOf(marker, at + 1)) {
+        const start = css.indexOf('{', at);
+        let depth = 0;
+        let end = start;
+        for (; end < css.length; end++) {
+          if (css[end] === '{') depth++;
+          else if (css[end] === '}' && --depth === 0) break;
+        }
+        out.push([start, end]);
+      }
+      return out;
+    };
+    const gated = blocks('@media (prefers-reduced-motion: no-preference)');
+    const inside = (i: number): boolean => gated.some(([a, b]) => a < i && i < b);
+    // Cross-document view transitions are opted into in the media query, outside the layers.
+    const at = css.search(/^\s*@view-transition \{$/m);
+    expect(inside(at)).toBe(true);
+    expect(at).toBeLessThan(css.indexOf('@layer ol.reset {'));
+    // So are entrances and endless motion: content rising, data drawing in, pulses. Everything
+    // else runs in an instant for reduced motion (base.css).
+    for (const name of ['ol-rise', 'ol-grow-y', 'ol-draw', 'ol-fill-in', 'ol-pulse', 'ol-ping']) {
+      const uses = [...css.matchAll(new RegExp(`animation:[^;]*\\b${name}\\b`, 'g'))];
+      expect(uses.length, name).toBeGreaterThan(0);
+      for (const m of uses) expect(inside(m.index ?? 0), `${name} at ${m.index}`).toBe(true);
+    }
   });
 
   it('ships the fonts its font faces reference, with their licence', () => {

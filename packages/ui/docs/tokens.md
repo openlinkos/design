@@ -159,6 +159,7 @@ Every token of `@openlinkos/ui` 0.4.1, resolved for light and dark mode with the
 | `--ol-duration-fast` | `100ms` | = | Hover and press feedback. |
 | `--ol-duration-normal` | `160ms` | = | Small elements entering: menus, popovers. |
 | `--ol-duration-slow` | `240ms` | = | Larger elements: dialogs, toasts. |
+| `--ol-duration-slower` | `400ms` | = | Content and data arriving: a page's content, bars and meters drawing in. |
 
 ## Motion: easing
 
@@ -241,6 +242,7 @@ Every token of `@openlinkos/ui` 0.4.1, resolved for light and dark mode with the
 | `--ol-font-size-xl` | `1.25rem` | = |  |
 | `--ol-font-size-2xl` | `1.5rem` | = |  |
 | `--ol-font-size-3xl` | `2.25rem` | = |  |
+| `--ol-font-size-4xl` | `3rem` | = | The hero title of a service page; nowhere in an app. |
 
 ## Line height
 
@@ -254,6 +256,7 @@ Every token of `@openlinkos/ui` 0.4.1, resolved for light and dark mode with the
 | `--ol-line-height-xl` | `1.75rem` | = |  |
 | `--ol-line-height-2xl` | `2rem` | = |  |
 | `--ol-line-height-3xl` | `2.75rem` | = |  |
+| `--ol-line-height-4xl` | `3.5rem` | = |  |
 
 ## Letter spacing
 

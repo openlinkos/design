@@ -1,6 +1,6 @@
 # Components
 
-Every component of `@openlinkos/ui`: what it is for, its markup, variants and states, what accessibility needs from the page, and how to use it well. All of them work without JavaScript. [`demo/components.html`](../demo/components.html) shows each one; run `node demo/serve.ts` in `packages/ui` and open http://127.0.0.1:4321/demo/components.html.
+Every component of `@openlinkos/ui`: what it is for, its markup, variants and states, what accessibility needs from the page, and how to use it well. All of them work without JavaScript. [`demo/components.html`](../demo/components.html) shows each one, [`demo/index.html`](../demo/index.html) an app page, [`demo/auth.html`](../demo/auth.html) a sign-in page and [`demo/site.html`](../demo/site.html) a service site; run `node demo/serve.ts` in `packages/ui` and open http://127.0.0.1:4321/demo/.
 
 States use one convention everywhere: hover and press come from `:hover` and `:active`, keyboard focus from `:focus-visible` (one 2px ring, see [principles](principles.md#accessibility)), and the rest from ARIA attributes the page needs anyway: `aria-current`, `aria-pressed`, `aria-selected`, `aria-invalid`, `aria-busy`, `aria-disabled`, `aria-sort`. Styling by ARIA keeps the visual state and the accessible state from drifting apart.
 
@@ -23,7 +23,15 @@ The frame of an app: a sidebar on the shell colour, and one floating content pan
         <a class="ol-nav-item" href="/timeline" aria-current="page">…icon… Timeline</a>
       </div>
     </nav>
-    <div class="ol-sidebar-foot">…</div>
+    <div class="ol-sidebar-foot">
+      <fieldset class="ol-segmented ol-segmented-block"><legend class="ol-sr-only">Theme</legend>…</fieldset>
+      <button class="ol-sidebar-account" type="button" popovertarget="account">
+        <span class="ol-avatar ol-avatar-sm">A</span>
+        <span class="ol-sidebar-account-text"><span class="ol-sidebar-account-name">admin</span><span class="ol-sidebar-account-meta">Administrator</span></span>
+        …chevrons-up-down icon…
+      </button>
+      <div class="ol-menu ol-menu-above" id="account" popover>…</div>
+    </div>
   </aside>
   <div class="ol-main">
     <header class="ol-topbar"><ol class="ol-breadcrumb">…</ol><div class="ol-topbar-actions">…</div></header>
@@ -38,6 +46,8 @@ The frame of an app: a sidebar on the shell colour, and one floating content pan
 - Mark the current page with `aria-current="page"`; `.ol-nav-count` shows a number after an item.
 - Group navigation by task, at most about five items per group. Name groups with nouns.
 - Keep the skip link first in the body.
+- The foot of the sidebar holds the theme switch and the signed-in account. `.ol-sidebar-account` shows the avatar, the name and the role, and opens the account's menu above it: the account's own page, the [language](#language), and signing out, last. Settings of the app itself belong in its navigation, not in this menu.
+- Moving between pages, the sidebar holds still and the panel cross-fades; see [motion](#motion).
 
 ## Page structure {#page-structure}
 
@@ -56,7 +66,7 @@ A brand panel beside the form. The panel draws the brand's mark large as an orig
 ```html
 <main class="ol-auth">
   <aside class="ol-auth-aside">
-    <div class="ol-auth-rings" aria-hidden="true"></div>
+    <div class="ol-auth-rings" aria-hidden="true"><img class="ol-rings-mark" src="logo-dark.svg" alt=""></div>
     <a class="ol-auth-brand" href="/">…mark… Origin</a>
     <p class="ol-auth-statement">Local-first, cross-agent memory for your AI coding agents.</p>
     <p class="ol-auth-meta">memory.example.com</p>
@@ -67,7 +77,7 @@ A brand panel beside the form. The panel draws the brand's mark large as an orig
       <p>Enter the admin password of this hub.</p>
       <form>…</form>
     </div>
-    <div class="ol-auth-foot">…</div>
+    <div class="ol-auth-foot"><span>Origin 0.2.0</span><a href="…">Documentation</a>…language menu…</div>
   </div>
 </main>
 ```
@@ -75,7 +85,44 @@ A brand panel beside the form. The panel draws the brand's mark large as an orig
 - Without the aside, `.ol-auth` centres a framed card on the shell: use it for errors and other single-card pages.
 - On narrow screens the panel becomes a band above the form, and the drawing scales down.
 - The rings use the brand's mark colour (`--ol-color-mark-inverse`) and disappear in forced-colours mode. They animate in once, unless the user prefers reduced motion.
+- At the origin goes the brand's own mark, its version for dark backgrounds, as `.ol-rings-mark` (an `<img>` or an inline `<svg>`, whose `.ol-brand-accent` or `.ol-brand-accent-line` shapes take the mark's colour). Without one, a ring and a dot stand for it, in the proportions of Origin's mark.
+- The footer holds the version, links, and the [language menu](#language), opening above it (`.ol-menu-above`).
 - The statement says what the product is; it is not a slogan.
+
+## Service sites {#site}
+
+One public page about one service, such as a mirror's usage page: a header with the brand, links to the page's sections and its tools; a hero; sections; and a footer. The hero is the page's one bold moment: a dark panel where the brand's mark sends rings across, and every few seconds one more ring leaves it.
+
+```html
+<header class="ol-site-header">
+  <a class="ol-brand" href="/">…mark… LinkOS Mirrors</a>
+  <nav class="ol-site-nav" aria-label="On this page"><a href="#start">Get started</a>…</nav>
+  <div class="ol-site-tools">…language menu…<fieldset class="ol-segmented ol-segmented-icons">…</fieldset></div>
+</header>
+<main id="main">
+  <section class="ol-hero" aria-labelledby="hero-title">
+    <div class="ol-hero-rings" aria-hidden="true"><img class="ol-rings-mark" src="logo-dark.svg" alt=""></div>
+    <div class="ol-hero-body">
+      <a class="ol-status ol-status-success" href="#status"><span class="ol-dot ol-dot-live"></span>All mirrors are up</a>
+      <h1 class="ol-hero-title" id="hero-title">Container images, pulled through a mirror</h1>
+      <p class="ol-hero-lead">Docker Hub, GitHub, Quay, Google and Kubernetes registries through one address each.</p>
+      <div class="ol-hero-actions"><a class="ol-btn ol-btn-primary ol-btn-lg" href="#start">Get started</a>…</div>
+    </div>
+  </section>
+  <section class="ol-site-section" id="start" aria-labelledby="start-title">
+    <div class="ol-site-section-header"><h2 class="ol-site-section-title" id="start-title">Get started</h2><p class="ol-site-section-description">…</p></div>
+    …
+  </section>
+</main>
+<footer class="ol-site-footer"><div>…brand, .ol-site-footer-note…</div><div class="ol-site-footer-links">…</div></footer>
+```
+
+- The header, sections and footer span the page and keep their content in one column, 68rem wide (`--ol-site-width`); `.ol-site-section-band` gives a section a band of colour. Grids inside a section follow the column's width, as in an app.
+- The header is sticky; at the top of the page it sits on the page, and it takes its frame as the page scrolls, where the browser supports scroll-driven animations. Anchors land clear of it, and scroll there smoothly unless the user prefers reduced motion. A script may mark the section in view with `aria-current="true"` on its link.
+- Below 860px the header takes two rows: the brand and the first tool (the language), then the section links, which scroll sideways and fade at the end, with the other tools after them.
+- `.ol-hero-rings` draws the rings as on the [sign-in page](#sign-in). Put the brand's mark for dark backgrounds inside as `.ol-rings-mark` (an `<img>` or an inline `<svg>`); without one, a ring and a dot stand for it. On the dark panel, secondary and ghost buttons, links, focus and status pills take the panel's colours; the primary button keeps the brand's.
+- Spend the boldness on the hero and nowhere else: sections are plain headings, text and the usual components. Say in the hero what the service does and what it costs, show its state, and offer the first step.
+- The page works without script. A script can switch [tabs](#navigation), fill in a status, or convert an input; keep what it writes to text.
 
 ## Buttons {#buttons}
 
@@ -122,6 +169,31 @@ States: hover darkens the edge, focus shows the ring, `aria-invalid="true"` turn
 - Control edges reach 3:1 against the page (WCAG 1.4.11), so the field is visible without its label.
 - In forced-colours mode, checkboxes, radios, switches and selects fall back to the platform's own controls.
 
+## Settings {#settings}
+
+Edit a setting where it is used: the limits on the limits page, a site's links on the page about that site. Two layouts serve this.
+
+`.ol-settings` lists one setting per row, its name and what it does at the start, its control at the end. In a panel it loses its own frame, and the panel's footer saves it: a note at the start, the buttons at the end.
+
+```html
+<form class="ol-panel" method="post">
+  <div class="ol-panel-header"><h2 class="ol-panel-title">…icon… Default limits</h2></div>
+  <div class="ol-settings">
+    <div class="ol-setting">
+      <div class="ol-setting-text"><label class="ol-setting-title" for="rate">Manifests a second</label>
+        <p class="ol-setting-description" id="rate-hint">Per client address. 0 turns the limit off.</p></div>
+      <div class="ol-setting-control"><input class="ol-input" id="rate" aria-describedby="rate-hint"></div>
+    </div>
+  </div>
+  <div class="ol-panel-footer"><span>Changes apply at once.</span><button class="ol-btn ol-btn-primary ol-btn-sm">Save limits</button></div>
+</form>
+```
+
+`.ol-form-section` splits a long form into parts, each with its name and purpose (`-header`, `-title`, `-description`) beside its fields (`-body`), or above them where the content is narrower than 48rem. A line divides the sections.
+
+- Name the save button after what it saves ("Save limits"), and say in the footer when changes take effect.
+- Keep a setting's description to one sentence about what changes; put the rest in the documentation.
+
 ## Tables {#tables}
 
 ```html
@@ -137,6 +209,18 @@ Density: `-compact`, default, `-relaxed`. `-sticky` keeps the heading row visibl
 
 Rows in groups, such as a timeline by day: give each group its own `<tbody>`, headed by `<tr class="ol-table-group"><th colspan="…" scope="rowgroup">Today</th></tr>`.
 
+A row that stands for something with a page of its own, such as an account: mark its name's link `.ol-row-link`, and the whole row becomes that link's target; other links and buttons in the row stay on top. Put a row's actions in a menu behind an icon button in the last cell, labelled with the row's name:
+
+```html
+<tr>
+  <td><span class="ol-entity"><span class="ol-avatar ol-avatar-sm ol-series-3">CI</span><span class="ol-entity-text">
+    <a class="ol-entity-title ol-row-link" href="/users/ci-runner">ci-runner</a><span class="ol-entity-sub">Build machines</span></span></span></td>
+  …
+  <td class="ol-actions"><button class="ol-btn ol-btn-ghost ol-btn-sm ol-btn-icon" popovertarget="row-ci" aria-label="Actions for ci-runner">…ellipsis icon…</button>
+    <div class="ol-menu ol-menu-end" id="row-ci" popover>…</div></td>
+</tr>
+```
+
 - Right-align numbers and keep units in the heading.
 - On narrow screens tables scroll sideways; do not hide columns that carry meaning.
 
@@ -146,7 +230,7 @@ Rows in groups, such as a timeline by day: give each group its own `<tbody>`, he
 
 ## Description lists, compact lists, feeds {#lists}
 
-`.ol-dl` lays `dt`/`dd` pairs in two columns; `dt.ol-dl-sub` indents a sub-row under the one before. `.ol-list` is a compact list in one frame: each item a title (`.ol-list-title`, often a link, kept to one line) over a line of facts (`.ol-list-meta`). `.ol-list-row` puts the title on one line with a value (`.ol-list-value`), a badge or a quiet link; a meter can sit under it. Inside a panel the list loses its own frame.
+`.ol-dl` lays `dt`/`dd` pairs in two columns; `dt.ol-dl-sub` indents a sub-row under the one before; `.ol-dl-stack` puts each term above its value, for a narrow column such as a detail page's side panel. `.ol-list` is a compact list in one frame: each item a title (`.ol-list-title`, often a link, kept to one line) over a line of facts (`.ol-list-meta`). `.ol-list-row` puts the title on one line with a value (`.ol-list-value`), a badge or a quiet link; a meter can sit under it. Inside a panel the list loses its own frame.
 
 ```html
 <ul class="ol-list">
@@ -162,9 +246,11 @@ Use a compact list for a short "latest" or "most active" list beside other conte
 
 `.ol-feed` lists events: `.ol-feed-item` with `data-role` (`user`, `assistant`, `tool`, `system`) and optionally `data-highlight="true"`, an `.ol-feed-avatar`, `.ol-feed-meta`, and `.ol-feed-body` (pre-wrapped text; tool output in monospace).
 
-## Badges, counts, avatars {#badges}
+## Badges, counts, avatars, entities {#badges}
 
-`.ol-badge` with a tone (`-accent`, `-success`, `-warning`, `-danger`, `-info`; neutral by default), optionally `-solid`, `-outline`, `-square` (tags), or `-mono` (an identifier, such as an agent's name or a version); add `.ol-dot` for a status dot. `.ol-count` shows a number next to a label. `.ol-avatar` (`-sm`, `-lg`) shows initials, an icon, or an image.
+`.ol-badge` with a tone (`-accent`, `-success`, `-warning`, `-danger`, `-info`; neutral by default), optionally `-solid`, `-outline`, `-square` (tags), or `-mono` (an identifier, such as an agent's name or a version); add `.ol-dot` for a status dot. `.ol-count` shows a number next to a label. `.ol-avatar` (`-sm`, `-lg`) shows initials, an icon, or an image; with `.ol-series-<n>` it takes a tint of that [series colour](principles.md#chart-series), so people in a list are told apart at a glance. Derive the slot from the name, such as a hash of it, so a person keeps their colour; the initials stay in the text colour (tested at 4.5:1).
+
+`.ol-entity` is someone or something named: an avatar or icon, then `.ol-entity-text` with `.ol-entity-title` (often a link) over `.ol-entity-sub`, both kept to one line. Use it in table cells, a menu's header (`.ol-menu-header`) and a detail page's title row.
 
 - A badge states a status or category in one or two words. Never make it the only way to act.
 
@@ -190,6 +276,27 @@ Small, muted notes in a flow of content, such as a command an agent ran or conte
 
 - A chip is a note, not a control: one that opens is a disclosure, one that navigates is a link. For an action, use a button.
 - Keep labels to the gist; the detail holds the rest.
+
+## Status pills, uptime strips, steps {#status}
+
+`.ol-status` states the overall state of a service in a few words: a dot in its tone (`-success`, `-warning`, `-danger`, `-info`; neutral without one), then the words. As a link it leads to the detail. `.ol-dot-live` sends a ring from the dot every few seconds, for a state that is being watched live.
+
+```html
+<a class="ol-status ol-status-success" href="#status"><span class="ol-dot ol-dot-live"></span>All mirrors are up</a>
+```
+
+`.ol-uptime` shows how something did over time, one cell per period, oldest first: `-ok`, `-degraded` or `-down`, and no class for a period without data. Cells keep to half a rem wide (`-lg`: taller, up to a rem), dim around the one the pointer is on, and rise one after another when the page draws them.
+
+```html
+<div class="ol-uptime" role="img" aria-label="Last 24 hours: up except at 14:00, when 96% of checks passed">
+  <span class="ol-uptime-ok" title="13:00 100%"></span><span class="ol-uptime-degraded" title="14:00 96%"></span>…
+</div>
+```
+
+- The strip is one image to assistive technology: its label says in words what it shows, and each cell's `title` gives its period and figure to pointer users. Put the figure (99.7% available) in text beside it.
+- In forced-colours mode, periods with data take the text colour and periods that were down the highlight colour.
+
+`.ol-steps` numbers what to do, in order, on a line that joins the numbers: each `<li>` starts with an `.ol-step-title` and holds what the step needs, such as a code block.
 
 ## Code and secrets {#code}
 
@@ -242,9 +349,11 @@ A stacked column chart:
 </figure>
 ```
 
-Parts: `.ol-chart-grid` (gridlines) and `.ol-chart-axis` (the baseline) are hairlines that stay 1px however the SVG scales; `.ol-chart-tick` and `.ol-chart-label` are axis text in `fg-subtle`; `.ol-chart-bar` fills, `.ol-chart-line` strokes 2px, and `.ol-chart-dot` fills with a ring in the surface colour, each in its series colour. `.ol-chart-col` groups a column: its transparent `.ol-chart-hit` band, the full height of the plot and wider than the bar, shades on hover, and its `<title>` shows the numbers. To let keyboard users step through the columns, give each group `tabindex="0"` and an `aria-label`; the band then shows the focus ring. Most charts need not: the table holds every number.
+Parts: `.ol-chart-grid` (gridlines) and `.ol-chart-axis` (the baseline) are hairlines that stay 1px however the SVG scales; `.ol-chart-tick` and `.ol-chart-label` are axis text in `fg-subtle`; `.ol-chart-bar` fills, `.ol-chart-line` strokes 2px, `.ol-chart-area` tints the area under a line (draw it first), and `.ol-chart-dot` fills with a ring in the surface colour, each in its series colour. A series that means good or bad takes `.ol-series-success`, `-warning` or `-danger` instead of a slot. `.ol-chart-col` groups a column: its transparent `.ol-chart-hit` band, the full height of the plot and wider than the bar, shades on hover, and its `<title>` shows the numbers. To let keyboard users step through the columns, give each group `tabindex="0"` and an `aria-label`; the band then shows the focus ring. Most charts need not: the table holds every number.
 
 Legends: `<ul class="ol-legend">` with a `.ol-swatch` (a square; `.ol-swatch-line` for a line series), the series' name, and optionally its total in `.ol-legend-value`. `.ol-legend-item` lays out one swatch and name on its own, such as in a table cell.
+
+Bars rise from the baseline when the page draws them, column after column where the browser can count siblings (`sibling-index()`); lines draw from the start, and dots follow. Reduced motion shows the chart at once.
 
 Meters in a series colour show one value against the largest of a list: `<meter class="ol-meter ol-meter-series" max="14026" value="526">526 events</meter>`, slot 1 unless a `.ol-series-<n>` says otherwise. They ignore `low`, `high` and `optimum`.
 
@@ -289,20 +398,29 @@ Wrap each table in `.ol-prose-table`, which scrolls sideways. Cells keep to one 
 </div>
 ```
 
-Tones: neutral, `-info`, `-success`, `-warning`, `-danger`; `.ol-alert-actions` adds buttons. `.ol-banner` (`-warning`, `-danger`) spans the top of the page for a system-wide state. `.ol-toaster` with `.ol-toast` items shows a transient confirmation, typically rendered by the server after a redirect.
+Tones: neutral, `-info`, `-success`, `-warning`, `-danger`; `.ol-alert-actions` adds buttons. `.ol-banner` (`-warning`, `-danger`) spans the top of the page for a system-wide state.
+
+`.ol-toaster` with `.ol-toast` items shows a transient confirmation, typically rendered by the server after a redirect. A tone (`-success`, `-info`, `-warning`, `-danger`) colours its icon. `.ol-toast-auto` leaves by itself after six seconds, with no script; pointing at it or focusing inside it holds it.
+
+```html
+<div class="ol-toaster" role="status"><div class="ol-toast ol-toast-success ol-toast-auto">…icon… Limits saved.</div></div>
+```
+
+`.ol-flash` briefly highlights a value that has just changed, such as a live figure: add it when the value changes and remove it on `animationend`, so it can flash again.
 
 - Use `role="alert"` only for errors that need attention now; use `role="status"` for confirmations.
 - Lead with what happened, then what to do. Pair colour with an icon and words.
+- A toast that leaves holds only a confirmation. Anything the reader must read or act on, such as an error or a secret shown once, belongs in an alert on the page.
 
 ## Progress, skeletons, spinners, empty states {#progress}
 
-Style the native `<progress class="ol-progress">` and `<meter class="ol-meter">` so assistive technology reads their values; meters colour themselves by `low`, `high` and `optimum`. `.ol-skeleton` holds space while content loads (mark the region `aria-busy="true"`); `.ol-spinner` shows pending work next to text.
+Style the native `<progress class="ol-progress">` and `<meter class="ol-meter">` so assistive technology reads their values; meters colour themselves by `low`, `high` and `optimum`, and fill in from the start when the page draws them. `.ol-skeleton` holds space while content loads (mark the region `aria-busy="true"`); `.ol-spinner` shows pending work next to text.
 
 `.ol-empty` explains an empty view: `.ol-empty-icon` (drawn at the centre of faint rings), `.ol-empty-title`, `.ol-empty-text`, and one action that fills it.
 
 ## Panels, cards, dividers, disclosures, folds {#containers}
 
-`.ol-panel` frames grouped detail: `-header` (with `-title`), `-body`, `-footer`; `-danger` marks a destructive zone. `.ol-card` is one item of a collection, often a link; the card a URL's `#fragment` points at is outlined in the accent and scrolls clear of the top bar. `.ol-divider` separates content, with optional text. `<details class="ol-details">` reveals secondary detail; several `<details class="ol-accordion">` with the same `name` open one at a time.
+`.ol-panel` frames grouped detail: `-header` (with `-title`), `-body`, `-footer`; `-danger` marks a destructive zone. A footer with buttons saves the panel: its note stays at the start and the buttons go to the end, on a quiet tint. `.ol-card` is one item of a collection, often a link that lifts towards the pointer; `.ol-card-row` lays a title and a badge, or facts, at both ends of a line, and the last row sits at the card's foot. The card a URL's `#fragment` points at is outlined in the accent and scrolls clear of the top bar. `.ol-divider` separates content, with optional text. `<details class="ol-details">` reveals secondary detail; several `<details class="ol-accordion">` with the same `name` open one at a time. Disclosures, accordions and folds open and close smoothly where the browser can animate to their content's height.
 
 A fold puts a run of steps behind one summary line that says what is inside: counts by kind, and how they went.
 
@@ -325,7 +443,11 @@ A fold puts a run of steps behind one summary line that says what is inside: cou
 
 ## Tabs, segmented controls, pagination, quiet links {#navigation}
 
-`.ol-tabs` with `.ol-tab` links switches between URLs (mark the current one `aria-current="page"`). For panels switched by script, use the ARIA tabs pattern instead. `.ol-segmented` holds mutually exclusive buttons (`aria-pressed`) or links (`aria-current="true"`), such as a theme switch; `-block` fills the width. `.ol-pager` shows a summary and previous/next links.
+`.ol-tabs` with `.ol-tab` links switches between URLs (mark the current one `aria-current="page"`). For panels switched by script, use the ARIA tabs pattern with the same classes: `<div class="ol-tabs" role="tablist">` holding `<button class="ol-tab" role="tab" aria-selected="true" aria-controls="…">`, and `.ol-tab-panel` with `role="tabpanel"`; the script moves `aria-selected` and handles the arrow keys. `.ol-pager` shows a summary and previous/next links.
+
+`.ol-segmented` holds mutually exclusive buttons (`aria-pressed`) or links (`aria-current="true"`), such as a theme switch; `-block` fills the width of its container. Group the options in a `<fieldset>` with a visually hidden `<legend>`, and put each label in a `<span>`. Where the options do not fit, one with an icon shows only its icon (screen readers still read the label), and one without ends its label with an ellipsis. `-icons` always shows only the icons, for a header; give each option an `aria-label` and a `title`.
+
+- Label a theme switch Auto, Light and Dark (自动, 浅色, 深色): one short word each.
 
 `.ol-quiet-link` is a small link, often only an icon, that stays out of the way until wanted, such as the source of every line in a feed: `<a class="ol-quiet-link" href="/event?id=…" aria-label="Open the event">…icon…</a>`. At rest its icon is `--ol-color-icon-subtle` (3:1) and its text `fg-subtle` (4.5:1); hover and focus fill it. It keeps a 24px target. An icon-only quiet link needs a text alternative, hidden text in `.ol-sr-only` or an `aria-label`; a `title` can add the id for pointer users.
 
@@ -341,9 +463,46 @@ A fold puts a run of steps behind one summary line that says what is inside: cou
 </div>
 ```
 
-Menus and popovers use the Popover API: the browser opens them from `popovertarget`, closes them on Escape or an outside click, and puts them in the top layer. Where CSS anchor positioning is supported they open below their button (`.ol-menu-end` aligns to its end); elsewhere they open centred. `.ol-popover` holds richer content.
+Menus and popovers use the Popover API: the browser opens them from `popovertarget`, closes them on Escape or an outside click, and puts them in the top layer. Where CSS anchor positioning is supported they open below their button, at least as wide as it (`.ol-menu-end` aligns to its end, `.ol-menu-above` opens above it, as at the foot of the sidebar) and flip when there is no room; elsewhere they open centred. They slide out of their button and close quicker than they open. `.ol-popover` holds richer content.
+
+Inside a menu: `.ol-menu-label` names a group of items, `.ol-menu-separator` divides groups, `.ol-menu-header` says who or what the menu is about (often an `.ol-entity`), and `.ol-menu-item-end` puts a shortcut or a current value at an item's end. The chosen one of several options gets a check mark at its end: mark it `aria-current="true"` in a plain menu of links or buttons, or `aria-checked="true"` on `role="menuitemradio"` in a `role="menu"` that a script drives with the arrow keys.
+
+### Language menus {#language}
+
+A language switch is a menu, the same in every app and site: its button shows the language now in use, and the menu lists every language in that language, with the current one checked.
+
+```html
+<button class="ol-btn ol-btn-ghost ol-btn-sm" type="button" popovertarget="language">…languages icon… 简体中文 …chevron-down icon…</button>
+<div class="ol-menu" id="language" popover>
+  <a class="ol-menu-item" href="?lang=zh-CN" lang="zh-CN" hreflang="zh-CN" aria-current="true">简体中文</a>
+  <a class="ol-menu-item" href="?lang=en" lang="en" hreflang="en">English</a>
+</div>
+```
+
+- Write each language in its own language (English, 简体中文), never translated into the page's language, and mark it with `lang` so it is read in that language.
+- Show the current language on the button, not the other one: a button that says "English" on a Chinese page reads as a label, not as a switch.
+- Put the switch where people look for it: in the account menu of an app, in the footer of a sign-in page, at the end of a site's header.
+- A form that posts the choice works as well as links: use `<form method="post">` with a `<button class="ol-menu-item">` per language.
 
 `<dialog class="ol-dialog">` (`-header`, `-title`, `-body`, `-footer`) opens with `command="show-modal" commandfor="id"` or `showModal()`, traps focus, and closes with Escape. Give it `aria-labelledby`.
 
 - Menus hold actions on one object; put destructive items last, after a separator.
 - Use a dialog only to confirm something consequential; prefer inline confirmation otherwise.
+
+## Motion {#motion}
+
+Motion explains change: where something came from, what just changed, that the page is alive. It never delays the reader, and none of it plays for users who prefer reduced motion. Durations and easings come from the motion tokens: 100 ms for hover and press, 160 ms for small things entering, 240 ms for larger ones, 400 ms for content and data arriving; the standard curve within the screen, a decelerating one for what enters, an accelerating one for what leaves.
+
+| What moves | How |
+| --- | --- |
+| Moving between pages | `ui.css` opts same-origin navigations into cross-document view transitions: the sidebar holds still and the content panel cross-fades. To turn them off, add `@view-transition { navigation: none; }` to the app's stylesheet. |
+| A page's content | Its first blocks rise into place one after another, 40 ms apart. |
+| Data | Chart bars rise from the baseline, lines draw, meters and progress bars fill, uptime cells rise one after another. |
+| Overlays | Menus and popovers slide out of their button; dialogs and their backdrop fade in; toasts rise in and, with `-auto`, leave. |
+| Disclosures | Details, accordions and folds open to their content's height. |
+| Changes | `.ol-flash` highlights a value that has just changed. |
+| Life | The hero sends a ring from the brand's mark every few seconds; `.ol-dot-live` pings. |
+| Response | Linked cards lift towards the pointer; uptime cells dim around the one pointed at; the site header takes its frame as the page scrolls. |
+
+- Animate opacity and transforms, which the browser moves without laying out the page again. Nothing the reader is reading moves.
+- Entrances run once, when the page draws them; loops are reserved for life (the hero, a live dot) and pending work (a spinner, a skeleton).
