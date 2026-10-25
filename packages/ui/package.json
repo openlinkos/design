@@ -1,6 +1,6 @@
 {
   "name": "@openlinkos/ui",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "The OpenLinkOS design system for apps: DTCG design tokens, framework-free CSS for layout and components (per brand, light and dark, accessible by test), and a curated Lucide icon set.",
   "license": "MIT",
   "author": "OpenLinkOS",
