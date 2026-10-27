@@ -44,7 +44,7 @@
     "build": "node scripts/build.ts"
   },
   "devDependencies": {
-    "lucide-static": "1.60.0"
+    "lucide-static": "1.61.0"
   },
   "publishConfig": {
     "access": "public"
