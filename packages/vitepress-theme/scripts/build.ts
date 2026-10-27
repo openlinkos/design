@@ -14,7 +14,12 @@ const dist = join(pkg, 'dist');
 
 rmSync(dist, { recursive: true, force: true });
 
-const tsc = createRequire(import.meta.url).resolve('typescript/bin/tsc');
+// typescript/bin/tsc is not exported from TypeScript 7 on, so find it next to the package's package.json
+const tsc = join(
+  dirname(createRequire(import.meta.url).resolve('typescript/package.json')),
+  'bin',
+  'tsc',
+);
 execFileSync(process.execPath, [tsc, '-p', join(pkg, 'tsconfig.json')], { stdio: 'inherit' });
 
 copyFileSync(join(pkg, 'src', 'theme', 'style.css'), join(dist, 'theme', 'style.css'));

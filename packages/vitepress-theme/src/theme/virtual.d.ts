@@ -4,3 +4,7 @@ declare module 'virtual:openlinkos/client' {
   /** The registrable domain for the language preference cookie, or null for host-only. */
   export const cookieDomain: string | null;
 }
+
+// Stylesheets imported for their side effects (./style.css and the plugin's virtual:openlinkos/brand.css);
+// Vite resolves them when the site is built.
+declare module '*.css';
