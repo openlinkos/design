@@ -534,6 +534,13 @@ details.ol-chip[open] > summary::after {
   overflow-wrap: anywhere;
 }
 
+/* Without a label the copy button sits beside the code: the code scrolls in a narrower box, so a long
+   line never slides under the button. */
+.ol-code:has(> .ol-copy):not(:has(> .ol-code-label)) > pre {
+  margin-inline-end: var(--ol-space-10);
+  padding-inline-end: 0;
+}
+
 /* Words quoted from a source. */
 .ol-quote {
   margin: 0;

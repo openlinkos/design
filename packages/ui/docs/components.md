@@ -160,7 +160,7 @@ States: `disabled` or `aria-disabled="true"` (for links) dims the button. `aria-
 </div>
 ```
 
-Controls: `.ol-input` (`-sm`, `-lg`, `-mono`), `.ol-select`, `.ol-textarea` (grows with its content where supported), `.ol-input-group` with `.ol-addon` or a button, `.ol-search` (leading icon), `.ol-checkbox`, `.ol-radio`, and `.ol-switch` (a checkbox with `role="switch"`), each inside a `<label class="ol-check">`. Group related checks in `<fieldset class="ol-fieldset">` with a `legend`. `.ol-form` stacks fields; `.ol-form-actions` ends a form; `.ol-toolbar` lays filters in a row (`.ol-grow` fills; a `.ol-check` sits level with the controls; an `.ol-section` after it gets space).
+Controls: `.ol-input` (`-sm`, `-lg`, `-mono`), `.ol-select`, `.ol-textarea` (grows with its content where supported), `.ol-input-group` with `.ol-addon` or a button, `.ol-search` (leading icon), `.ol-checkbox`, `.ol-radio`, and `.ol-switch` (a checkbox with `role="switch"`), each inside a `<label class="ol-check">`. Group related checks in `<fieldset class="ol-fieldset">` with a `legend`. `.ol-form` stacks fields; `.ol-form-actions` ends a form; `.ol-toolbar` lays filters in a row (`.ol-grow` fills; a `.ol-check` sits level with the controls; an `.ol-section` after it gets space; as a panel's body or the last thing in its box it adds no space below).
 
 States: hover darkens the edge, focus shows the ring, `aria-invalid="true"` turns the edge red, `disabled` greys the control, `readonly` tints it.
 
@@ -300,7 +300,7 @@ Small, muted notes in a flow of content, such as a command an agent ran or conte
 
 ## Code and secrets {#code}
 
-`.ol-code` frames a `<pre>`, optionally with `.ol-code-label` and a copy button (`.ol-copy`, wired by the app). `.ol-code-wrap` wraps long single lines, such as raw JSON, instead of scrolling. `.ol-quote` sets words quoted from a source; `.ol-text-pre` shows stored text whole, keeping line breaks. `.ol-mono` sets inline text in monospace; `.ol-kbd` shows a key. `.ol-secret` shows a value that is displayed once, selects entirely on click, and wraps anywhere.
+`.ol-code` frames a `<pre>`, optionally with `.ol-code-label` and a copy button (`.ol-copy`, wired by the app). The button sits in the label; without one it sits beside the code, which scrolls clear of it. `.ol-code-wrap` wraps long single lines, such as raw JSON, instead of scrolling. `.ol-quote` sets words quoted from a source; `.ol-text-pre` shows stored text whole, keeping line breaks. `.ol-mono` sets inline text in monospace; `.ol-kbd` shows a key. `.ol-secret` shows a value that is displayed once, selects entirely on click, and wraps anywhere.
 
 ## Charts {#charts}
 
