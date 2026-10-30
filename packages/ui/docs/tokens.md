@@ -2,7 +2,7 @@
 
 # Token reference
 
-Every token of `@openlinkos/ui` 0.6.0, resolved for light and dark mode with the OpenLinkOS accent. Accent tokens take each brand's colours under `data-brand`; size tokens marked with a density change under `data-density`. The sources are the DTCG files in [`tokens/`](../tokens).
+Every token of `@openlinkos/ui` 0.6.1, resolved for light and dark mode with the OpenLinkOS accent. Accent tokens take each brand's colours under `data-brand`; size tokens marked with a density change under `data-density`. The sources are the DTCG files in [`tokens/`](../tokens).
 
 ## Colour: surfaces, text and lines
 

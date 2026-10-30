@@ -1,6 +1,6 @@
 {
   "name": "@openlinkos/vitepress-theme",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "The shared VitePress theme of OpenLinkOS and LinkOS sites: brand, bilingual interface, language detection, metadata and a bilingual coverage check.",
   "license": "MIT",
   "author": "OpenLinkOS",
