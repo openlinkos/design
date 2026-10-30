@@ -187,6 +187,112 @@
   display: contents;
 }
 
+/*
+ * Sheets: a pane that slides in from an edge, above the page, for what a narrow screen has no room
+ * for beside the content: the navigation, a list's filters, the list of a list-detail layout. A
+ * sheet is a popover, so it needs no script: the backdrop, a click outside, and Escape close it,
+ * and focus returns to its button. A layout can show the same element in place where there is
+ * room (see workbench.css), so a pane is written once.
+ *
+ *   <button class="ol-btn ol-btn-secondary ol-btn-sm ol-sheet-open" popovertarget="filters">…</button>
+ *   <aside class="ol-sheet" id="filters" popover aria-label="Filters">
+ *     <div class="ol-sheet-head"><h2 class="ol-sheet-title">Filters</h2>
+ *       <button class="ol-btn ol-btn-ghost ol-btn-icon ol-btn-sm" popovertarget="filters"
+ *         popovertargetaction="hide" aria-label="Close">…x icon…</button></div>
+ *     …
+ *   </aside>
+ *
+ * -end slides in from the end.
+ */
+
+.ol-sheet {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: min(20rem, 85vw);
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  border: 0;
+  border-inline-end: 1px solid var(--ol-color-border);
+  background: var(--ol-color-surface-overlay);
+  box-shadow: var(--ol-shadow-xl);
+  color: var(--ol-color-fg);
+  translate: -100% 0;
+  transition:
+    translate var(--ol-duration-normal) var(--ol-ease-enter),
+    overlay var(--ol-duration-normal) allow-discrete,
+    display var(--ol-duration-normal) allow-discrete;
+}
+
+.ol-sheet:popover-open {
+  translate: 0 0;
+}
+
+@starting-style {
+  .ol-sheet:popover-open {
+    translate: -100% 0;
+  }
+}
+
+.ol-sheet:not(:popover-open) {
+  transition-duration: var(--ol-duration-fast);
+  transition-timing-function: var(--ol-ease-exit);
+}
+
+.ol-sheet-end {
+  inset: 0 0 0 auto;
+  border-inline-start: 1px solid var(--ol-color-border);
+  border-inline-end: 0;
+  translate: 100% 0;
+}
+
+@starting-style {
+  .ol-sheet-end:popover-open {
+    translate: 100% 0;
+  }
+}
+
+.ol-sheet::backdrop {
+  background: var(--ol-color-overlay);
+  opacity: 0;
+  transition:
+    opacity var(--ol-duration-normal) var(--ol-ease-standard),
+    overlay var(--ol-duration-normal) allow-discrete,
+    display var(--ol-duration-normal) allow-discrete;
+}
+
+.ol-sheet:popover-open::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .ol-sheet:popover-open::backdrop {
+    opacity: 0;
+  }
+}
+
+.ol-sheet-head {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ol-space-2);
+  min-height: var(--ol-size-topbar);
+  padding-inline: var(--ol-space-4) var(--ol-space-2);
+  border-block-end: 1px solid var(--ol-color-border);
+  background: var(--ol-color-surface-overlay);
+}
+
+.ol-sheet-title {
+  font-size: var(--ol-font-size-md);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: var(--ol-line-height-md);
+}
+
 /* Dialogs */
 
 .ol-dialog {
@@ -271,7 +377,8 @@
 @media (forced-colors: active) {
   .ol-popover,
   .ol-menu,
-  .ol-dialog {
+  .ol-dialog,
+  .ol-sheet {
     border: 1px solid CanvasText;
   }
 

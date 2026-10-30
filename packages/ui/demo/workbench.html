@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workbench – @openlinkos/ui demo</title>
+  <link rel="stylesheet" href="../dist/ui.css">
+</head>
+<!-- The workbench and its layouts: a list with filters, a dashboard, a list beside its detail, and
+     a detail with a side column. Resize the window to see the sidebar become a rail (860–1200px)
+     and a sheet (860px and less), and the panes fold into sheets or below. Serve the package
+     directory over HTTP, for example with `node demo/serve.ts`. -->
+<body data-brand="origin">
+<a class="ol-skip-link" href="#main">Skip to content</a>
+<div class="ol-app ol-app-workbench">
+  <aside class="ol-sidebar" id="nav" popover aria-label="Sections">
+    <div class="ol-sidebar-head">
+      <a class="ol-brand" href="#demo" aria-label="Origin">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="5.5"/><circle cx="24" cy="24" r="6" class="ol-brand-accent"/></svg>
+        <span>Origin</span>
+      </a>
+      <span class="ol-brand-tag">Hub</span>
+    </div>
+    <nav class="ol-nav" aria-label="Sections">
+      <div class="ol-nav-group">
+        <a class="ol-nav-item" href="#demo" title="Overview"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#layout-dashboard"/></svg><span class="ol-nav-text">Overview</span></a>
+        <a class="ol-nav-item" href="#demo" title="Sessions" aria-current="page"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#history"/></svg><span class="ol-nav-text">Sessions</span><span class="ol-nav-count">1,042</span></a>
+        <a class="ol-nav-item" href="#demo" title="Recalls"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#lightbulb"/></svg><span class="ol-nav-text">Recalls</span><span class="ol-nav-count">236</span></a>
+        <a class="ol-nav-item" href="#demo" title="Entries"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#book-marked"/></svg><span class="ol-nav-text">Entries</span><span class="ol-nav-count">117</span></a>
+      </div>
+      <div class="ol-nav-group">
+        <div class="ol-nav-label">Settings</div>
+        <a class="ol-nav-item" href="#demo" title="Devices"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#laptop"/></svg><span class="ol-nav-text">Devices</span></a>
+        <a class="ol-nav-item" href="#demo" title="Forgotten"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#eraser"/></svg><span class="ol-nav-text">Forgotten</span></a>
+        <a class="ol-nav-item" href="#demo" title="Audit log"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#scroll-text"/></svg><span class="ol-nav-text">Audit log</span></a>
+      </div>
+    </nav>
+    <div class="ol-sidebar-foot">
+      <a class="ol-sidebar-status ol-status-success" href="#demo" title="3 devices, all active"><span class="ol-dot"></span><span>3 devices, all active</span></a>
+      <button class="ol-sidebar-account" type="button" popovertarget="prefs" title="Preferences">
+        <svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#settings"/></svg>
+        <span class="ol-sidebar-account-text"><span class="ol-sidebar-account-name">Preferences</span><span class="ol-sidebar-account-meta">Origin 0.4.0</span></span>
+        <svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevrons-up-down"/></svg>
+      </button>
+      <div class="ol-menu ol-menu-above" id="prefs" popover>
+        <div class="ol-menu-label">Colour theme</div>
+        <button class="ol-menu-item" type="button" aria-current="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun-moon"/></svg>Auto</button>
+        <button class="ol-menu-item" type="button"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#sun"/></svg>Light</button>
+        <button class="ol-menu-item" type="button"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#moon"/></svg>Dark</button>
+        <hr class="ol-menu-separator">
+        <button class="ol-menu-item" type="button"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#log-out"/></svg>Sign out</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="ol-main">
+    <header class="ol-topbar">
+      <button class="ol-btn ol-btn-ghost ol-btn-icon ol-btn-sm ol-nav-open" type="button" popovertarget="nav" aria-label="Menu"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#menu"/></svg></button>
+      <h1 class="ol-topbar-title"><span class="ol-topbar-title-text">Sessions</span><span class="ol-topbar-count">1,042</span></h1>
+      <div class="ol-topbar-actions">
+        <form class="ol-search">
+          <svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#search"/></svg>
+          <input class="ol-input ol-input-sm" type="search" placeholder="Search memory…" aria-label="Search">
+        </form>
+        <a class="ol-btn ol-btn-ghost ol-btn-icon ol-btn-sm ol-topbar-search-link" href="#demo"><svg class="ol-icon" aria-hidden="true"><use href="../dist/icons.svg#search"/></svg><span class="ol-sr-only">Search</span></a>
+      </div>
+    </header>
+
+    <main class="ol-content" id="main" tabindex="-1">
+      <!-- A list with its filters. -->
+      <div class="ol-layout-filters">
+        <aside class="ol-sheet ol-facets" id="filters" popover aria-label="Filters">
+          <div class="ol-sheet-head"><h2 class="ol-sheet-title">Filters</h2><button type="button" class="ol-btn ol-btn-ghost ol-btn-icon ol-btn-sm" popovertarget="filters" popovertargetaction="hide" aria-label="Close"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#x"/></svg></button></div>
+          <section class="ol-facet-group">
+            <h2 class="ol-facet-head">Agent <a href="#demo">Clear</a></h2>
+            <ul class="ol-facet-list">
+              <li><a class="ol-facet" href="#demo" aria-current="true"><span class="ol-facet-check" aria-hidden="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#check"/></svg></span><span class="ol-facet-label"><span class="ol-legend-item ol-series-1"><span class="ol-swatch" aria-hidden="true"></span>claude-code</span></span><span class="ol-facet-count">17</span></a></li>
+              <li><a class="ol-facet" href="#demo"><span class="ol-facet-check" aria-hidden="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#check"/></svg></span><span class="ol-facet-label"><span class="ol-legend-item ol-series-3"><span class="ol-swatch" aria-hidden="true"></span>codex</span></span><span class="ol-facet-count">2</span></a></li>
+              <li><a class="ol-facet" href="#demo"><span class="ol-facet-check" aria-hidden="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#check"/></svg></span><span class="ol-facet-label"><span class="ol-legend-item ol-series-5"><span class="ol-swatch" aria-hidden="true"></span>zcode</span></span><span class="ol-facet-count">921</span></a></li>
+            </ul>
+          </section>
+          <section class="ol-facet-group">
+            <h2 class="ol-facet-head">Project</h2>
+            <ul class="ol-facet-list">
+              <li><a class="ol-facet" href="#demo"><span class="ol-facet-check" aria-hidden="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#check"/></svg></span><span class="ol-facet-label">origin</span><span class="ol-facet-count">12</span></a></li>
+              <li><a class="ol-facet" href="#demo"><span class="ol-facet-check" aria-hidden="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#check"/></svg></span><span class="ol-facet-label">openlinkos</span><span class="ol-facet-count">5</span></a></li>
+            </ul>
+            <span class="ol-facet-more">4 more</span>
+          </section>
+        </aside>
+        <section class="ol-layout-main">
+          <div class="ol-filterbar">
+            <form class="ol-search">
+              <svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#search"/></svg>
+              <input class="ol-input ol-input-sm" type="search" placeholder="Words of a title" aria-label="Filter by name">
+            </form>
+            <div class="ol-cluster">
+              <a class="ol-chip" href="#demo">Today <span class="ol-count">2</span></a>
+              <a class="ol-chip" href="#demo">7 days <span class="ol-count">7</span></a>
+              <a class="ol-chip" href="#demo" aria-current="true">30 days <span class="ol-count">17</span></a>
+            </div>
+            <a class="ol-filter-tag" href="#demo" title="Remove this filter"><span>claude-code</span><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#x"/></svg></a>
+            <div class="ol-filterbar-end">
+              <button type="button" class="ol-btn ol-btn-ghost ol-btn-sm" popovertarget="sort"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-down"/></svg>Latest activity</button>
+              <div class="ol-menu ol-menu-end" id="sort" popover>
+                <a class="ol-menu-item" href="#demo" aria-current="true">Latest activity</a>
+                <a class="ol-menu-item" href="#demo">Most events</a>
+              </div>
+              <button type="button" class="ol-btn ol-btn-secondary ol-btn-sm ol-sheet-open" popovertarget="filters"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#list-filter"/></svg>Filters <span class="ol-count">1</span></button>
+            </div>
+          </div>
+          <div class="ol-table-wrap">
+            <table class="ol-table ol-table-compact ol-table-stack">
+              <thead><tr><th>Session</th><th>Agent</th><th>Project</th><th class="ol-num">Turns</th><th class="ol-num">Events</th><th class="ol-num">Last active</th></tr></thead>
+              <tbody>
+                <tr><td><a class="ol-cell-title" href="#demo">Move the admin UI's layout into the design system</a></td><td><span class="ol-legend-item ol-series-1"><span class="ol-swatch" aria-hidden="true"></span>claude-code</span></td><td data-label="Project">origin</td><td class="ol-num" data-label="Turns">97</td><td class="ol-num" data-label="Events">19,160</td><td class="ol-num">16:11</td></tr>
+                <tr><td><a class="ol-cell-title" href="#demo">Status page monitoring</a></td><td><span class="ol-legend-item ol-series-1"><span class="ol-swatch" aria-hidden="true"></span>claude-code</span></td><td data-label="Project">openlinkos</td><td class="ol-num" data-label="Turns">51</td><td class="ol-num" data-label="Events">11,889</td><td class="ol-num">16:08</td></tr>
+                <tr><td><a class="ol-cell-title" href="#demo">Daily data archive check</a></td><td><span class="ol-legend-item ol-series-5"><span class="ol-swatch" aria-hidden="true"></span>zcode</span></td><td data-label="Project">banto-skills</td><td class="ol-num" data-label="Turns">45</td><td class="ol-num" data-label="Events">1,376</td><td class="ol-num">Oct 27</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <nav class="ol-pager" aria-label="Pages"><span>1–3 of 17</span><span class="ol-pager-links"><span class="ol-btn ol-btn-secondary ol-btn-icon ol-btn-sm" aria-disabled="true"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-left"/></svg></span><a class="ol-btn ol-btn-secondary ol-btn-icon ol-btn-sm" href="#demo"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#chevron-right"/></svg><span class="ol-sr-only">Next page</span></a></span></nav>
+        </section>
+      </div>
+
+      <!-- A dashboard: figures with small charts, then two columns. -->
+      <section class="ol-stats" aria-label="Totals">
+        <a class="ol-stat" href="#demo">
+          <span class="ol-stat-label"><span class="ol-stat-icon"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#message-square"/></svg></span>Events</span>
+          <span class="ol-stat-row"><span class="ol-stat-value">173,378</span><svg class="ol-sparkline" viewBox="0 0 120 32" preserveAspectRatio="none" role="img" aria-label="Events per day over the last 30 days, rising to 15,000" focusable="false"><path class="ol-sparkline-area" d="M0,32 L0,28 L20,26 L40,29 L60,22 L80,24 L100,6 L120,20 L120,32 Z"/><polyline class="ol-sparkline-line" points="0,28 20,26 40,29 60,22 80,24 100,6 120,20"/></svg></span>
+          <span class="ol-stat-meta">50,921 in the last 30 days</span>
+        </a>
+        <a class="ol-stat" href="#demo">
+          <span class="ol-stat-label"><span class="ol-stat-icon"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#book-marked"/></svg></span>Entries</span>
+          <span class="ol-stat-value">120</span>
+          <svg class="ol-stackbar" viewBox="0 0 100 6" preserveAspectRatio="none" role="img" aria-label="Memory 59, knowledge 21, cognition 40" focusable="false"><rect class="ol-series-1" x="0" width="48.6" height="6"/><rect class="ol-series-3" x="49.2" width="16.9" height="6"/><rect class="ol-series-4" x="66.7" width="32.7" height="6"/></svg>
+          <span class="ol-stat-meta">59 memory, 21 knowledge, 40 cognition</span>
+        </a>
+        <a class="ol-stat" href="#demo">
+          <span class="ol-stat-label"><span class="ol-stat-icon"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#lightbulb"/></svg></span>Recalls</span>
+          <span class="ol-stat-value">6</span>
+          <svg class="ol-ratio" viewBox="0 0 100 8" preserveAspectRatio="none" role="img" aria-label="3 of 6 used" focusable="false"><rect class="ol-ratio-track" width="100" height="8" rx="2"/><rect class="ol-ratio-whole" width="100" height="8" rx="2"/><rect class="ol-ratio-part" width="50" height="8" rx="2"/></svg>
+          <span class="ol-stat-meta">3 used, of 44 items handed over</span>
+        </a>
+      </section>
+
+      <div class="ol-layout-dashboard">
+        <div class="ol-stack">
+          <section class="ol-panel">
+            <div class="ol-panel-header"><h2 class="ol-panel-title">Activity</h2></div>
+            <div class="ol-panel-body">
+              <figure class="ol-chart">
+                <div class="ol-chart-plot">
+                  <div class="ol-chart-y" aria-hidden="true"><span>20K</span><span>10K</span><span>0</span></div>
+                  <svg class="ol-chart-svg ol-chart-fluid" viewBox="0 0 144 100" preserveAspectRatio="none" role="img" aria-label="Events per day over the last 6 days" focusable="false">
+                    <line class="ol-chart-grid" x1="0" x2="144" y1="0" y2="0"/><line class="ol-chart-grid" x1="0" x2="144" y1="50" y2="50"/>
+                    <g class="ol-chart-col"><title>Oct 25: 4,200</title><rect class="ol-chart-hit" x="0" y="0" width="24" height="100"/><rect class="ol-chart-bar ol-series-1" x="4.6" y="79" width="14.9" height="21"/></g>
+                    <g class="ol-chart-col"><title>Oct 26: 9,000</title><rect class="ol-chart-hit" x="24" y="0" width="24" height="100"/><rect class="ol-chart-bar ol-series-1" x="28.6" y="55" width="14.9" height="45"/></g>
+                    <g class="ol-chart-col"><title>Oct 27: 15,600</title><rect class="ol-chart-hit" x="48" y="0" width="24" height="100"/><rect class="ol-chart-bar ol-series-1" x="52.6" y="22" width="14.9" height="78"/></g>
+                    <g class="ol-chart-col"><title>Oct 28: 11,200</title><rect class="ol-chart-hit" x="72" y="0" width="24" height="100"/><rect class="ol-chart-bar ol-series-5" x="76.6" y="44" width="14.9" height="56"/></g>
+                    <g class="ol-chart-col"><title>Oct 29: 6,400</title><rect class="ol-chart-hit" x="96" y="0" width="24" height="100"/><rect class="ol-chart-bar ol-series-1" x="100.6" y="68" width="14.9" height="32"/></g>
+                    <g class="ol-chart-col"><title>Oct 30: 8,800</title><rect class="ol-chart-hit" x="120" y="0" width="24" height="100"/><rect class="ol-chart-bar ol-series-1" x="124.6" y="56" width="14.9" height="44"/></g>
+                    <line class="ol-chart-axis" x1="0" x2="144" y1="100" y2="100"/>
+                  </svg>
+                  <div class="ol-chart-x" aria-hidden="true"><span>10/25</span><span></span><span>10/27</span><span></span><span></span><span>Today</span></div>
+                </div>
+              </figure>
+            </div>
+          </section>
+        </div>
+        <div class="ol-stack">
+          <section class="ol-panel">
+            <div class="ol-panel-header"><h2 class="ol-panel-title">Storage</h2></div>
+            <div class="ol-panel-body">
+              <dl class="ol-dl"><dt>Database</dt><dd>513 MiB</dd><dt>Raw mirrors</dt><dd>302 MiB</dd><dt>Free disk</dt><dd>733 GiB</dd></dl>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- A list beside the item shown: on narrow screens, the list opens as a sheet. -->
+      <div class="ol-layout-list-detail">
+        <nav class="ol-sheet" id="turns" popover aria-label="Turns">
+          <div class="ol-sheet-head"><h2 class="ol-sheet-title">Turns</h2><button type="button" class="ol-btn ol-btn-ghost ol-btn-icon ol-btn-sm" popovertarget="turns" popovertargetaction="hide" aria-label="Close"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#x"/></svg></button></div>
+          <ul class="ol-list">
+            <li><a class="ol-list-title" href="#demo">1 Plan the workbench layouts</a></li>
+            <li><a class="ol-list-title" href="#demo" aria-current="true">2 Move the sidebar into a sheet</a></li>
+          </ul>
+        </nav>
+        <section class="ol-panel">
+          <div class="ol-panel-header"><h2 class="ol-panel-title">Turn 2</h2><button type="button" class="ol-btn ol-btn-secondary ol-btn-sm ol-sheet-open" popovertarget="turns"><svg class="ol-icon ol-icon-sm" aria-hidden="true"><use href="../dist/icons.svg#list"/></svg>Turn 2 of 2</button></div>
+          <div class="ol-panel-body"><p>The turn shown, in full, beside the list of turns.</p></div>
+        </section>
+      </div>
+
+      <!-- Main content with a side column of details. -->
+      <div class="ol-layout-supporting">
+        <div class="ol-stack">
+          <section class="ol-panel">
+            <div class="ol-panel-header"><h2 class="ol-panel-title">What the agent was handed</h2></div>
+            <div class="ol-panel-body"><p>The main content: text, tables, and lists.</p></div>
+          </section>
+        </div>
+        <div class="ol-stack">
+          <section class="ol-panel">
+            <div class="ol-panel-header"><h2 class="ol-panel-title">Details</h2></div>
+            <div class="ol-panel-body"><dl class="ol-dl"><dt>Occasion</dt><dd>Session start</dd><dt>Size</dt><dd>462 of 800 tokens</dd></dl></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,197 @@
+/*
+ * Filters for a list: facets (values to choose, each with how many items choosing it would leave)
+ * and the filter bar above the list (a text filter, ranges, the filters chosen, and the sort).
+ * Every filter is a link to the same list with one parameter changed, so they need no script; a
+ * value that is chosen is marked aria-current="true", as the current chip of a set is, and shows a
+ * checked box. (Not role="checkbox": a link does not toggle with Space, as a checkbox would.)
+ *
+ *   <aside class="ol-sheet ol-facets" id="filters" popover aria-label="Filters">
+ *     <div class="ol-sheet-head">…</div>
+ *     <section class="ol-facet-group">
+ *       <h2 class="ol-facet-head">Agent <a href="…">Clear</a></h2>
+ *       <ul class="ol-facet-list"><li><a class="ol-facet" href="…" aria-current="true">
+ *         <span class="ol-facet-check" aria-hidden="true">…check icon…</span>
+ *         <span class="ol-facet-label">codex</span><span class="ol-facet-count">12</span></a></li></ul>
+ *     </section>
+ *   </aside>
+ *
+ *   <div class="ol-filterbar">
+ *     <form class="ol-search">…</form>
+ *     <div class="ol-cluster"><a class="ol-chip" href="…" aria-current="true">30 days</a>…</div>
+ *     <a class="ol-filter-tag" href="…without it…" aria-label="Remove filter: codex">codex …x icon…</a>
+ *     <div class="ol-filterbar-end">…sort menu… <button class="… ol-sheet-open" popovertarget="filters">…</button></div>
+ *   </div>
+ */
+
+.ol-filterbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ol-space-2);
+  padding: var(--ol-space-2-5) var(--ol-space-3-5);
+  border-block-end: 1px solid var(--ol-color-border);
+}
+
+.ol-filterbar .ol-search {
+  flex: 1 1 12rem;
+  max-width: 18rem;
+}
+
+.ol-filterbar-end {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  margin-inline-start: auto;
+}
+
+/* A filter that is on, as a tag that removes it. */
+.ol-filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ol-space-1);
+  max-width: 16rem;
+  min-height: var(--ol-size-control-xs);
+  padding-inline: var(--ol-space-2) var(--ol-space-1-5);
+  border-radius: var(--ol-radius-full);
+  background: var(--ol-color-accent-bg);
+  color: var(--ol-color-accent-text);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+  white-space: nowrap;
+}
+
+.ol-filter-tag > :not(svg) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ol-filter-tag > svg {
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.ol-filter-tag:hover {
+  background: var(--ol-color-accent-bg-hover);
+  text-decoration: none;
+}
+
+.ol-facets {
+  padding-block-end: var(--ol-space-4);
+}
+
+.ol-facet-group {
+  padding-block: var(--ol-space-2) var(--ol-space-1);
+}
+
+.ol-facet-group + .ol-facet-group {
+  border-block-start: 1px solid var(--ol-color-border);
+}
+
+.ol-facet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ol-space-2);
+  padding: var(--ol-space-1) var(--ol-space-3);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  font-weight: var(--ol-font-weight-medium);
+  line-height: var(--ol-line-height-xs);
+}
+
+.ol-facet-head a {
+  color: var(--ol-color-fg-muted);
+  font-weight: var(--ol-font-weight-regular);
+}
+
+.ol-facet-list {
+  margin: 0;
+  padding: 0 var(--ol-space-1-5);
+  list-style: none;
+}
+
+.ol-facet {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-height: var(--ol-size-control-sm);
+  padding-inline: var(--ol-space-1-5);
+  border-radius: var(--ol-radius-control);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-sm);
+  line-height: var(--ol-line-height-sm);
+}
+
+.ol-facet:hover {
+  background: var(--ol-color-fill-hover);
+  color: var(--ol-color-fg);
+  text-decoration: none;
+}
+
+.ol-facet[aria-current="true"] {
+  color: var(--ol-color-fg);
+}
+
+.ol-facet-check {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 1px solid var(--ol-color-border-input);
+  border-radius: var(--ol-radius-xs);
+  background: var(--ol-color-surface);
+  color: var(--ol-color-accent-on-solid);
+}
+
+.ol-facet-check > svg {
+  width: 0.625rem;
+  height: 0.625rem;
+  stroke-width: 3;
+  opacity: 0;
+}
+
+.ol-facet[aria-current="true"] .ol-facet-check {
+  border-color: var(--ol-color-accent-solid);
+  background: var(--ol-color-accent-solid);
+}
+
+.ol-facet[aria-current="true"] .ol-facet-check > svg {
+  opacity: 1;
+}
+
+.ol-facet-label {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ol-facet-count {
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.ol-facet-more {
+  display: block;
+  padding: var(--ol-space-1) var(--ol-space-3);
+  color: var(--ol-color-fg-subtle);
+  font-size: var(--ol-font-size-xs);
+}
+
+@media (forced-colors: active) {
+  .ol-facet[aria-current="true"] .ol-facet-check {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .ol-filter-tag {
+    border: 1px solid CanvasText;
+  }
+}

@@ -166,6 +166,81 @@
   }
 }
 
+/*
+ * Stacked tables: a list read row by row, such as sessions, can restack its rows where its frame is
+ * narrower than 40rem: the first cell on a line of its own, and every other cell after it, named by
+ * its column (data-label). No column is hidden; nothing scrolls sideways.
+ *
+ *   <div class="ol-table-wrap"><table class="ol-table ol-table-stack">…
+ *     <td>…title…</td><td data-label="Agent">codex</td><td class="ol-num" data-label="Turns">12</td>
+ */
+.ol-table-wrap {
+  container: ol-table / inline-size;
+}
+
+@container ol-table (max-width: 40rem) {
+  .ol-table-stack,
+  .ol-table-stack tbody {
+    display: block;
+  }
+
+  /* The headings stay for assistive technology, hidden inside the table so they never widen the
+     page. */
+  .ol-table-stack {
+    position: relative;
+  }
+
+  .ol-table-stack thead {
+    position: absolute;
+    display: block;
+    width: 1px;
+    height: 1px;
+    overflow: clip;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ol-table-stack tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--ol-space-0-5) var(--ol-space-3);
+    padding: var(--ol-space-2-5) var(--ol-space-3-5);
+    border-block-end: 1px solid var(--ol-color-border);
+  }
+
+  .ol-table-stack tbody:last-of-type > tr:last-child {
+    border-block-end: 0;
+  }
+
+  .ol-table-stack td {
+    display: block;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    color: var(--ol-color-fg-muted);
+    font-size: var(--ol-font-size-xs);
+    line-height: var(--ol-line-height-xs);
+    white-space: normal;
+  }
+
+  .ol-table-stack td:first-child {
+    flex: 1 0 100%;
+    color: var(--ol-color-fg);
+    font-size: var(--ol-font-size-sm);
+    line-height: var(--ol-line-height-sm);
+  }
+
+  .ol-table-stack td[data-label]::before {
+    content: attr(data-label) " ";
+    color: var(--ol-color-fg-subtle);
+  }
+
+  .ol-table-stack .ol-num {
+    text-align: start;
+  }
+}
+
 /* Stats: one framed strip of figures divided by hairlines, not a grid of separate cards. Items
    grow to fill every row, so a short last row never shows an empty cell. */
 
@@ -243,6 +318,25 @@ a.ol-stat:hover {
   font-weight: var(--ol-font-weight-semibold);
   letter-spacing: var(--ol-tracking-tight);
   line-height: var(--ol-line-height-2xl);
+}
+
+/* A figure with a small chart beside it, such as the line of its last 30 days; or a bar under it,
+   such as its parts, placed in the stat as it is. */
+.ol-stat-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ol-space-4);
+  min-width: 0;
+}
+
+.ol-stat-row > .ol-sparkline {
+  flex: 0 1 8rem;
+  min-width: 3rem;
+}
+
+.ol-stat > :is(.ol-stackbar, .ol-ratio) {
+  margin-block: var(--ol-space-1);
 }
 
 .ol-stat-meta {

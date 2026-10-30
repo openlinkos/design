@@ -41,6 +41,14 @@
   border-radius: 0;
 }
 
+/* So does an empty state that is all a panel holds: the panel is its frame. */
+.ol-panel > .ol-empty,
+.ol-panel-body > .ol-empty:only-child {
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
 /* Whatever sits at the panel's edges (a tinted header, a table's heading row, a footer) follows
    its rounded corners inside its 1px border. */
 .ol-panel > :first-child {

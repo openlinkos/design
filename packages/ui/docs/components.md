@@ -49,6 +49,84 @@ The frame of an app: a sidebar on the shell colour, and one floating content pan
 - The foot of the sidebar holds the theme switch and the signed-in account. `.ol-sidebar-account` shows the avatar, the name and the role, and opens the account's menu above it: the account's own page, the [language](#language), and signing out, last. Settings of the app itself belong in its navigation, not in this menu.
 - Moving between pages, the sidebar holds still and the panel cross-fades; see [motion](#motion).
 
+## Workbench {#workbench}
+
+The frame of a dense tool, such as a console or an admin UI, that uses the full width: `.ol-app-workbench` on `.ol-app`. The sidebar sits on the recessed colour and the content on the surface, divided by hairlines, and the page scrolls under a sticky top bar that also heads it. [`demo/workbench.html`](../demo/workbench.html) shows each layout.
+
+```html
+<a class="ol-skip-link" href="#main">Skip to content</a>
+<div class="ol-app ol-app-workbench">
+  <aside class="ol-sidebar" id="nav" popover aria-label="Sections">
+    <div class="ol-sidebar-head"><a class="ol-brand" href="/" aria-label="Origin">…mark… <span>Origin</span></a><span class="ol-brand-tag">Hub</span></div>
+    <nav class="ol-nav" aria-label="Sections">
+      <div class="ol-nav-group">
+        <a class="ol-nav-item" href="/sessions" title="Sessions" aria-current="page">…icon… <span class="ol-nav-text">Sessions</span><span class="ol-nav-count">1,042</span></a>
+      </div>
+    </nav>
+    <div class="ol-sidebar-foot">
+      <div class="ol-sidebar-status ol-status-success" title="Synced 2 minutes ago"><span class="ol-dot"></span><span>Synced 2 minutes ago</span></div>
+      <button class="ol-sidebar-account" type="button" popovertarget="prefs">…</button>
+      <div class="ol-menu ol-menu-above" id="prefs" popover>…theme, language, sign out…</div>
+    </div>
+  </aside>
+  <div class="ol-main">
+    <header class="ol-topbar">
+      <button class="ol-btn ol-btn-ghost ol-btn-icon ol-btn-sm ol-nav-open" type="button" popovertarget="nav" aria-label="Menu">…menu icon…</button>
+      <nav aria-label="Breadcrumb"><ol class="ol-breadcrumb"><li><a href="/sessions">Sessions</a></li></ol></nav>
+      <h1 class="ol-topbar-title"><span class="ol-topbar-title-text">Recalls</span><span class="ol-topbar-count">6</span></h1>
+      <div class="ol-topbar-actions">
+        <form class="ol-search" role="search">…</form>
+        <a class="ol-btn ol-btn-ghost ol-btn-icon ol-btn-sm ol-topbar-search-link" href="/search">…search icon… <span class="ol-sr-only">Search</span></a>
+      </div>
+    </header>
+    <main class="ol-content" id="main" tabindex="-1">…</main>
+  </div>
+</div>
+```
+
+It has three window size classes, by the width of the viewport, as Material 3 has:
+
+| Class | Width | The sidebar | The top bar |
+| --- | --- | --- | --- |
+| Wide | 1200px and up | 15rem, with labels, group names, and counts | breadcrumb, title, actions, search |
+| Medium | 860 to 1200px | a rail of icons (`--ol-size-rail`), its labels as tooltips and for assistive technology | search becomes a link (`.ol-topbar-search-link`) |
+| Narrow | 860px and less | a sheet from the start edge, opened by `.ol-nav-open` | the menu button, the page right above, the title |
+
+The sidebar is a popover: shown in place where there is room, and on narrow screens opened in the top layer, with a backdrop, light dismiss, and Escape, all without script. A browser without popovers ignores the attribute and shows it in place. The page's heading is the `h1` in the top bar, after the breadcrumb of the pages above it, so a page never says its title twice.
+
+Inside the content, a pane that does not fit folds away into a sheet or below the content, never out of reach. The layouts follow the content's width (container queries), not the viewport's:
+
+- **`.ol-layout-filters`**, a list with its filters: an `.ol-sheet.ol-facets` and an `.ol-layout-main` with the `.ol-filterbar` and the list. From 52rem the filters stand on the left; narrower, the filter bar's `.ol-sheet-open` button opens them. Show the filters that are on as `.ol-filter-tag`s in the filter bar, links that remove them, so that what is filtered shows at every width.
+- **`.ol-layout-list-detail`**, a list beside the item shown, such as a session's turns beside the turn: an `.ol-sheet` and the detail. From 60rem the list stands on the left, sticky under the top bar; narrower, a `.ol-sheet-open` button in the detail opens it.
+- **`.ol-layout-supporting`**, main content with a side column of details: from 52rem the side column is on the right, 16 to 20rem wide; narrower, it follows the main content. Put an `.ol-stack` in each.
+- **`.ol-layout-dashboard`**, two columns, 2:1, from 60rem; narrower, the main column comes first. Put the most telling panels first in each column.
+
+```html
+<div class="ol-layout-filters">
+  <aside class="ol-sheet ol-facets" id="filters" popover aria-label="Filters">
+    <div class="ol-sheet-head"><h2 class="ol-sheet-title">Filters</h2><button … popovertarget="filters" popovertargetaction="hide" aria-label="Close">…</button></div>
+    <section class="ol-facet-group">
+      <h2 class="ol-facet-head">Agent <a href="?">Clear</a></h2>
+      <ul class="ol-facet-list"><li><a class="ol-facet" href="?" aria-current="true">
+        <span class="ol-facet-check" aria-hidden="true">…check icon…</span><span class="ol-facet-label">codex</span><span class="ol-facet-count">12</span></a></li></ul>
+    </section>
+  </aside>
+  <section class="ol-layout-main">
+    <div class="ol-filterbar">
+      <form class="ol-search" role="search">…</form>
+      <div class="ol-cluster"><a class="ol-chip" href="?range=7d">7 days</a><a class="ol-chip" href="?" aria-current="true">30 days</a></div>
+      <a class="ol-filter-tag" href="?" title="Remove this filter"><span>codex</span>…x icon…</a>
+      <div class="ol-filterbar-end">…sort menu… <button class="ol-btn ol-btn-secondary ol-btn-sm ol-sheet-open" popovertarget="filters">…Filters <span class="ol-count">1</span></button></div>
+    </div>
+    <div class="ol-table-wrap"><table class="ol-table ol-table-compact ol-table-stack">…</table></div>
+  </section>
+</div>
+```
+
+- Every filter is a link to the same list with one parameter changed, so the list needs no script and every state has a URL.
+- A facet counts what choosing it would leave, under every other filter but its own. Mark a chosen value `aria-current="true"`: it shows a checked box. Not `role="checkbox"`, since a link does not toggle with Space.
+- Keep the content dense: compact tables, 13px text, panels in place of separate cards.
+
 ## Page structure {#page-structure}
 
 `.ol-page-header` holds `.ol-page-heading` (`.ol-page-title`, `.ol-page-description`, and rarely `.ol-eyebrow` for a real parent, such as the session an event belongs to) and `.ol-page-actions`. `.ol-section` groups a region, with `.ol-section-header` (`-title`, `-description`, `-actions`). Layout primitives: `.ol-grid` with `-2`, `-3` or `-sidebar` (columns follow the container width), `.ol-stack` (vertical; `--ol-stack-gap`), `.ol-cluster` (wrapping row; `--ol-cluster-gap`), `.ol-split` (two ends). Sections side by side in a grid start level with each other.
@@ -223,10 +301,11 @@ A row that stands for something with a page of its own, such as an account: mark
 
 - Right-align numbers and keep units in the heading.
 - On narrow screens tables scroll sideways; do not hide columns that carry meaning.
+- A list read row by row, such as sessions, can restack instead: with `.ol-table-stack`, where its frame is narrower than 40rem, each row becomes its first cell on a line of its own and the other cells after it, each named by its column from `data-label` (`<td class="ol-num" data-label="Turns">12</td>`). Every column stays; nothing scrolls sideways. Leave `data-label` off a cell whose value names itself, such as an agent or a time.
 
 ## Stats {#stats}
 
-`.ol-stats` holds `.ol-stat` items (`-label`, `-value`, `-meta`; `a.ol-stat` links to detail). An `.ol-stat-icon` inside the label shows the figure's icon on an accent tint, or a tone with `.ol-tone-success`, `-warning` or `-danger`. Show three to five figures that answer "is everything all right?". `.ol-trend-up` and `.ol-trend-down` colour a change; also state the direction in words.
+`.ol-stats` holds `.ol-stat` items (`-label`, `-value`, `-meta`; `a.ol-stat` links to detail). `.ol-stat-row` sets the value beside a small chart, such as an `.ol-sparkline` of the last 30 days; an `.ol-stackbar` or `.ol-ratio` placed in the stat itself runs under the value. An `.ol-stat-icon` inside the label shows the figure's icon on an accent tint, or a tone with `.ol-tone-success`, `-warning` or `-danger`. Show three to five figures that answer "is everything all right?". `.ol-trend-up` and `.ol-trend-down` colour a change; also state the direction in words.
 
 ## Description lists, compact lists, feeds {#lists}
 
@@ -355,6 +434,18 @@ Legends: `<ul class="ol-legend">` with a `.ol-swatch` (a square; `.ol-swatch-lin
 
 Bars rise from the baseline when the page draws them, column after column where the browser can count siblings (`sibling-index()`); lines draw from the start, and dots follow. Reduced motion shows the chart at once.
 
+**Fluid charts.** A chart whose width follows its column at every width draws its plot alone in the SVG, stretched to its box (`.ol-chart-fluid`, `preserveAspectRatio="none"`, its viewBox the plot itself), and its text as HTML beside it, so that the text stays at 11px however wide the chart is: `.ol-chart-plot` holds an `.ol-chart-y` with the labels from top to bottom, the SVG, and an `.ol-chart-x` with one cell per column, most of them empty. Lines and gridlines keep one pixel (`vector-effect: non-scaling-stroke`); round bar ends lightly, as they stretch with the plot. `.ol-chart-plot-sm` makes a short plot, for a histogram above a list. Inside a panel's body a chart drops its own frame.
+
+```html
+<div class="ol-chart-plot">
+  <div class="ol-chart-y" aria-hidden="true"><span>20K</span><span>10K</span><span>0</span></div>
+  <svg class="ol-chart-svg ol-chart-fluid" viewBox="0 0 720 100" preserveAspectRatio="none" role="img" aria-labelledby="…">…</svg>
+  <div class="ol-chart-x" aria-hidden="true"><span>10/01</span><span></span>…<span>Today</span></div>
+</div>
+```
+
+**Small charts.** `.ol-sparkline` is the shape of a figure over time beside it: an SVG with an `.ol-sparkline-area` and an `.ol-sparkline-line`, in the accent or the series set on it. `.ol-stackbar` is one bar split into parts in their series (`<rect class="ol-series-2" …/>`), as wide as their shares, such as entries by kind. `.ol-ratio` is a part of a whole against the largest whole of a list, with an `.ol-ratio-track`, an `.ol-ratio-whole`, and an `.ol-ratio-part`, such as recalls used of those made. Each is one image to assistive technology: give it `role="img"` and a label that says its numbers.
+
 Meters in a series colour show one value against the largest of a list: `<meter class="ol-meter ol-meter-series" max="14026" value="526">526 events</meter>`, slot 1 unless a `.ol-series-<n>` says otherwise. They ignore `low`, `high` and `optimum`.
 
 - Give every chart a title and a one-line summary (`<title>`, `<desc>` and the caption), a legend when it has two or more series, and its numbers in a table. Colour is never the only way to tell series apart.
@@ -464,6 +555,8 @@ A fold puts a run of steps behind one summary line that says what is inside: cou
 ```
 
 Menus and popovers use the Popover API: the browser opens them from `popovertarget`, closes them on Escape or an outside click, and puts them in the top layer. Where CSS anchor positioning is supported they open below their button, at least as wide as it (`.ol-menu-end` aligns to its end, `.ol-menu-above` opens above it, as at the foot of the sidebar) and flip when there is no room; elsewhere they open centred. They slide out of their button and close quicker than they open. `.ol-popover` holds richer content.
+
+**Sheets.** `.ol-sheet` is a pane that slides in from the start edge (`.ol-sheet-end`: the end) above the page, for what a narrow screen has no room for beside the content: the navigation, a list's filters, the list of a list-detail layout. It is a popover too, so the backdrop, an outside click, and Escape close it, and focus returns to its button. Head it with `.ol-sheet-head`, an `.ol-sheet-title`, and a close button (`popovertargetaction="hide"`). The [workbench](#workbench) layouts show the same element in place where there is room, so a pane is written once.
 
 Inside a menu: `.ol-menu-label` names a group of items, `.ol-menu-separator` divides groups, `.ol-menu-header` says who or what the menu is about (often an `.ol-entity`), and `.ol-menu-item-end` puts a shortcut or a current value at an item's end. The chosen one of several options gets a check mark at its end: mark it `aria-current="true"` in a plain menu of links or buttons, or `aria-checked="true"` on `role="menuitemradio"` in a `role="menu"` that a script drives with the arrow keys.
 

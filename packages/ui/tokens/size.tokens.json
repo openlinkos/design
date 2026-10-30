@@ -106,6 +106,20 @@
       },
       "$description": "Width of the app sidebar."
     },
+    "rail": {
+      "$value": {
+        "value": 3.5,
+        "unit": "rem"
+      },
+      "$description": "Width of the workbench's sidebar as a rail of icons, between 860 and 1200px."
+    },
+    "topbar": {
+      "$value": {
+        "value": 3.0,
+        "unit": "rem"
+      },
+      "$description": "Height of the workbench's top bar; panes that stay in view start below it."
+    },
     "content": {
       "$value": {
         "value": 75.0,

@@ -1,0 +1,499 @@
+/*
+ * The workbench: the app shell for dense tools, such as consoles and admin UIs, that use the full
+ * width. The sidebar sits on the recessed colour, the content on the surface with hairlines, and
+ * the page scrolls under a sticky top bar that also heads the page.
+ *
+ * It has three window size classes, by the viewport's width:
+ *   wide    1200px and up   the sidebar with labels and counts
+ *   medium  860 to 1200px   the sidebar as a rail of icons, its labels as tooltips
+ *   narrow  860px and less  a top bar with a menu button; the sidebar opens as a sheet
+ * It sits in the component layer, after the components, since it changes some of them in place.
+ *
+ * The sidebar is a popover, so that on narrow screens it opens in the top layer, with a backdrop,
+ * light dismiss, and Escape, all without script; wider, it is shown in place.
+ *
+ * Inside the content, layouts follow the content's width, not the viewport's (container queries
+ * at 40, 52, and 60rem), and a pane that does not fit folds into a sheet or below, never away:
+ *   .ol-layout-filters      a list with its filters on the left from 52rem, else in a sheet
+ *   .ol-layout-list-detail  a list beside the item shown from 60rem, else the list in a sheet
+ *   .ol-layout-supporting   main content with a side column from 52rem, else the side below
+ *   .ol-layout-dashboard    two columns, 2:1, from 60rem, else the main column first
+ *
+ *   <a class="ol-skip-link" href="#main">Skip to content</a>
+ *   <div class="ol-app ol-app-workbench">
+ *     <aside class="ol-sidebar" id="nav" popover aria-label="…">
+ *       <div class="ol-sidebar-head"><a class="ol-brand">…mark… <span>Origin</span></a>…</div>
+ *       <nav class="ol-nav">.ol-nav-group > .ol-nav-label + a.ol-nav-item[title] > …icon…
+ *         <span class="ol-nav-text">Sessions</span><span class="ol-nav-count">12</span></nav>
+ *       <div class="ol-sidebar-foot"><div class="ol-sidebar-status">…</div>
+ *         <button class="ol-sidebar-account" popovertarget="prefs">…</button>
+ *         <div class="ol-menu ol-menu-above" id="prefs" popover>…</div></div>
+ *     </aside>
+ *     <div class="ol-main">
+ *       <header class="ol-topbar">
+ *         <button class="ol-btn ol-btn-ghost ol-btn-icon ol-nav-open" popovertarget="nav">…</button>
+ *         <nav aria-label="Breadcrumb"><ol class="ol-breadcrumb">…the pages above…</ol></nav>
+ *         <h1 class="ol-topbar-title">Recalls <span class="ol-topbar-count">6</span></h1>
+ *         <div class="ol-topbar-actions">…</div>
+ *       </header>
+ *       <main class="ol-content" id="main">…</main>
+ *     </div>
+ *   </div>
+ */
+
+.ol-app-workbench {
+  grid-template-columns: var(--ol-size-sidebar) minmax(0, 1fr);
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+  background: var(--ol-color-surface);
+}
+
+/* The sidebar, shown in place: sticky, as tall as the viewport. */
+.ol-app-workbench > .ol-sidebar {
+  position: sticky;
+  inset: 0 auto auto;
+  display: flex;
+  gap: var(--ol-space-4);
+  width: auto;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: var(--ol-space-2-5) var(--ol-space-2);
+  overflow-y: auto;
+  border: 0;
+  border-inline-end: 1px solid var(--ol-color-border);
+  background: var(--ol-color-bg-subtle);
+  color: inherit;
+}
+
+.ol-app-workbench .ol-sidebar-head {
+  min-height: var(--ol-size-control-md);
+  padding-inline: var(--ol-space-2);
+}
+
+.ol-app-workbench .ol-brand {
+  font-size: var(--ol-font-size-md);
+}
+
+.ol-app-workbench .ol-brand img,
+.ol-app-workbench .ol-brand svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.ol-app-workbench .ol-brand-tag {
+  margin-inline-start: auto;
+}
+
+.ol-app-workbench .ol-nav {
+  gap: var(--ol-space-4);
+}
+
+.ol-app-workbench .ol-nav-item {
+  min-height: var(--ol-size-control-sm);
+}
+
+.ol-app-workbench .ol-nav-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ol-app-workbench .ol-sidebar-foot {
+  gap: var(--ol-space-1);
+  padding: var(--ol-space-2) 0 0;
+}
+
+/* How the app stands, such as when it last synced, with a dot for its state. */
+.ol-sidebar-status {
+  display: flex;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-height: var(--ol-size-control-xs);
+  padding-inline: var(--ol-space-2);
+  color: var(--ol-color-fg-muted);
+  font-size: var(--ol-font-size-xs);
+  line-height: var(--ol-line-height-xs);
+}
+
+/* Its dot takes the tone of a status class on it: .ol-status-success, -warning, -danger. */
+.ol-sidebar-status > .ol-dot {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  color: var(--ol-status-dot, var(--ol-color-fg-subtle));
+}
+
+.ol-sidebar-status > :last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ol-app-workbench .ol-sidebar-account {
+  width: 100%;
+  min-height: var(--ol-size-control-md);
+  margin-inline: 0;
+  padding-inline: var(--ol-space-2);
+}
+
+/* The menu button that opens the sidebar, and a link to search: for narrower screens only. */
+.ol-nav-open,
+.ol-topbar-search-link {
+  display: none;
+}
+
+/* The content: the page scrolls, under a sticky top bar that also heads the page. */
+.ol-app-workbench .ol-main {
+  margin: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: var(--ol-color-surface);
+  box-shadow: none;
+}
+
+.ol-app-workbench .ol-topbar {
+  position: sticky;
+  min-height: var(--ol-size-topbar);
+  padding-inline: var(--ol-space-5) var(--ol-space-4);
+  background: var(--ol-color-surface);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* The page's title, after the breadcrumb of the pages above it. */
+.ol-topbar-title {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: var(--ol-space-2);
+  min-width: 0;
+  font-size: var(--ol-font-size-md);
+  font-weight: var(--ol-font-weight-semibold);
+  line-height: var(--ol-line-height-md);
+}
+
+/* Only the title gives way, with an ellipsis; a count and badges after it keep their width. */
+.ol-topbar-title > :not(.ol-topbar-title-text) {
+  flex: none;
+}
+
+.ol-topbar-title-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ol-topbar-count {
+  color: var(--ol-color-fg-subtle);
+  font-weight: var(--ol-font-weight-regular);
+  font-variant-numeric: tabular-nums;
+}
+
+.ol-app-workbench .ol-breadcrumb:not(:empty) {
+  flex: none;
+}
+
+.ol-app-workbench .ol-breadcrumb:not(:empty)::after {
+  content: "/";
+  color: var(--ol-color-border-strong);
+}
+
+.ol-app-workbench .ol-topbar .ol-search {
+  width: 18rem;
+}
+
+/* A panel's title keeps to one line; a note beside it wraps instead. */
+.ol-app-workbench .ol-panel-title {
+  flex: none;
+  white-space: nowrap;
+}
+
+.ol-app-workbench .ol-content {
+  max-width: none;
+  padding: var(--ol-space-4) var(--ol-space-5) var(--ol-space-8);
+}
+
+/* The blocks of a page follow each other at one distance; the facts under the title come first. */
+.ol-app-workbench .ol-content > :where(* + *) {
+  margin-block-start: var(--ol-space-4);
+}
+
+.ol-app-workbench .ol-content > .ol-page-meta:first-child {
+  margin-block-start: 0;
+}
+
+/* Medium: the sidebar becomes a rail of icons, its words kept for assistive technology. */
+@media (860px < width < 1200px) {
+  .ol-app-workbench {
+    grid-template-columns: var(--ol-size-rail) minmax(0, 1fr);
+  }
+
+  .ol-app-workbench > .ol-sidebar {
+    align-items: center;
+    padding-inline: var(--ol-space-1-5);
+  }
+
+  .ol-app-workbench .ol-sidebar-head {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .ol-app-workbench .ol-brand > :not(svg, img, picture),
+  .ol-app-workbench .ol-brand-tag,
+  .ol-app-workbench .ol-nav-count,
+  .ol-app-workbench .ol-sidebar-account > svg:last-child {
+    display: none;
+  }
+
+  .ol-app-workbench .ol-nav-text,
+  .ol-app-workbench .ol-nav-label,
+  .ol-app-workbench .ol-sidebar-status > :last-child,
+  .ol-app-workbench .ol-sidebar-account-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* A group's label gives way to a hairline above the group. */
+  .ol-app-workbench .ol-nav-group + .ol-nav-group {
+    padding-block-start: var(--ol-space-3);
+    border-block-start: 1px solid var(--ol-color-border);
+  }
+
+  .ol-app-workbench .ol-nav-item,
+  .ol-app-workbench .ol-sidebar-account {
+    justify-content: center;
+    width: var(--ol-size-control-md);
+    min-height: var(--ol-size-control-md);
+    padding: 0;
+  }
+
+  .ol-app-workbench .ol-sidebar-foot {
+    align-items: center;
+  }
+
+  .ol-app-workbench .ol-sidebar-status {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .ol-app-workbench .ol-topbar .ol-search {
+    display: none;
+  }
+
+  .ol-app-workbench .ol-topbar-search-link {
+    display: inline-flex;
+  }
+}
+
+/* Narrow: a top bar with the menu button; the sidebar opens as a sheet from the start. */
+@media (width <= 860px) {
+  .ol-app-workbench {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+
+  .ol-app-workbench > .ol-sidebar {
+    gap: var(--ol-space-4);
+    padding: var(--ol-space-2-5) var(--ol-space-2);
+    border-block-end: 0;
+    background: var(--ol-color-bg-subtle);
+  }
+
+  .ol-app-workbench > .ol-sidebar:not(:popover-open) {
+    display: none;
+  }
+
+  .ol-app-workbench > .ol-sidebar:popover-open {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(18rem, 85vw);
+    height: 100dvh;
+    box-shadow: var(--ol-shadow-xl);
+    translate: 0 0;
+    transition:
+      translate var(--ol-duration-normal) var(--ol-ease-enter),
+      overlay var(--ol-duration-normal) allow-discrete,
+      display var(--ol-duration-normal) allow-discrete;
+  }
+
+  @starting-style {
+    .ol-app-workbench > .ol-sidebar:popover-open {
+      translate: -100% 0;
+    }
+  }
+
+  .ol-app-workbench > .ol-sidebar::backdrop {
+    background: var(--ol-color-overlay);
+  }
+
+  .ol-app-workbench .ol-nav,
+  .ol-app-workbench .ol-sidebar-foot {
+    display: flex;
+  }
+
+  .ol-app-workbench .ol-topbar {
+    position: sticky;
+    flex-wrap: wrap;
+    row-gap: var(--ol-space-1);
+    padding: var(--ol-space-1-5) var(--ol-space-3);
+  }
+
+  .ol-app-workbench .ol-nav-open,
+  .ol-app-workbench .ol-topbar-search-link {
+    display: inline-flex;
+  }
+
+  .ol-app-workbench .ol-topbar .ol-search {
+    display: none;
+  }
+
+  /* Only the page right above stays, as the way back. */
+  .ol-app-workbench .ol-breadcrumb li:not(:last-child) {
+    display: none;
+  }
+
+  .ol-app-workbench .ol-content {
+    padding: var(--ol-space-3) var(--ol-space-3) var(--ol-space-8);
+  }
+}
+
+/* Layouts inside the content. ---------------------------------------------------------------- */
+
+/* A list with its filters: a framed box, the filters on the left from 52rem, else in a sheet. */
+.ol-layout-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-container);
+  background: var(--ol-color-surface);
+  overflow: clip;
+}
+
+/* A table or a compact list in the frame of a list with filters loses its own frame. */
+.ol-layout-main > :is(.ol-table-wrap, .ol-list) {
+  border: 0;
+  border-radius: 0;
+}
+
+/* An empty list in that frame needs no frame of its own. */
+.ol-layout-main > .ol-empty {
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+/* The pager under a list in that frame keeps the frame's padding. */
+.ol-layout-main > .ol-pager {
+  margin: 0;
+  padding: var(--ol-space-2) var(--ol-space-3-5);
+}
+
+.ol-layout-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* A list beside the item shown: the list on the left from 60rem, else in a sheet. */
+.ol-layout-list-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--ol-space-4);
+}
+
+/* Main content with a side column from 52rem; narrower, the side column follows it. */
+.ol-layout-supporting {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--ol-space-4);
+}
+
+/* A dashboard: two columns, 2:1, from 60rem; narrower, the main column comes first. */
+.ol-layout-dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--ol-space-4);
+}
+
+.ol-layout-dashboard > .ol-stack,
+.ol-layout-supporting > .ol-stack {
+  --ol-stack-gap: var(--ol-space-4);
+  min-width: 0;
+}
+
+/* What opens a folded pane: shown only while the pane is folded. */
+.ol-layout-filters .ol-sheet-open,
+.ol-layout-list-detail .ol-sheet-open {
+  display: inline-flex;
+}
+
+@container ol-content (min-width: 52rem) {
+  .ol-layout-filters {
+    grid-template-columns: 13rem minmax(0, 1fr);
+  }
+
+  .ol-layout-supporting {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+  }
+
+  .ol-layout-filters > .ol-sheet {
+    position: static;
+    display: block;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    border: 0;
+    border-inline-end: 1px solid var(--ol-color-border);
+    background: var(--ol-color-bg-subtle);
+    box-shadow: none;
+    translate: none;
+  }
+
+  .ol-layout-filters > .ol-sheet > .ol-sheet-head,
+  .ol-layout-filters .ol-sheet-open {
+    display: none;
+  }
+}
+
+@container ol-content (min-width: 60rem) {
+  .ol-layout-list-detail {
+    grid-template-columns: minmax(18rem, 26rem) minmax(0, 1fr);
+  }
+
+  .ol-layout-dashboard {
+    grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+  }
+
+  .ol-layout-list-detail > .ol-sheet {
+    position: sticky;
+    inset: calc(var(--ol-size-topbar) + var(--ol-space-4)) auto auto;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: auto;
+    max-height: calc(100dvh - var(--ol-size-topbar) - var(--ol-space-8));
+    overflow: hidden;
+    border: 1px solid var(--ol-color-border);
+    border-radius: var(--ol-radius-container);
+    background: var(--ol-color-surface);
+    box-shadow: none;
+    translate: none;
+  }
+
+  .ol-layout-list-detail > .ol-sheet > .ol-sheet-head,
+  .ol-layout-list-detail .ol-sheet-open {
+    display: none;
+  }
+}

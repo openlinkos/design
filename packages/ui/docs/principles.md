@@ -79,10 +79,11 @@ Pairs further apart than neighbours can still be close for a colour-blind reader
 | --- | --- | --- |
 | Type | 11, 12, 13, 14 (body), 16, 20, 24, 36 px with line heights 14, 16, 20, 22, 24, 28, 32, 44; 48/56 for a service site's hero only | Carbon body-01 14/20, Ant Design and TDesign 14/22, Geist copy 14/20 |
 | Space | a 4px grid, named by multiples of 4px (`space-4` = 16px) | Polaris `space-100` = 4px, Atlassian `space.100` = 8px |
-| Controls | 24, 28, 32 (default), 40 px; 36 and 44 in comfortable density | Primer 24/28/32/40/48, shadcn 32/36/40 |
+| Controls | 24, 28, 32 (default), 40 px; 36 and 44 in comfortable density, which touch screens get unless the page chooses | Primer 24/28/32/40/48, shadcn 32/36/40 |
 | Radius | 3, 4, 6, 10, 14 px and full, by role | Primer 3/6/12, Fluent 2/4/6/8 |
 | Elevation | xs, sm, md, lg, xl | Primer resting and floating shadows, Fluent shadow2–64 |
 | Motion | 100, 160, 240, 400 ms; standard (0.2, 0, 0, 1), enter, exit | Material 3 standard easing, Carbon productive and expressive durations |
+| Window sizes | narrow up to 860px, medium to 1200px, wide beyond | Material 3 window size classes (compact, medium, expanded) |
 | Stacking | sticky 100, dropdown 1000, overlay 1100, toast 1300 | Primer, Fluent; overlays use the top layer instead |
 
 ## Motion {#motion}
@@ -136,18 +137,20 @@ Following the W3C [clreq](https://www.w3.org/TR/clreq/) requirements:
 
 **Cascade layers.** `ui.css` declares `@layer ol.reset, ol.tokens, ol.base, ol.layout, ol.components, ol.utilities`, as Tailwind v4 and daisyUI 5 do. App CSS outside the layers always wins, without specificity games. Font faces and the global at-rules (`@view-transition`, `@property`) come first, outside the layers. A layout that changes a component inside it, such as the buttons on a hero, does so in the component layer, since a rule in an earlier layer cannot override a later one.
 
-**No JavaScript, strict CSP.** Every component works with server-rendered HTML and no script: the narrow-screen menu is a checkbox, menus use `popovertarget`, dialogs use `command`/`commandfor`, disclosures use `<details>`. No inline styles are needed, and fonts, icons and styles are files the app serves itself.
+**Adaptive layout.** Pages are laid out by priority, not squeezed. The viewport chooses only the frame, at the two widths of the window size classes: the sidebar of an app (and of a workbench, a rail between them). Everything inside follows the width of its container, through container queries, since the same panel can sit beside the sidebar or alone. A pane with a minimum useful width that does not fit folds into a sheet or below the content, and stays reachable from a button, as Material 3's canonical layouts (list-detail, supporting pane, feed) do: nothing is hidden for want of room. Text keeps its size at every width, so charts draw their labels as HTML beside the plot.
+
+**No JavaScript, strict CSP.** Every component works with server-rendered HTML and no script: the narrow-screen menu is a checkbox (in the workbench, a popover sheet), menus use `popovertarget`, dialogs use `command`/`commandfor`, disclosures use `<details>`. No inline styles are needed, and fonts, icons and styles are files the app serves itself.
 
 **Modern CSS with fallbacks.**
 
 | Feature | Use | Status, and the fallback where needed |
 | --- | --- | --- |
 | Logical properties | all spacing | Widely available |
-| Container queries | grids | Widely available |
+| Container queries | grids, workbench layouts, stacked tables | Widely available |
 | `:has()` | layout | Widely available |
 | `color-mix()` | tints and rims | Widely available |
 | `light-dark()` | colour modes | Widely available from November 2026 |
-| Popover API | menus and popovers | Newly available |
+| Popover API | menus, popovers, sheets, the workbench's sidebar | Newly available |
 | `@starting-style` | entry transitions | Newly available |
 | Cross-document view transitions | moving between pages | Enhancement; elsewhere pages load as before |
 | `::details-content`, `interpolate-size` | disclosures that open smoothly | Enhancement; elsewhere they open at once |
@@ -155,6 +158,7 @@ Following the W3C [clreq](https://www.w3.org/TR/clreq/) requirements:
 | `sibling-index()`, `@property` | bars and cells rising one after another | Enhancement; elsewhere they rise together |
 | Anchor positioning | menus beside their button | Enhancement; elsewhere they open centred |
 | Invoker commands | dialogs without script | Enhancement; elsewhere use `showModal()` |
+| Range media queries (`860px < width < 1200px`) | the workbench's window sizes | Widely available |
 | `field-sizing` | textareas that grow | Enhancement; elsewhere the text area keeps its rows |
 | `text-autospace`, `text-spacing-trim` | Chinese spacing | Enhancement; ignored elsewhere |
 

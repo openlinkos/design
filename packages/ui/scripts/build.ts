@@ -33,6 +33,7 @@ const SOURCES: Record<(typeof LAYERS)[number], string[]> = {
     'css/components/button.css',
     'css/components/form.css',
     'css/components/data.css',
+    'css/components/filter.css',
     'css/components/chart.css',
     'css/components/display.css',
     'css/components/feedback.css',
@@ -41,6 +42,8 @@ const SOURCES: Record<(typeof LAYERS)[number], string[]> = {
     'css/components/overlay.css',
     'css/components/prose.css',
     'css/components/context.css',
+    // The workbench changes components inside it (search, buttons, sheets, tables), so it comes last.
+    'css/workbench.css',
   ],
   utilities: ['css/utilities.css'],
 };
@@ -61,6 +64,12 @@ function tokenLayer(): string {
     ':root[data-theme="dark"] {\n  color-scheme: dark;\n}',
     ...Object.entries(brands).map(([id, decls]) => block(`[data-brand="${id}"]`, decls)),
     ...Object.entries(densities).map(([d, decls]) => block(`[data-density="${d}"]`, decls)),
+    // On a touch screen, the comfortable density unless the page chose one.
+    ...(densities.comfortable
+      ? [
+          `@media (pointer: coarse) {\n${indent(block(':root:not([data-density])', densities.comfortable))}\n}`,
+        ]
+      : []),
   ].join('\n\n');
 }
 

@@ -202,6 +202,8 @@ Every token of `@openlinkos/ui` 0.5.1, resolved for light and dark mode with the
 | `--ol-size-avatar-md` | `1.75rem` | = |  |
 | `--ol-size-avatar-lg` | `2.25rem` | = |  |
 | `--ol-size-sidebar` | `15rem` | = | Width of the app sidebar. |
+| `--ol-size-rail` | `3.5rem` | = | Width of the workbench's sidebar as a rail of icons, between 860 and 1200px. |
+| `--ol-size-topbar` | `3rem` | = | Height of the workbench's top bar; panes that stay in view start below it. |
 | `--ol-size-content` | `75rem` | = | Maximum width of page content. |
 
 ## Space

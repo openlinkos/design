@@ -282,6 +282,25 @@ describe('build', () => {
     expect(read('dist/LICENSE-lucide.txt')).toMatch(/ISC/);
   });
 
+  it('lays out by the window size classes and, inside them, by the width of containers', () => {
+    // The viewport chooses only the frame, at the two widths of the window size classes.
+    const widths = new Set<string>();
+    for (const [, query] of css.matchAll(/@media ([^{]+)\{/g)) {
+      for (const [w] of (query ?? '').matchAll(/\d+(?:\.\d+)?(?:px|rem|em)/g)) widths.add(w);
+    }
+    expect([...widths].sort()).toEqual(['1200px', '860px']);
+    // Inside, layouts follow their container, at a few widths.
+    const containers = new Set(
+      [...css.matchAll(/@container [^{]*?(\d+(?:\.\d+)?rem)/g)].map((m) => m[1] as string),
+    );
+    expect([...containers].sort()).toEqual(['40rem', '48rem', '52rem', '60rem']);
+    // The workbench changes components inside it, so it comes after them in the component layer.
+    const components = css.indexOf('@layer ol.components {');
+    expect(css.indexOf('.ol-app-workbench {')).toBeGreaterThan(css.indexOf('.ol-sheet {'));
+    expect(css.indexOf('.ol-app-workbench {')).toBeGreaterThan(components);
+    expect(css.indexOf('.ol-app-workbench {')).toBeLessThan(css.indexOf('@layer ol.utilities {'));
+  });
+
   it('defines every class and icon the demo pages use, and the pages need no inline style', () => {
     const demos = readdirSync(new URL('demo/', pkg)).filter((f) => f.endsWith('.html'));
     expect(demos.length).toBeGreaterThan(2);

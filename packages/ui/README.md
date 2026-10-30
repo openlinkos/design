@@ -23,7 +23,7 @@ Copy the files into your app's static assets at build time, keeping `fonts/` nex
 - [Principles](docs/principles.md): how the system is built and why, with the practices it takes from other design systems.
 - [Components](docs/components.md): markup, variants, states, accessibility and guidance for each component.
 - [Token reference](docs/tokens.md): every token with its light and dark value, generated from [`tokens/`](tokens).
-- [`demo/`](demo): an app page, every component, a sign-in page, and a service site. Run `node demo/serve.ts` here and open http://127.0.0.1:4321/demo/.
+- [`demo/`](demo): an app page, a workbench with its layouts, every component, a sign-in page, and a service site. Run `node demo/serve.ts` here and open http://127.0.0.1:4321/demo/.
 
 ## Tokens
 
