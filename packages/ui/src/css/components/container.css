@@ -41,6 +41,13 @@
   border-radius: 0;
 }
 
+/* A pager at the foot of a panel, under its table, keeps the panel's padding. */
+.ol-panel > .ol-pager {
+  margin: 0;
+  padding: var(--ol-space-2) var(--ol-space-4);
+  border-block-start: 1px solid var(--ol-color-border);
+}
+
 /* So does an empty state that is all a panel holds: the panel is its frame. */
 .ol-panel > .ol-empty,
 .ol-panel-body > .ol-empty:only-child {

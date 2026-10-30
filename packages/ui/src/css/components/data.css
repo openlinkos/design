@@ -6,6 +6,9 @@
    headings with aria-sort and selected rows with aria-selected="true". */
 
 .ol-table-wrap {
+  /* Positioned, so that what is placed absolutely inside a table, such as a heading kept only for
+     assistive technology (.ol-sr-only), scrolls with it rather than widening the page. */
+  position: relative;
   overflow-x: auto;
   border: 1px solid var(--ol-color-border);
   border-radius: var(--ol-radius-container);
