@@ -102,8 +102,8 @@
     "url": { "en": "https://beacon.openlinkos.com/", "zh": "https://beacon.openlinkos.com/zh/" },
     "repo": "openlinkos/beacon",
     "description": {
-      "en": "Infrastructure for AI agents that run operations",
-      "zh": "给做运维的 AI Agent 用的基础设施"
+      "en": "Monitoring and SSH access for AI agents on call",
+      "zh": "给值班 AI Agent 的监控与 SSH 接入"
     },
     "nav": ["projects"],
     "colors": {
