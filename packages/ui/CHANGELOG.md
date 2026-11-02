@@ -2,6 +2,10 @@
 
 Changes to `@openlinkos/ui`, newest first. It shares its version with `@openlinkos/vitepress-theme`; releases before 0.7.0 are described in the git history.
 
+## 0.7.1
+
+No changes to the package; released with `@openlinkos/vitepress-theme` 0.7.1, whose version it shares.
+
 ## 0.7.0
 
 ### Added

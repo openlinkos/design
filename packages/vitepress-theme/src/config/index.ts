@@ -12,7 +12,17 @@ import type {
 import { deriveCookieDomain } from '../shared/lang.js';
 import { type Brand, findBrand, listed, loadBrands, type NavGroup } from './brands.js';
 import { checkSite, formatProblems } from './check.js';
-import { buildFooter, type Footer, type FooterLink, masterBrand } from './footer.js';
+import {
+  buildFooter,
+  type Footer,
+  type FooterLegal,
+  type Legal,
+  type Localized,
+  masterBrand,
+  pick,
+  repeatedPrivacy,
+  siteLink,
+} from './footer.js';
 import { addXDefault, pageHead, siteHead } from './head.js';
 import { englishLabels, localizeMarkdown } from './markdown.js';
 import { openlinkosPlugin, PACKAGE_NAME } from './plugin.js';
@@ -20,13 +30,22 @@ import { openlinkosTokenize } from './search.js';
 import { FAMILY, LINKS, UI, ZH_SEARCH_TRANSLATIONS } from './strings.js';
 
 export { sourceHash } from './check.js';
-export type { FooterLink, Localized } from './footer.js';
+export type { FooterLegal, FooterLink, Legal, Localized } from './footer.js';
 
 type ThemeConfig = DefaultTheme.Config;
 type Config = UserConfig<ThemeConfig>;
 
 /** A locale of an OpenLinkOS site. `lang`, `label` and `link` are set by the theme. */
 export type OpenLinkOSLocale = Omit<LocaleSpecificConfig<ThemeConfig>, 'head' | 'lang' | 'dir'>;
+
+/** The site's own part of the shared footer. */
+export interface OpenLinkOSFooter {
+  /**
+   * One line of the site's own in the footer's brand block, under the description, such as who
+   * runs the site: plain text, the same in both languages or `{ en, zh }`.
+   */
+  note?: Localized;
+}
 
 export interface OpenLinkOSConfig extends Omit<Config, 'locales' | 'extends'> {
   /** The site's brand: an id from brands.json, such as `openlinkos` or `origin`. */
@@ -42,11 +61,14 @@ export interface OpenLinkOSConfig extends Omit<Config, 'locales' | 'extends'> {
   cookieDomain?: string | false;
   /** English at the root and Simplified Chinese under /zh/; no other locales. */
   locales?: { root?: OpenLinkOSLocale; zh?: OpenLinkOSLocale };
+  /** The site's own part of the shared footer: `note`, one line of its own. */
+  footer?: OpenLinkOSFooter;
   /**
-   * The links in the footer's bottom row, after the copyright, such as the terms of use and the
-   * privacy notice. Defaults to the organization's privacy notice.
+   * The footer's bottom row, after the copyright: the organization's privacy notice, then the
+   * site's links. A list of links adds them after the notice; `{ privacy, links }` also points the
+   * notice at the site's own (`privacy: { en, zh }`) or leaves it out (`privacy: false`).
    */
-  legal?: FooterLink[];
+  legal?: Legal;
 }
 
 /** Theme config keys that the theme sets in every locale, which therefore hide top-level values. */
@@ -99,27 +121,82 @@ const resolveHostname = (hostname: string): string => {
 
 /**
  * The family menu, named after the master brand: its home, the open-source projects and the free
- * public services from brands.json, and a link to every service.
+ * public services from brands.json, and a link to every service. As in the footer, links into the
+ * site itself become paths, so they open in the same tab, without the external-link icon, and
+ * also work on a preview or a local server.
  */
-const familyNav = (locale: 'en' | 'zh'): DefaultTheme.NavItem => {
+const familyNav = (locale: 'en' | 'zh', hostname: string): DefaultTheme.NavItem => {
   const brands = loadBrands();
   const master = masterBrand(brands);
-  const items = (group: NavGroup) =>
-    listed(brands, group, locale).map((l) => ({ text: l.name, link: l.link }));
+  const link = (text: string, url: string) => ({ text, link: siteLink(url, hostname) });
+  const items = (group: NavGroup) => listed(brands, group, locale).map((l) => link(l.name, l.link));
   return {
     text: master.name,
     items: [
-      { text: FAMILY[locale].home(master.name), link: master.url[locale] },
+      link(FAMILY[locale].home(master.name), master.url[locale]),
       { text: FAMILY[locale].projects, items: items('projects') },
       {
         text: FAMILY[locale].services,
-        items: [
-          ...items('services'),
-          { text: FAMILY[locale].allServices, link: LINKS.services[locale] },
-        ],
+        items: [...items('services'), link(FAMILY[locale].allServices, LINKS.services[locale])],
       },
     ],
   };
+};
+
+const LOCALIZED = 'a string or { en, zh }';
+
+/** Whether a value is a text or link for both languages: a string, or `{ en, zh }`. */
+const isLocalized = (value: unknown): value is Localized =>
+  (typeof value === 'string' && value.trim() !== '') ||
+  (isPlainObject(value) &&
+    (['en', 'zh'] as const).every((l) => typeof value[l] === 'string' && value[l].trim() !== ''));
+
+/** Checks the site's footer options: a note in both languages, legal links that skip Privacy. */
+const checkFooter = (
+  footer: OpenLinkOSFooter | undefined,
+  legal: Legal | undefined,
+  master: Brand,
+  hostname: string,
+): void => {
+  const others = (value: object, allowed: string[]) =>
+    Object.keys(value).filter((key) => !allowed.includes(key));
+  if (footer !== undefined) {
+    if (!isPlainObject(footer)) fail('footer must be an object such as { note: { en, zh } }');
+    const other = others(footer, ['note']);
+    if (other.length) {
+      fail(
+        `footer may only have note, got ${other.join(', ')}; ` +
+          'to replace the columns, set themeConfig.footer.message in each locale',
+      );
+    }
+    if (footer.note !== undefined && !isLocalized(footer.note)) {
+      fail(`footer.note must be ${LOCALIZED}`);
+    }
+  }
+  if (legal === undefined) return;
+  if (!Array.isArray(legal)) {
+    if (!isPlainObject(legal)) fail('legal must be a list of links or { privacy, links }');
+    const other = others(legal, ['privacy', 'links']);
+    if (other.length) fail(`legal may only have privacy and links, got ${other.join(', ')}`);
+  }
+  const { privacy, links = [] }: FooterLegal = Array.isArray(legal) ? { links: legal } : legal;
+  if (privacy !== undefined && typeof privacy !== 'boolean' && !isLocalized(privacy)) {
+    fail(`legal.privacy must be true, false or the link of the site's notice, ${LOCALIZED}`);
+  }
+  if (!Array.isArray(links)) fail('legal.links must be a list of links');
+  for (const [i, l] of links.entries()) {
+    if (!isLocalized(l?.text) || !isLocalized(l?.link)) {
+      fail(`legal link ${i + 1}: text and link must each be ${LOCALIZED}`);
+    }
+  }
+  const repeated = repeatedPrivacy(master, legal, hostname);
+  if (repeated) {
+    fail(
+      `legal: "${pick(repeated.text, 'en')}" repeats the privacy notice, which the footer links ` +
+        'to first; remove it, point the notice at your own with legal.privacy: { en, zh }, or ' +
+        'leave the notice out with legal.privacy: false',
+    );
+  }
 };
 
 /** The search options: local search with Chinese strings and a CJK-aware tokenizer. */
@@ -214,6 +291,7 @@ export function defineOpenLinkOSConfig(config: OpenLinkOSConfig): Config {
     brandKit = false,
     cookieDomain,
     locales = {},
+    footer: ownFooter,
     legal,
     ...site
   } = config;
@@ -234,9 +312,11 @@ export function defineOpenLinkOSConfig(config: OpenLinkOSConfig): Config {
 
   const hostname = resolveHostname(rawHostname);
   const brand = findBrand(brandId);
+  checkFooter(ownFooter, legal, masterBrand(loadBrands()), hostname);
   const year = new Date().getUTCFullYear();
+  const note = ownFooter?.note;
   const footer = (locale: 'en' | 'zh', description: string | undefined): Footer =>
-    buildFooter({ brand, brands: loadBrands(), hostname, locale, description, legal, year });
+    buildFooter({ brand, brands: loadBrands(), hostname, locale, description, note, legal, year });
   const resolved: Resolved = {
     brand,
     hostname,
@@ -261,7 +341,10 @@ export function defineOpenLinkOSConfig(config: OpenLinkOSConfig): Config {
     return {
       ...LOCALE_META[key],
       ...own,
-      themeConfig: { ...themeConfig, nav: [...(themeConfig.nav ?? []), familyNav(lang)] },
+      themeConfig: {
+        ...themeConfig,
+        nav: [...(themeConfig.nav ?? []), familyNav(lang, hostname)],
+      },
     };
   };
 

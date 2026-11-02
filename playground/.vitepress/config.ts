@@ -8,6 +8,18 @@ export default defineOpenLinkOSConfig({
   themeConfig: {
     socialLinks: [{ icon: 'github', link: 'https://github.com/openlinkos/design' }],
   },
+  footer: {
+    note: {
+      en: 'The playground is kept by the LinkOS team.',
+      zh: '演示站点由 LinkOS 团队维护。',
+    },
+  },
+  legal: [
+    {
+      text: { en: 'MIT License', zh: 'MIT 许可证' },
+      link: 'https://github.com/openlinkos/design/blob/master/LICENSE',
+    },
+  ],
   locales: {
     root: {
       description: 'A test site for the OpenLinkOS VitePress theme.',

@@ -2,6 +2,25 @@
 
 Changes to `@openlinkos/vitepress-theme`, newest first. It shares its version with `@openlinkos/ui`; releases before 0.7.0 are described in the git history.
 
+## 0.7.1
+
+### Added
+
+- `footer.note`: one line of the site's own in the footer, under the description in the brand block, as a string for both languages or `{ en, zh }`. The shared columns stay. A site of the master brand that is not the organization's own, such as linkos.org, has no attribution line; it says who runs it with the note (`{ en: 'The free public services are run by the LinkOS team', zh: 'LinkOS 免费公共服务由 LinkOS 团队运营' }`).
+- `legal: { privacy, links }`: `privacy` points the privacy notice at the site's own (`{ en: '/privacy', zh: '/zh/privacy' }`) or leaves it out (`false`).
+
+### Changed
+
+- `legal` adds to the privacy notice instead of replacing it. The bottom row is the copyright, the privacy notice, then the site's links. The build stops, saying what to do, if a site's `legal` repeats the notice (an entry named "Privacy" or "隐私说明", or with its address): sites that listed it to keep it next to a licence or terms link now leave it out.
+- The footer is on every page, pages with a sidebar included, beside the sidebar. VitePress hides it there; `footer: false` in a page's frontmatter still leaves it out.
+- The family menu links to the site itself by paths, as the footer does: on linkos.org, LinkOS Mirrors is `/mirrors` and All services `/`, on linkos.io LinkOS home is `/`, on origin.openlinkos.com Origin is `/`, on beacon.openlinkos.com Beacon is `/`. They open in the same tab, without the external-link icon, and work on `vitepress preview`. The menu's label does not light up on those pages; the link inside does.
+- The LinkOS description in `brands.json` says free public services: "The team behind OpenLinkOS and the LinkOS free public services", "OpenLinkOS 开源项目和 LinkOS 免费公共服务背后的团队". The services group stays 公共服务 in the menu and the footer.
+
+### Upgrading from 0.7.0
+
+- Remove the Privacy entry from `legal` (Origin, Beacon), or, with a privacy notice of the site's own, move it to `legal.privacy` (linkos.org).
+- Move a "run by" line out of the locale `description` into `footer.note`.
+
 ## 0.7.0
 
 ### Added
