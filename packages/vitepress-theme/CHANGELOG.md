@@ -6,7 +6,7 @@ Changes to `@openlinkos/vitepress-theme`, newest first. It shares its version wi
 
 ### Added
 
-- The Beacon brand (`brand: 'beacon'`): its favicons, app icons, web manifest, Open Graph image, README headers and brand kit, and Beacon in the family menu and the footer. Its colour is signal orange; its mark is the family ring opened at the top with the fire on the rim.
+- The Beacon brand (`brand: 'beacon'`): its favicons, app icons, web manifest, Open Graph image, README headers and brand kit, and Beacon in the family menu and the footer. Its colour is signal orange; its mark is the family ring opened at the top and the bottom around the fire, the signal going both ways along the wall.
 
 ### Changed
 
