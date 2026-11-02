@@ -113,7 +113,7 @@ describe('defineOpenLinkOSConfig', () => {
           text: 'Open-source projects',
           items: [
             { text: 'LinkOS Mirrors', link: 'https://github.com/openlinkos/registry-mirrors' },
-            { text: 'Origin', link: 'https://origin.openlinkos.com/' },
+            { text: 'Origin', link: '/' },
             { text: 'Beacon', link: 'https://beacon.openlinkos.com/' },
           ],
         },
@@ -139,15 +139,129 @@ describe('defineOpenLinkOSConfig', () => {
       text: '全部服务',
       link: 'https://linkos.org/zh/',
     });
-    // Projects link to their Chinese pages; a service listed as a project links to its repository.
+    // Projects link to their Chinese pages (Origin's own by path, on Origin's site); a service
+    // listed as a project links to its repository.
     expect((family.items[1] as DefaultTheme.NavItemChildren).items.slice(0, 2)).toEqual([
       { text: 'LinkOS Mirrors', link: 'https://github.com/openlinkos/registry-mirrors' },
-      { text: 'Origin', link: 'https://origin.openlinkos.com/zh/' },
+      { text: 'Origin', link: '/zh/' },
     ]);
     expect((family.items[2] as DefaultTheme.NavItemChildren).items[0]).toEqual({
       text: 'LinkOS Mirrors',
       link: 'https://linkos.org/zh/mirrors',
     });
+  });
+
+  it('links the family menu to the site itself by paths', () => {
+    const family = (
+      brand: string,
+      hostname: string,
+      locale: 'root' | 'zh',
+    ): DefaultTheme.NavItemWithChildren => {
+      const config = resolve(defineOpenLinkOSConfig({ brand, hostname, title: 'x' }));
+      return config.locales?.[locale]?.themeConfig?.nav?.at(-1) as DefaultTheme.NavItemWithChildren;
+    };
+    const group = (menu: DefaultTheme.NavItemWithChildren, i: number) =>
+      (menu.items[i] as DefaultTheme.NavItemChildren).items;
+
+    const org = family('linkos', 'https://linkos.org', 'root');
+    expect(group(org, 1)[0]).toEqual({
+      text: 'LinkOS Mirrors',
+      link: 'https://github.com/openlinkos/registry-mirrors',
+    });
+    expect(group(org, 2)).toEqual([
+      { text: 'LinkOS Mirrors', link: '/mirrors' },
+      { text: 'LinkOS Status', link: 'https://uptime.linkos.org/' },
+      { text: 'All services', link: '/' },
+    ]);
+    expect(group(family('linkos', 'https://linkos.org', 'zh'), 2)).toEqual([
+      { text: 'LinkOS Mirrors', link: '/zh/mirrors' },
+      { text: 'LinkOS Status', link: 'https://uptime.linkos.org/' },
+      { text: '全部服务', link: '/zh/' },
+    ]);
+    expect(family('linkos', 'https://linkos.io', 'root').items[0]).toEqual({
+      text: 'LinkOS home',
+      link: '/',
+    });
+    expect(family('linkos', 'https://linkos.io', 'zh').items[0]).toEqual({
+      text: 'LinkOS 主页',
+      link: '/zh/',
+    });
+    expect(group(family('origin', 'https://origin.openlinkos.com', 'zh'), 1)[1]).toEqual({
+      text: 'Origin',
+      link: '/zh/',
+    });
+    expect(group(family('beacon', 'https://beacon.openlinkos.com', 'root'), 1)).toEqual([
+      { text: 'LinkOS Mirrors', link: 'https://github.com/openlinkos/registry-mirrors' },
+      { text: 'Origin', link: 'https://origin.openlinkos.com/' },
+      { text: 'Beacon', link: '/' },
+    ]);
+  });
+
+  it('adds the site’s footer note and legal links to the shared footer', () => {
+    const config = resolve(
+      defineOpenLinkOSConfig({
+        brand: 'linkos',
+        hostname: 'https://linkos.org',
+        title: 'LinkOS',
+        footer: {
+          note: {
+            en: 'The free public services are run by the LinkOS team',
+            zh: 'LinkOS 免费公共服务由 LinkOS 团队运营',
+          },
+        },
+        legal: {
+          privacy: { en: '/privacy', zh: '/zh/privacy' },
+          links: [{ text: { en: 'Terms of use', zh: '使用须知' }, link: '/terms' }],
+        },
+      }),
+    );
+    const en = config.locales?.root?.themeConfig?.footer;
+    const zh = config.locales?.zh?.themeConfig?.footer;
+    expect(en?.message).toContain(
+      '<span class="olf-note">The free public services are run by the LinkOS team</span>',
+    );
+    expect(zh?.message).toContain(
+      '<span class="olf-note">LinkOS 免费公共服务由 LinkOS 团队运营</span>',
+    );
+    expect(en?.copyright).toMatch(
+      /<a href="\/privacy">Privacy<\/a>.*<a href="\/terms">Terms of use</,
+    );
+    expect(zh?.copyright).toMatch(/<a href="\/zh\/privacy">隐私说明<\/a>.*>使用须知</);
+    expect(config).not.toHaveProperty('footer');
+    expect(config).not.toHaveProperty('legal');
+  });
+
+  it('rejects footer options it does not know and legal links that repeat Privacy', () => {
+    const define = (extra: Partial<OpenLinkOSConfig>) => () =>
+      defineOpenLinkOSConfig(origin({ locales: {}, ...extra }));
+    expect(define({ footer: { note: { en: 'Only English' } } as never })).toThrow(
+      /footer.note must be a string or \{ en, zh \}/,
+    );
+    expect(define({ footer: { message: 'x' } as never })).toThrow(
+      /footer may only have note, got message; to replace the columns/,
+    );
+    expect(define({ legal: { links: [], terms: '/terms' } as never })).toThrow(
+      /legal may only have privacy and links, got terms/,
+    );
+    expect(define({ legal: { privacy: 1 } as never })).toThrow(/legal.privacy must be/);
+    expect(define({ legal: [{ text: 'MIT', link: { en: '/mit' } }] as never })).toThrow(
+      /legal link 1: text and link must each be/,
+    );
+    // Origin's 0.7.0 legal repeated the privacy notice the theme now adds by itself.
+    expect(
+      define({
+        legal: [
+          {
+            text: { en: 'Privacy', zh: '隐私说明' },
+            link: { en: 'https://linkos.io/privacy', zh: 'https://linkos.io/zh/privacy' },
+          },
+          { text: 'MIT License', link: 'https://github.com/openlinkos/origin/blob/master/LICENSE' },
+        ],
+      }),
+    ).toThrow(/legal: "Privacy" repeats the privacy notice, which the footer links to first/);
+    expect(
+      define({ legal: { privacy: false, links: [{ text: 'Privacy', link: '/privacy' }] } }),
+    ).not.toThrow();
   });
 
   it('moves per-locale theme keys from the top level into each locale', () => {

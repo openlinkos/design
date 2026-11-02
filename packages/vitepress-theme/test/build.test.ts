@@ -34,7 +34,17 @@ const run = (args: string[], cwd: string): { status: number | null; output: stri
 /** Builds a VitePress site in `root`, run from the playground package like `pnpm docs:build`. */
 const buildSite = (root: string) => run([vitepress, 'build', root], playground);
 
-const read = (path: string): string => readFileSync(join(dist, path), 'utf8');
+const read = (path: string, root = dist): string => readFileSync(join(root, path), 'utf8');
+
+/** The built site's stylesheet. */
+const stylesheet = (): string => {
+  const css = readdirSync(join(dist, 'assets')).find((f) => f.endsWith('.css'));
+  return readFileSync(join(dist, 'assets', css ?? ''), 'utf8');
+};
+
+/** The footers VitePress rendered into a page (the site data in the page is not one). */
+const footers = (html: string): string[] =>
+  [...html.matchAll(/<footer class="VPFooter[\s\S]*?<\/footer>/g)].map((m) => m[0]);
 
 /** A copy of the playground sources (no node_modules or build output) under playground/.tmp/. */
 const copyPlayground = (name: string): string => {
@@ -181,13 +191,82 @@ describe('the playground build', () => {
     expect(html).toContain('_vp-fn_function openlinkosTokenize');
   });
 
+  it('shows the footer once on every page, beside the sidebar on pages with one', () => {
+    const [home] = footers(read('index.html'));
+    expect(footers(read('index.html'))).toHaveLength(1);
+    expect(home).toMatch(/^<footer class="VPFooter" /);
+    // The guide has a sidebar: VitePress renders the footer there but hides it, and the theme's
+    // stylesheet shows it again.
+    expect(footers(read('guide.html'))).toHaveLength(1);
+    expect(footers(read('zh/guide.html'))).toHaveLength(1);
+    expect(footers(read('guide.html'))[0]).toMatch(/^<footer class="VPFooter has-sidebar" /);
+    expect(stylesheet()).toContain('.Layout>footer.VPFooter.has-sidebar{display:block}');
+    expect(stylesheet()).toContain(
+      '.Layout>footer.VPFooter.has-sidebar{padding-left:calc(var(--vp-sidebar-width) + 32px)}',
+    );
+  });
+
+  it('adds the site’s note and its legal links after the privacy notice', () => {
+    const [en] = footers(read('guide.html'));
+    const [zh] = footers(read('zh/guide.html'));
+    expect(en).toContain(
+      '<span class="olf-about">Open source by LinkOS</span>' +
+        '<span class="olf-note">The playground is kept by the LinkOS team.</span>',
+    );
+    expect(zh).toContain('<span class="olf-note">演示站点由 LinkOS 团队维护。</span>');
+    const sep = '<span class="olf-sep" aria-hidden="true"> · </span>';
+    const license = 'https://github.com/openlinkos/design/blob/master/LICENSE';
+    expect(en).toContain(
+      `<span class="olf-copy">© ${new Date().getUTCFullYear()} LinkOS</span>` +
+        `${sep}<a href="https://linkos.io/privacy">Privacy</a>` +
+        `${sep}<a href="${license}">MIT License</a></p>`,
+    );
+    expect(zh).toContain(
+      `${sep}<a href="https://linkos.io/zh/privacy">隐私说明</a>` +
+        `${sep}<a href="${license}">MIT 许可证</a></p>`,
+    );
+  });
+
   it('bundles the brand colours into the stylesheet', () => {
-    const css = readdirSync(join(dist, 'assets')).find((f) => f.endsWith('.css'));
-    const style = readFileSync(join(dist, 'assets', css ?? ''), 'utf8');
+    const style = stylesheet();
     expect(style).toMatch(/--vp-c-brand-1:\s*#1d4ed8/);
     expect(style).toMatch(/\.dark\{[^}]*--vp-c-brand-1:\s*#6b9bff/);
     expect(style).toContain('html[lang^=zh]');
   });
+});
+
+describe('a family site', () => {
+  it('links the family menu to its own pages by paths, which VitePress keeps in the tab', () => {
+    // The playground as linkos.org: the menu's LinkOS Mirrors and All services are its own pages.
+    const root = copyPlayground('linkos-org');
+    const config = join(root, '.vitepress', 'config.ts');
+    writeFileSync(
+      config,
+      readFileSync(config, 'utf8')
+        .replace("brand: 'openlinkos'", "brand: 'linkos'")
+        .replace("hostname: 'https://playground.openlinkos.com'", "hostname: 'https://linkos.org'"),
+    );
+    const result = buildSite(root);
+    expect(result.status, result.output).toBe(0);
+    const out = join(root, '.vitepress', 'dist');
+    // The links of the nav bar's menus: the family menu and the language menu.
+    const links = (html: string): string[] =>
+      [...html.matchAll(/<div class="VPMenuLink"[^>]*>(<a [^>]*>)/g)].map((m) => m[1]);
+    const en = links(read('guide.html', out));
+    expect(en.filter((a) => a.includes('href="/mirrors"'))).toHaveLength(1);
+    expect(en.filter((a) => a.includes('href="/"'))).toHaveLength(1);
+    for (const a of en.filter((a) => /href="\/(mirrors)?"/.test(a))) {
+      expect(a).not.toMatch(/target=|vp-external-link-icon/);
+    }
+    expect(en.some((a) => a.includes('https://linkos.org'))).toBe(false);
+    // Links to other sites, such as LinkOS Status, stay external.
+    expect(en.find((a) => a.includes('href="https://uptime.linkos.org/"'))).toContain(
+      'target="_blank"',
+    );
+    const zh = links(read('zh/guide.html', out));
+    expect(zh.filter((a) => a.includes('href="/zh/mirrors"'))).toHaveLength(1);
+    expect(zh.filter((a) => a.includes('href="/zh/"'))).toHaveLength(1);
+  }, 120_000);
 });
 
 describe('the bilingual coverage check', () => {

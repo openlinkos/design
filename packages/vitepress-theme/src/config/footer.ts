@@ -1,8 +1,9 @@
-// The footer every site shares: the site's brand, the open-source projects and services from
-// brands.json, the organization's pages, resources, and a bottom row with the copyright and the
-// site's legal links. VitePress renders `footer.message` and `footer.copyright` with `v-html`
-// inside a `<p>`, so the markup uses phrasing elements only (`span`, `a`, `img`); a `div` or `ul`
-// would be moved out of the paragraph by the browser and break hydration.
+// The footer every site shares: the site's brand (and the site's note, if any), the open-source
+// projects and services from brands.json, the organization's pages, resources, and a bottom row
+// with the copyright, the privacy notice and the site's legal links. VitePress renders
+// `footer.message` and `footer.copyright` with `v-html` inside a `<p>`, so the markup uses phrasing
+// elements only (`span`, `a`, `img`); a `div` or `ul` would be moved out of the paragraph by the
+// browser and break hydration.
 
 import { type Brand, type BrandLocale, listed, type NavGroup } from './brands.js';
 import { CONTACT, FAMILY, FOOTER, LINKS } from './strings.js';
@@ -10,11 +11,25 @@ import { CONTACT, FAMILY, FOOTER, LINKS } from './strings.js';
 /** A text or link that is the same in both languages, or given per language. */
 export type Localized = string | Record<BrandLocale, string>;
 
-/** A link in the footer's bottom row, such as the privacy notice or the terms of use. */
+/** A link in the footer's bottom row, such as the terms of use or the licence. */
 export interface FooterLink {
   text: Localized;
   link: Localized;
 }
+
+/** The footer's bottom row, after the copyright: the privacy notice, then the site's links. */
+export interface FooterLegal {
+  /**
+   * The privacy notice, first in the row: the organization's (`true`, the default), the site's own
+   * (its link, a string or `{ en, zh }`; the text stays "Privacy"), or `false` for none.
+   */
+  privacy?: boolean | Localized;
+  /** The site's own links, after the privacy notice, such as its terms of use or its licence. */
+  links?: FooterLink[];
+}
+
+/** The site's footer options: `legal`, or its links alone, which come after the privacy notice. */
+export type Legal = FooterLegal | FooterLink[];
 
 export interface FooterOptions {
   /** The site's brand. */
@@ -26,8 +41,10 @@ export interface FooterOptions {
   locale: BrandLocale;
   /** The text under the brand name; the brand's description when the site has none. */
   description?: string;
-  /** The bottom row's links; the organization's privacy notice when not set. */
-  legal?: FooterLink[];
+  /** One line of the site's own under the description and the attribution, such as who runs it. */
+  note?: Localized;
+  /** The bottom row's links: the organization's privacy notice, then the site's own. */
+  legal?: Legal;
   year: number;
 }
 
@@ -43,8 +60,17 @@ const escapeHtml = (text: string): string =>
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;');
 
-const pick = (value: Localized, locale: BrandLocale): string =>
+export const pick = (value: Localized, locale: BrandLocale): string =>
   typeof value === 'string' ? value : value[locale];
+
+/**
+ * A link as the site uses it: a link into the site itself (by its origin, `hostname`) becomes a
+ * path, so it opens in the same tab and also works on a preview or a local server.
+ */
+export const siteLink = (url: string, hostname: string): string => {
+  if (url === hostname || url === `${hostname}/`) return '/';
+  return url.startsWith(`${hostname}/`) ? url.slice(hostname.length) : url;
+};
 
 /** The master brand: the organization. */
 export const masterBrand = (brands: Brand[]): Brand => {
@@ -59,15 +85,55 @@ export const masterBrand = (brands: Brand[]): Brand => {
 export const orgLink = (master: Brand, locale: BrandLocale, page: string): string =>
   `${master.url[locale]}${page}`;
 
-/** The default bottom row: the organization's privacy notice. */
-export const defaultLegal = (master: Brand): FooterLink[] => [
-  {
-    text: { en: FOOTER.en.privacy, zh: FOOTER.zh.privacy },
-    link: { en: orgLink(master, 'en', 'privacy'), zh: orgLink(master, 'zh', 'privacy') },
-  },
-];
+/** `legal` in full: links alone come after the organization's privacy notice. */
+const fullLegal = (legal: Legal = {}): Required<FooterLegal> =>
+  Array.isArray(legal)
+    ? { privacy: true, links: legal }
+    : { privacy: legal.privacy ?? true, links: legal.links ?? [] };
 
-/** The line under the description: who the site belongs to, or nothing on the master's sites. */
+/** The privacy notice in the bottom row, or null when the site turned it off. */
+const privacyNotice = (master: Brand, legal?: Legal): FooterLink | null => {
+  const { privacy } = fullLegal(legal);
+  if (privacy === false) return null;
+  return {
+    text: { en: FOOTER.en.privacy, zh: FOOTER.zh.privacy },
+    link:
+      privacy === true
+        ? { en: orgLink(master, 'en', 'privacy'), zh: orgLink(master, 'zh', 'privacy') }
+        : privacy,
+  };
+};
+
+/** The links of the bottom row, in order: the privacy notice (unless turned off), then the site's. */
+export const legalLinks = (master: Brand, legal?: Legal): FooterLink[] => {
+  const notice = privacyNotice(master, legal);
+  return [...(notice ? [notice] : []), ...fullLegal(legal).links];
+};
+
+/**
+ * The first of the site's own legal links that repeats the privacy notice the theme adds: one with
+ * its text ("Privacy", "隐私说明") or its address, in either language.
+ */
+export const repeatedPrivacy = (
+  master: Brand,
+  legal: Legal | undefined,
+  hostname: string,
+): FooterLink | undefined => {
+  const notice = privacyNotice(master, legal);
+  if (!notice) return undefined;
+  const same = (a: Localized, b: Localized, normalize: (s: string) => string): boolean =>
+    (['en', 'zh'] as const).some((l) => normalize(pick(a, l)) === normalize(pick(b, l)));
+  return fullLegal(legal).links.find(
+    (l) =>
+      same(l.text, notice.text, (s) => s.trim().toLowerCase()) ||
+      same(l.link, notice.link, (s) => siteLink(s, hostname)),
+  );
+};
+
+/**
+ * The line under the description: who the site belongs to, or nothing on the master brand's sites
+ * (a site of the master brand that is run for others, such as linkos.org, says so in its note).
+ */
 const attribution = (brand: Brand, master: Brand, locale: BrandLocale): string | undefined => {
   if (brand.tier === 'master') return undefined;
   const strings = FOOTER[locale];
@@ -79,13 +145,8 @@ export const buildFooter = (o: FooterOptions): Footer => {
   const { brand, brands, locale } = o;
   const master = masterBrand(brands);
   const strings = FOOTER[locale];
-  // Links into this site become paths, so they also work on a preview or a local server.
-  const href = (url: string): string => {
-    if (url === o.hostname || url === `${o.hostname}/`) return '/';
-    return url.startsWith(`${o.hostname}/`) ? url.slice(o.hostname.length) : url;
-  };
   const a = (url: string, text: string): string =>
-    `<a href="${escapeHtml(href(url))}">${escapeHtml(text)}</a>`;
+    `<a href="${escapeHtml(siteLink(url, o.hostname))}">${escapeHtml(text)}</a>`;
   const column = (key: string, title: string, links: string[]): string =>
     `<span class="olf-col olf-${key}" role="group" aria-label="${escapeHtml(title)}">` +
     `<span class="olf-title">${escapeHtml(title)}</span>${links.join('')}</span>`;
@@ -99,6 +160,7 @@ export const buildFooter = (o: FooterOptions): Footer => {
     `${escapeHtml(brand.name)}</a>` +
     `<span class="olf-desc">${escapeHtml(o.description ?? brand.description[locale])}</span>` +
     (about ? `<span class="olf-about">${escapeHtml(about)}</span>` : '') +
+    (o.note ? `<span class="olf-note">${escapeHtml(pick(o.note, locale))}</span>` : '') +
     '</span>';
 
   const links = (group: NavGroup): string[] =>
@@ -124,7 +186,7 @@ export const buildFooter = (o: FooterOptions): Footer => {
     ]) +
     '</span>';
 
-  const legal = (o.legal ?? defaultLegal(master)).map((l) =>
+  const legal = legalLinks(master, o.legal).map((l) =>
     a(pick(l.link, locale), pick(l.text, locale)),
   );
   const copyright =

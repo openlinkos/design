@@ -46,8 +46,8 @@ export default defineOpenLinkOSConfig({
       },
     },
   },
+  // After the organization's privacy notice, which the footer always links to first.
   legal: [
-    { text: { en: 'Privacy', zh: '隐私说明' }, link: { en: 'https://linkos.io/privacy', zh: 'https://linkos.io/zh/privacy' } },
     { text: { en: 'MIT License', zh: 'MIT 许可证' }, link: 'https://github.com/openlinkos/origin/blob/master/LICENSE' },
   ],
 });
@@ -62,9 +62,10 @@ export default defineOpenLinkOSConfig({
 | `brandKit` | Publish every brand's web, GitHub and kit files under `/brand/<id>/` (for openlinkos.com). Markdown can then show them, as in `![](/brand/origin/kit/lockup.svg)`. |
 | `cookieDomain` | The domain that shares the language preference across sites. Defaults to the last two labels of `hostname` (`openlinkos.com`); `false` keeps it to one host. |
 | `locales` | `root` (English) and `zh` (Simplified Chinese) only. Language, label and link are set for you. |
-| `legal` | The links in the footer's bottom row, after the copyright: `{ text, link }`, each a string or `{ en, zh }`. Defaults to the organization's privacy notice. |
+| `footer` | The site's own part of the shared footer. `footer.note`: one line of plain text of its own in the brand block, under the description, such as who runs the site: a string for both languages or `{ en, zh }`. |
+| `legal` | The footer's bottom row, after the copyright: the organization's privacy notice, then the site's links. A list of links (`{ text, link }`, each a string or `{ en, zh }`) adds them after the notice. The full form is `{ privacy, links }`: `privacy` is `true` (the default, the organization's notice), the site's own notice (its link, a string or `{ en, zh }`; the text stays "Privacy"), or `false` for none. |
 
-The site's config extends the theme's: arrays such as `head` are appended, objects are merged, and the theme's `transformHead`, `buildEnd`, `markdown.config` and `sitemap.transformItems` run before the site's own. The family menu is appended to each locale's `nav`.
+The site's config extends the theme's: arrays such as `head` are appended, objects are merged, and the theme's `transformHead`, `buildEnd`, `markdown.config` and `sitemap.transformItems` run before the site's own. The family menu is appended to each locale's `nav`; its links into the site itself are paths (see [Footer](#footer)).
 
 Things to know:
 
@@ -77,11 +78,26 @@ Things to know:
 
 Every site gets the same footer, built from `brands.json`:
 
-- the site's logo and name, its description (the locale's `description`, or the brand's), and who it belongs to: "Open source by LinkOS" on the open-source sites, "Run by LinkOS" on a service, nothing on the master brand's own sites;
+- the site's logo and name, its description (the locale's `description`, or the brand's), who it belongs to ("Open source by LinkOS" on the open-source sites, "Run by LinkOS" on a service, nothing on the master brand's sites), and the site's `footer.note`, if it has one;
 - columns of the open-source projects and the free public services (`nav` in `brands.json`, the same as the family menu; a service that is also an open-source project links to its repository under the projects), the master brand's pages (about, news, trust and security, contact), and resources (GitHub, brand guidelines, design system);
-- a bottom row with `© <build year> <master brand>` and the site's `legal` links.
+- a bottom row with `© <build year> <master brand>`, the privacy notice, and the site's `legal` links.
 
-Links into the site itself become paths. On pages with a sidebar, VitePress hides the footer. A site that sets its own `footer.message` replaces the columns and keeps the bottom row. VitePress renders the footer with `v-html` inside a paragraph, so the theme builds it from phrasing elements only.
+The footer is on every page, pages with a sidebar included: VitePress hides it there, and the theme shows it beside the sidebar. A page leaves it out with `footer: false` in its frontmatter. A site that sets its own `themeConfig.footer.message` in a locale replaces the columns (and the note) and keeps the bottom row. VitePress renders the footer with `v-html` inside a paragraph, so the theme builds it from phrasing elements only.
+
+Links into the site itself, by its `hostname`, become paths, in the footer and in the family menu alike: on linkos.org, the menu's LinkOS Mirrors is `/mirrors`, so it opens in the same tab, without the external-link icon, and works on `vitepress preview` too. The family menu's label does not light up when one of its links is the page on screen; the link does.
+
+**Saying who runs the site.** A site of the master brand that is not the organization's own, such as linkos.org, shows no attribution line; it says who runs it with the note:
+
+```ts
+footer: {
+  note: {
+    en: 'The free public services are run by the LinkOS team',
+    zh: 'LinkOS 免费公共服务由 LinkOS 团队运营',
+  },
+},
+```
+
+**Legal links.** The bottom row always starts with the privacy notice; `legal` adds the site's links after it. The build stops if one of them repeats the notice (its text, "Privacy" or "隐私说明", or its address): remove it, point the notice at the site's own with `legal: { privacy: { en: '/privacy', zh: '/zh/privacy' }, links: [/* … */] }`, or leave the notice out with `privacy: false`.
 
 ## security.txt
 

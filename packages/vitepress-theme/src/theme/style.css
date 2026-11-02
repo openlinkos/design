@@ -53,7 +53,8 @@ html[lang^="zh"] {
 }
 
 .VPFooter .olf-desc,
-.VPFooter .olf-about {
+.VPFooter .olf-about,
+.VPFooter .olf-note {
   max-width: 36ch;
   font-weight: 400;
 }
@@ -94,4 +95,49 @@ html[lang^="zh"] {
   .VPFooter .olf-brand {
     grid-column: 1 / -1;
   }
+}
+
+/*
+ * The footer is on every page. VitePress hides it on pages with a sidebar; there it stays, beside
+ * the sidebar (fixed from 960px on), lined up with the page's content. A page leaves it out with
+ * `footer: false` in its frontmatter. The selectors outrank the scoped `.VPFooter.has-sidebar`.
+ */
+.Layout > footer.VPFooter.has-sidebar {
+  display: block;
+}
+
+@media (min-width: 960px) {
+  .Layout > footer.VPFooter.has-sidebar {
+    padding-left: calc(var(--vp-sidebar-width) + 32px);
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  /* Beside the sidebar there is room for the four columns under the brand, not beside it. */
+  .VPFooter.has-sidebar .olf {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .VPFooter.has-sidebar .olf-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1440px) {
+  .Layout > footer.VPFooter.has-sidebar {
+    padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
+    padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width) + 32px);
+  }
+}
+
+/*
+ * The family menu, the last group of the nav bar, is not a section of the site: it does not light
+ * up when one of its links is the page on screen (that link does, inside the menu).
+ */
+.VPNavBarMenu > .VPNavBarMenuGroup:last-child.active .text {
+  color: var(--vp-c-text-1);
+}
+
+.VPNavBarMenu > .VPNavBarMenuGroup:last-child.active:hover .text {
+  color: var(--vp-c-text-2);
 }
