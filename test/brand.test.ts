@@ -30,17 +30,22 @@ describe('brands.json', () => {
   it('resolves every brand with complete colours', () => {
     expect(brands.map((b) => b.id)).toEqual([
       'openlinkos',
-      'origin',
-      'agent',
       'linkos',
       'linkos-mirrors',
       'linkos-status',
+      'origin',
+      'beacon',
+      'agent',
     ]);
     for (const b of brands) {
       expect(b.colors.brand.light).toHaveLength(3);
       expect(b.colors.brand.dark).toHaveLength(3);
       expect(b.url.en).toMatch(/^https:\/\//);
       expect(b.description.zh.length).toBeGreaterThan(0);
+      if (b.repo !== undefined) expect(b.repo).toMatch(/^openlinkos\/[a-z0-9.-]+$/);
+      for (const group of b.nav) expect(['projects', 'services']).toContain(group);
+      // A service listed with the projects links there to its repository.
+      if (b.tier === 'service' && b.nav.includes('projects')) expect(b.repo).toBeDefined();
     }
   });
 

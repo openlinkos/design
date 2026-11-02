@@ -9,15 +9,18 @@ Every brand is an entry in [`brand/brands.json`](brand/brands.json), the single 
 | Id | Name | Tier | Mark | Accent |
 | --- | --- | --- | --- | --- |
 | `openlinkos` | OpenLinkOS | line | interlocked rings | blue |
-| `origin` | Origin | product | ring and centre point | indigo |
-| `agent` | OpenLinkOS Agent | product | interlocked rings | violet |
 | `linkos` | LinkOS | master | interlocked rings | green |
 | `linkos-mirrors` | LinkOS Mirrors | service | interlocked rings | green |
 | `linkos-status` | LinkOS Status | service | interlocked rings | green |
+| `origin` | Origin | product | ring and centre point | indigo |
+| `beacon` | Beacon | product | its own, provisional (see below) | orange |
+| `agent` | OpenLinkOS Agent | product | interlocked rings | violet |
+
+The open-source projects are LinkOS Mirrors (its code: registry-mirrors, registry-mirrors-caddy and registry-mirrors-relay), Origin and Beacon; the free public services are LinkOS Mirrors and LinkOS Status. OpenLinkOS Agent was an experiment: it keeps its entry and its files, which its README uses, but is not listed.
 
 LinkOS is the organization, at linkos.io. OpenLinkOS is its brand for open-source projects, at openlinkos.com, and the LinkOS services, listed at linkos.org, are its free public services. Every brand shares one visual system; the tier shows in the accent colour and the wordmark, not in a different mark. Exactly one brand is the master: the theme names the family menu and the footer's copyright after it and links to its pages.
 
-An entry holds the name, tier and parent, the mark, the wordmark and an optional descriptor (drawn in the accent colour, for example "LinkOS **Mirrors**"), the URL and a one-line description in English and Chinese, the navigation group (`projects`, `services` or none), and the colours. A service can reuse another brand's colours by naming it (`"colors": "linkos"`).
+An entry holds the name, tier and parent, the mark, the wordmark and an optional descriptor (drawn in the accent colour, for example "LinkOS **Mirrors**"), the URL, the GitHub repository where there is one, a one-line description in English and Chinese, the groups it is listed in (`nav`: `projects` for the open-source projects, `services` for the free public services, both, or none), and the colours. The family menu and the footer list each group in the order of `brands.json`; a service listed with the projects links there to its repository, since its own URL is the service. A service can reuse another brand's colours by naming it (`"colors": "linkos"`).
 
 ## Construction
 
@@ -25,8 +28,9 @@ An entry holds the name, tier and parent, the mark, the wordmark and an optional
 - **Line.** One stroke weight, 4 units, with round caps and joins. At 32 px and below the small variant uses 5.5 units so the mark stays legible; the favicon uses it.
 - **Interlocked rings.** Two rings of radius 10, centres 14 apart. Each passes under the other once: the left ring at the upper crossing, the right ring at the lower one. The gap where a ring passes under is the stroke width plus 1.25 units on each side.
 - **Ring and centre point.** A ring of radius 15 around a solid point of radius 5 (6 in the small variant).
+- **Beacon.** Its own mark, in [`brand/beacon.ts`](brand/beacon.ts), which documents its construction. It is provisional: the candidates are in [`brand/proposals/beacon/`](brand/proposals/beacon/) with their gallery (`index.html`, built by `node brand/proposals/beacon/build.ts`), each a drop-in for `brand/beacon.ts`; the one picked replaces it, and `pnpm gen` does the rest. The mark holds candidate 1 until then.
 - **Wordmark.** A monoline alphabet drawn as paths in [`brand/wordmark.ts`](brand/wordmark.ts) (x-height 11, cap height 15, descender 5, stroke 2.6 font units). In a lockup the wordmark is scaled by 1.45 so its stroke matches the mark, sits 13 units to the right of the mark, and the descriptor follows 8 units after the name. Brand names are always set in Latin letters, in every language.
-- **Colour.** The left ring (or the ring around the origin) is ink; the accent is the brand colour. Ink is `#0f172a` on light backgrounds and `#e2e8f0` on dark ones. App icons and cards use the ink tile `#0f172a` with the dark colourway.
+- **Colour.** The left ring (or the ring around the origin, or the lines of Beacon's mark) is ink; the accent is the brand colour (Beacon's fire). Ink is `#0f172a` on light backgrounds and `#e2e8f0` on dark ones. App icons and cards use the ink tile `#0f172a` with the dark colourway.
 - **Paths only.** Marks contain no text, filters, external references, embedded fonts or inline colours; colours come from the classes `ink`, `accent`, `ink-f` and `accent-f`, so one geometry renders every colourway. The tests enforce this.
 
 Contrast rules, also enforced by the tests: the mark accent reaches 3:1 against the page, brand-1 (text and links) reaches 4.5:1 on light and dark pages, and white text on brand-3 (solid buttons) reaches 4.5:1.
@@ -49,7 +53,7 @@ Sites do not copy these files: `@openlinkos/vitepress-theme` ships them and writ
 
 ## Changing the brand
 
-1. Edit `brand/brands.json`, `brand/marks.ts` or `brand/wordmark.ts`.
+1. Edit `brand/brands.json`, `brand/marks.ts`, `brand/beacon.ts` or `brand/wordmark.ts`.
 2. Run `pnpm gen`, look at the result, and run `pnpm test`.
 3. Commit the source change together with the regenerated `brand/out/`.
 

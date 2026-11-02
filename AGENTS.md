@@ -33,7 +33,7 @@ Read [BRAND.md](BRAND.md) before changing a mark, a colour, or the asset set, [p
 
 ## Releases
 
-`@openlinkos/ui` and `@openlinkos/vitepress-theme` are published to npm by `.github/workflows/release.yml` and share one version. To release, bump `version` in both `packages/*/package.json`, commit, then tag `v<version>` and push the tag; a package whose version is already on npm is skipped. A maintainer approves the run in the `npm` environment; npm trusted publishing attaches provenance. Never publish from a workstation.
+`@openlinkos/ui` and `@openlinkos/vitepress-theme` are published to npm by `.github/workflows/release.yml` and share one version. To release, bump `version` in both `packages/*/package.json`, add the release to both `packages/*/CHANGELOG.md`, commit, then tag `v<version>` and push the tag; a package whose version is already on npm is skipped. A maintainer approves the run in the `npm` environment; npm trusted publishing attaches provenance. Never publish from a workstation.
 
 ## Git
 

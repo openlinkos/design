@@ -7,6 +7,9 @@ import { fileURLToPath } from 'node:url';
 
 export type BrandLocale = 'en' | 'zh';
 
+/** The groups of the family menu and the footer: open-source projects and free public services. */
+export type NavGroup = 'projects' | 'services';
+
 export interface BrandColours {
   mark: { light: string; dark: string };
   brand: { light: [string, string, string]; dark: [string, string, string] };
@@ -22,8 +25,11 @@ export interface Brand {
   word: string;
   descriptor?: string;
   url: Record<BrandLocale, string>;
+  /** The source repository on GitHub, as owner/name, for brands that have one. */
+  repo?: string;
   description: Record<BrandLocale, string>;
-  nav: 'projects' | 'services' | null;
+  /** The groups the brand is listed in; none for a brand that is not listed. */
+  nav: NavGroup[];
   colors: BrandColours;
 }
 
@@ -88,6 +94,26 @@ export const findBrand = (id: string): Brand => {
   }
   return brand;
 };
+
+/**
+ * The brands listed in a group of the family menu and the footer, in brands.json order, with their
+ * links. A service is also listed with the projects when its code is open source; there it links
+ * to its repository, since its own URL is the service.
+ */
+export const listed = (
+  brands: Brand[],
+  group: NavGroup,
+  locale: BrandLocale,
+): Array<{ name: string; link: string }> =>
+  brands
+    .filter((b) => b.nav.includes(group))
+    .map((b) => ({
+      name: b.name,
+      link:
+        group === 'projects' && b.tier === 'service' && b.repo
+          ? `https://github.com/${b.repo}`
+          : b.url[locale],
+    }));
 
 /** Absolute path of a generated asset, e.g. assetPath('origin', 'web/favicon.svg'). */
 export const assetPath = (id: string, file: string): string => join(brandDir(), 'out', id, file);

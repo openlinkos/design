@@ -10,7 +10,7 @@ import type {
   UserConfig,
 } from 'vitepress';
 import { deriveCookieDomain } from '../shared/lang.js';
-import { type Brand, findBrand, loadBrands } from './brands.js';
+import { type Brand, findBrand, listed, loadBrands, type NavGroup } from './brands.js';
 import { checkSite, formatProblems } from './check.js';
 import { buildFooter, type Footer, type FooterLink, masterBrand } from './footer.js';
 import { addXDefault, pageHead, siteHead } from './head.js';
@@ -98,23 +98,23 @@ const resolveHostname = (hostname: string): string => {
 };
 
 /**
- * The family menu, named after the master brand: its home, the open-source projects and the
- * services from brands.json, and a link to every service.
+ * The family menu, named after the master brand: its home, the open-source projects and the free
+ * public services from brands.json, and a link to every service.
  */
 const familyNav = (locale: 'en' | 'zh'): DefaultTheme.NavItem => {
   const brands = loadBrands();
   const master = masterBrand(brands);
-  const listed = (nav: 'projects' | 'services') =>
-    brands.filter((b) => b.nav === nav).map((b) => ({ text: b.name, link: b.url[locale] }));
+  const items = (group: NavGroup) =>
+    listed(brands, group, locale).map((l) => ({ text: l.name, link: l.link }));
   return {
     text: master.name,
     items: [
       { text: FAMILY[locale].home(master.name), link: master.url[locale] },
-      { text: FAMILY[locale].projects, items: listed('projects') },
+      { text: FAMILY[locale].projects, items: items('projects') },
       {
         text: FAMILY[locale].services,
         items: [
-          ...listed('services'),
+          ...items('services'),
           { text: FAMILY[locale].allServices, link: LINKS.services[locale] },
         ],
       },

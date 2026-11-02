@@ -71,6 +71,8 @@ WCAG 2 is the measure, since APCA is not adopted and WCAG 3's contrast method is
 - neighbouring series, and every pair among the first four: ΔE 15 for normal vision and 8 under both simulations;
 - the accent against every other series: ΔE 15, so no brand's accent has a twin in the palette.
 
+**A slot gives way to the accent.** A warm accent sits among orange, gold and red, and no fire-coloured solid dark enough for white text is ΔE 15 from all three. So for a brand whose accent would be a slot's twin in either mode, that slot takes the next reserve colour instead (blue, the default accent, then teal), in both modes and in that brand only, and keeps its place. Every other brand keeps the palette above; the tests check both, and the reserve colours meet the same rules as the slots they replace.
+
 Pairs further apart than neighbours can still be close for a colour-blind reader (green and red, for one), so colour is never the only channel: a chart with two or more series has a legend, its text stays in text colours rather than series colours, and its numbers are in a table (WCAG 1.4.1). Series colours mean identity, not status: a series that means good or bad takes the status tones, with an icon and words.
 
 ## Scales {#scales}

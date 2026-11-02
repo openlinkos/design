@@ -41,8 +41,9 @@ describe('the footer', () => {
     const { message } = footer('origin', 'en');
     expect(hrefs(message)).toEqual([
       '/',
+      'https://github.com/openlinkos/registry-mirrors',
       'https://origin.openlinkos.com/',
-      'https://github.com/openlinkos/agent',
+      'https://beacon.openlinkos.com/',
       'https://linkos.org/mirrors',
       'https://uptime.linkos.org/',
       'https://linkos.org/',
@@ -97,7 +98,7 @@ describe('the footer', () => {
 
   it('needs exactly one master brand', () => {
     const asMaster = (b: Brand): Brand => ({ ...b, tier: 'master' });
-    expect(() => masterBrand(brands.map(asMaster))).toThrow(/exactly one master brand, found 6/);
+    expect(() => masterBrand(brands.map(asMaster))).toThrow(/exactly one master brand, found 7/);
     expect(() => masterBrand(brands.filter((b) => b.tier !== 'master'))).toThrow(/found 0/);
   });
 });

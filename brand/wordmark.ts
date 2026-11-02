@@ -35,6 +35,15 @@ interface Glyph {
 const glyphs: Record<string, Glyph> = {
   O: { width: H, draw: (o) => circle(o + H / 2, -H / 2, H / 2) },
   o: { width: X, draw: (o) => circle(o + R, -R, R) },
+  // The o opened on the right, ending where the e ends (40°), mirrored above.
+  c: { width: R + R * Math.cos(Math.PI * (40 / 180)), draw: (o) => arc(o + R, -R, R, 40, 320) },
+  // A stem and two bowls of half circles, the lower one a little larger.
+  B: {
+    width: 9,
+    draw: (o) =>
+      `M${round(o)} -8H${round(o + 5)}A4 4 0 0 1 ${round(o + 5)} 0H${round(o)}V-15` +
+      `H${round(o + 4.5)}A3.5 3.5 0 0 1 ${round(o + 4.5)} -8`,
+  },
   p: { width: X, draw: (o) => circle(o + R, -R, R) + line(o, -X, o, 5) },
   e: { width: X, draw: (o) => arc(o + R, -R, R, 40, 360) + line(o + X, -R, o, -R) },
   n: {

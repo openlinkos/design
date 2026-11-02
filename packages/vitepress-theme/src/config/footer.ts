@@ -4,7 +4,7 @@
 // inside a `<p>`, so the markup uses phrasing elements only (`span`, `a`, `img`); a `div` or `ul`
 // would be moved out of the paragraph by the browser and break hydration.
 
-import type { Brand, BrandLocale } from './brands.js';
+import { type Brand, type BrandLocale, listed, type NavGroup } from './brands.js';
 import { CONTACT, FAMILY, FOOTER, LINKS } from './strings.js';
 
 /** A text or link that is the same in both languages, or given per language. */
@@ -101,14 +101,14 @@ export const buildFooter = (o: FooterOptions): Footer => {
     (about ? `<span class="olf-about">${escapeHtml(about)}</span>` : '') +
     '</span>';
 
-  const listed = (nav: 'projects' | 'services'): string[] =>
-    brands.filter((b) => b.nav === nav).map((b) => a(b.url[locale], b.name));
+  const links = (group: NavGroup): string[] =>
+    listed(brands, group, locale).map((l) => a(l.link, l.name));
   const message =
     '<span class="olf">' +
     brandBlock +
-    column('projects', strings.projects, listed('projects')) +
+    column('projects', strings.projects, links('projects')) +
     column('services', strings.services, [
-      ...listed('services'),
+      ...links('services'),
       a(LINKS.services[locale], FAMILY[locale].allServices),
     ]) +
     column(master.id, master.name, [

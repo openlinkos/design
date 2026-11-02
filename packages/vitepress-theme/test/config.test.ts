@@ -110,14 +110,15 @@ describe('defineOpenLinkOSConfig', () => {
       items: [
         { text: 'LinkOS home', link: 'https://linkos.io/' },
         {
-          text: 'Projects',
+          text: 'Open-source projects',
           items: [
+            { text: 'LinkOS Mirrors', link: 'https://github.com/openlinkos/registry-mirrors' },
             { text: 'Origin', link: 'https://origin.openlinkos.com/' },
-            { text: 'OpenLinkOS Agent', link: 'https://github.com/openlinkos/agent' },
+            { text: 'Beacon', link: 'https://beacon.openlinkos.com/' },
           ],
         },
         {
-          text: 'Services',
+          text: 'Free public services',
           items: [
             { text: 'LinkOS Mirrors', link: 'https://linkos.org/mirrors' },
             { text: 'LinkOS Status', link: 'https://uptime.linkos.org/' },
@@ -131,16 +132,21 @@ describe('defineOpenLinkOSConfig', () => {
     expect(family.items.map((g) => (g as DefaultTheme.NavItemChildren).text)).toEqual([
       'LinkOS 主页',
       '开源项目',
-      '服务',
+      '公益服务',
     ]);
     expect(family.items[0]).toEqual({ text: 'LinkOS 主页', link: 'https://linkos.io/zh/' });
     expect((family.items[2] as DefaultTheme.NavItemChildren).items.at(-1)).toEqual({
       text: '全部服务',
       link: 'https://linkos.org/zh/',
     });
-    expect((family.items[1] as DefaultTheme.NavItemChildren).items[0]).toEqual({
-      text: 'Origin',
-      link: 'https://origin.openlinkos.com/zh/',
+    // Projects link to their Chinese pages; a service listed as a project links to its repository.
+    expect((family.items[1] as DefaultTheme.NavItemChildren).items.slice(0, 2)).toEqual([
+      { text: 'LinkOS Mirrors', link: 'https://github.com/openlinkos/registry-mirrors' },
+      { text: 'Origin', link: 'https://origin.openlinkos.com/zh/' },
+    ]);
+    expect((family.items[2] as DefaultTheme.NavItemChildren).items[0]).toEqual({
+      text: 'LinkOS Mirrors',
+      link: 'https://linkos.org/zh/mirrors',
     });
   });
 
@@ -295,7 +301,7 @@ describe('the Vite plugin', () => {
     expect(kit.get('brand/origin/kit/lockup.svg')?.type).toBe('image/svg+xml');
     expect(kit.has('brand/linkos-mirrors/github/social-preview.png')).toBe(true);
     expect(kit.get('brand/linkos-mirrors/github/readme.svg')?.type).toBe('image/svg+xml');
-    expect([...kit.keys()].filter((k) => k.startsWith('brand/'))).toHaveLength(6 * 22);
+    expect([...kit.keys()].filter((k) => k.startsWith('brand/'))).toHaveLength(7 * 22);
   });
 });
 

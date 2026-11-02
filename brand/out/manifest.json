@@ -111,230 +111,6 @@
       "sha256": "a0b75ab69b890aa24ea36b803aecec5d0705c5fda5c48c7cfe5ec11a8b6928b9"
     }
   ],
-  "origin": [
-    {
-      "file": "web/favicon.svg",
-      "bytes": 485,
-      "sha256": "dde49d0a05f2f11c2791b3008c814e4ca490f441215def7d018883837b9d89e5"
-    },
-    {
-      "file": "web/favicon.ico",
-      "bytes": 2432,
-      "sha256": "682427f00ab2de4b92ca98ea898411d503b089b7f6721f2177c6c898e6f8c247"
-    },
-    {
-      "file": "web/apple-touch-icon.png",
-      "bytes": 2849,
-      "sha256": "e3c4a3c9d997681dc273dc7f98aecf5d0734ee43f2904d404f8867d850f1d4d9"
-    },
-    {
-      "file": "web/icon-192.png",
-      "bytes": 4558,
-      "sha256": "26b6f49e4f28e15108bb02ab4c6595524796a008f7127b7d8dee54deccff6efa"
-    },
-    {
-      "file": "web/icon-512.png",
-      "bytes": 12773,
-      "sha256": "683c42df724c4e10dda92c8058bee081d5440b3c4199b3b9760c1522e3e1ea45"
-    },
-    {
-      "file": "web/icon-maskable-512.png",
-      "bytes": 7997,
-      "sha256": "5844d82caa1b4798bd012f0321321ec631e31a14ba7e92c4fc2c394f3c323031"
-    },
-    {
-      "file": "web/site.webmanifest",
-      "bytes": 474,
-      "sha256": "5e20d98f0cc62931e2d3daca01721a45054744a8cbf2b5dc226c647ed03f0921"
-    },
-    {
-      "file": "web/og.png",
-      "bytes": 16810,
-      "sha256": "9d8693f6426e701867be5b694614787b23d70911a4483a3b19b759d3cae0e82a"
-    },
-    {
-      "file": "web/logo.svg",
-      "bytes": 361,
-      "sha256": "16133e3c07229add6d42b1e903b953b9f85666a16295aaf50f2982e029e19cf0"
-    },
-    {
-      "file": "web/logo-dark.svg",
-      "bytes": 361,
-      "sha256": "5c8c123c65862e046be2acc1cf9bff63f2ffbf9dcdbe9e9e07e4a5b67e2a9e96"
-    },
-    {
-      "file": "github/social-preview.png",
-      "bytes": 17502,
-      "sha256": "7c28ad89c5575eb04885616557b89e26519d25bc3e55b108d5f9ae7530f83b97"
-    },
-    {
-      "file": "github/avatar.png",
-      "bytes": 8093,
-      "sha256": "8870384dd350ff3de1fe9876d96be61b105402445d8582c0dee1a55991961b18"
-    },
-    {
-      "file": "github/readme-light.svg",
-      "bytes": 808,
-      "sha256": "7ec1080565cbb1d5d490fcdbf3e455576b3c24d9a11862781b2cf9753ef178da"
-    },
-    {
-      "file": "github/readme-dark.svg",
-      "bytes": 808,
-      "sha256": "08ee13a04c2a5885cd1a22294e429457233d4577679b3aa8c2fcd84dfe735561"
-    },
-    {
-      "file": "github/readme.svg",
-      "bytes": 898,
-      "sha256": "72574f2a0d7e7bd72895c8017327278ae184abcaaeae352571c9080c2479d1af"
-    },
-    {
-      "file": "kit/mark.svg",
-      "bytes": 361,
-      "sha256": "16133e3c07229add6d42b1e903b953b9f85666a16295aaf50f2982e029e19cf0"
-    },
-    {
-      "file": "kit/mark-dark.svg",
-      "bytes": 361,
-      "sha256": "5c8c123c65862e046be2acc1cf9bff63f2ffbf9dcdbe9e9e07e4a5b67e2a9e96"
-    },
-    {
-      "file": "kit/mark-black.svg",
-      "bytes": 361,
-      "sha256": "f5e37a2b38cca319f73bcb12bcfa7fbb9d19ff4576dfdcd80510381202342002"
-    },
-    {
-      "file": "kit/mark-white.svg",
-      "bytes": 361,
-      "sha256": "be29463e8b9d8cf5f9b24883e44dee7faa262a30ab1e21f1e34fffbf35a23e1f"
-    },
-    {
-      "file": "kit/lockup.svg",
-      "bytes": 808,
-      "sha256": "7ec1080565cbb1d5d490fcdbf3e455576b3c24d9a11862781b2cf9753ef178da"
-    },
-    {
-      "file": "kit/lockup-dark.svg",
-      "bytes": 808,
-      "sha256": "08ee13a04c2a5885cd1a22294e429457233d4577679b3aa8c2fcd84dfe735561"
-    },
-    {
-      "file": "kit/mark-1024.png",
-      "bytes": 29905,
-      "sha256": "1e7a031be4782027d69aaa9f28cf4d2469e7a52846b295aca348882b92198df3"
-    }
-  ],
-  "agent": [
-    {
-      "file": "web/favicon.svg",
-      "bytes": 503,
-      "sha256": "ca5937ee21b73e3726d87ae5899e23e77d0d772f63654144d48ece61ebd7b426"
-    },
-    {
-      "file": "web/favicon.ico",
-      "bytes": 2859,
-      "sha256": "1b34d62b074abb975a69580cee36360794d7dd775c31824c27f64f4c2763c78a"
-    },
-    {
-      "file": "web/apple-touch-icon.png",
-      "bytes": 3209,
-      "sha256": "63ac0c16ba50d5287e64445c365bf6f48549adaf0480b97e47990fa26ab0fee9"
-    },
-    {
-      "file": "web/icon-192.png",
-      "bytes": 4891,
-      "sha256": "f554ca5ce729ef8c8d75cc3b58b375aba788aa09a64fae99c3214a4aa12cee16"
-    },
-    {
-      "file": "web/icon-512.png",
-      "bytes": 13767,
-      "sha256": "2bdc821be10ee85899ad440ea0870a7b51bbec26ed0c54bf8f405ba24cf301be"
-    },
-    {
-      "file": "web/icon-maskable-512.png",
-      "bytes": 8950,
-      "sha256": "920b834e25cc9a79646b1703af0b651dcf21ab73a9b62344bc26f80894ff4587"
-    },
-    {
-      "file": "web/site.webmanifest",
-      "bytes": 494,
-      "sha256": "466e152570149f4d479756085259b29283e51584f3cba80f2101c73e3e45e8fc"
-    },
-    {
-      "file": "web/og.png",
-      "bytes": 24281,
-      "sha256": "5c5173f143bf388ef542bc8ac97463ba588ff874bccce0fc5ceba321fade25fe"
-    },
-    {
-      "file": "web/logo.svg",
-      "bytes": 379,
-      "sha256": "b861ae0c9f8bbd62e229da699b8975990befe4bfedce3858dcee6bbfdda0e6f0"
-    },
-    {
-      "file": "web/logo-dark.svg",
-      "bytes": 379,
-      "sha256": "9e15ee926f2efb05201a6fd2b61f24d343d9b053aa2e02365db76ed1bbb98c1a"
-    },
-    {
-      "file": "github/social-preview.png",
-      "bytes": 26137,
-      "sha256": "b3ee0f492e0323fae94092b824491472302ffa8ae0c45b40c189d471d14cd72e"
-    },
-    {
-      "file": "github/avatar.png",
-      "bytes": 9162,
-      "sha256": "79f0661ddd5bb3294c1bc93eb6760488ed1b822e1caaa6d303b2bf293399f425"
-    },
-    {
-      "file": "github/readme-light.svg",
-      "bytes": 1478,
-      "sha256": "59c482201215f43914a8ebbf9b14098c5705e4faba69e09f6c4bf7eda3c42992"
-    },
-    {
-      "file": "github/readme-dark.svg",
-      "bytes": 1478,
-      "sha256": "ff2201d087bd445149235be497c1090c73c2f59ea04920f02531a678d746ba85"
-    },
-    {
-      "file": "github/readme.svg",
-      "bytes": 1568,
-      "sha256": "7a5f800213a6ea289ca59243f9e9a2ed8a50d69e0c5cff711f22dd0bcfffc2c8"
-    },
-    {
-      "file": "kit/mark.svg",
-      "bytes": 379,
-      "sha256": "b861ae0c9f8bbd62e229da699b8975990befe4bfedce3858dcee6bbfdda0e6f0"
-    },
-    {
-      "file": "kit/mark-dark.svg",
-      "bytes": 379,
-      "sha256": "9e15ee926f2efb05201a6fd2b61f24d343d9b053aa2e02365db76ed1bbb98c1a"
-    },
-    {
-      "file": "kit/mark-black.svg",
-      "bytes": 379,
-      "sha256": "bf25af81835f2a238b116d5688f211ec4f8b932d15ce8da431ea099334a67439"
-    },
-    {
-      "file": "kit/mark-white.svg",
-      "bytes": 379,
-      "sha256": "4e4da040bd94fdc0858f42b7e32325ceebd6b781b4fcf0c6eef7ca348f72037f"
-    },
-    {
-      "file": "kit/lockup.svg",
-      "bytes": 1478,
-      "sha256": "59c482201215f43914a8ebbf9b14098c5705e4faba69e09f6c4bf7eda3c42992"
-    },
-    {
-      "file": "kit/lockup-dark.svg",
-      "bytes": 1478,
-      "sha256": "ff2201d087bd445149235be497c1090c73c2f59ea04920f02531a678d746ba85"
-    },
-    {
-      "file": "kit/mark-1024.png",
-      "bytes": 31665,
-      "sha256": "1b9759f1bf3f36ca8ce71aee4a80429482f2756b1e6b5956d75bfeda14ddd81a"
-    }
-  ],
   "linkos": [
     {
       "file": "web/favicon.svg",
@@ -669,6 +445,342 @@
       "file": "kit/mark-1024.png",
       "bytes": 32153,
       "sha256": "b66067e2f3a0f4e62d19f29c4239a13460f6232e0976271eff84af44c22f44ed"
+    }
+  ],
+  "origin": [
+    {
+      "file": "web/favicon.svg",
+      "bytes": 485,
+      "sha256": "dde49d0a05f2f11c2791b3008c814e4ca490f441215def7d018883837b9d89e5"
+    },
+    {
+      "file": "web/favicon.ico",
+      "bytes": 2432,
+      "sha256": "682427f00ab2de4b92ca98ea898411d503b089b7f6721f2177c6c898e6f8c247"
+    },
+    {
+      "file": "web/apple-touch-icon.png",
+      "bytes": 2849,
+      "sha256": "e3c4a3c9d997681dc273dc7f98aecf5d0734ee43f2904d404f8867d850f1d4d9"
+    },
+    {
+      "file": "web/icon-192.png",
+      "bytes": 4558,
+      "sha256": "26b6f49e4f28e15108bb02ab4c6595524796a008f7127b7d8dee54deccff6efa"
+    },
+    {
+      "file": "web/icon-512.png",
+      "bytes": 12773,
+      "sha256": "683c42df724c4e10dda92c8058bee081d5440b3c4199b3b9760c1522e3e1ea45"
+    },
+    {
+      "file": "web/icon-maskable-512.png",
+      "bytes": 7997,
+      "sha256": "5844d82caa1b4798bd012f0321321ec631e31a14ba7e92c4fc2c394f3c323031"
+    },
+    {
+      "file": "web/site.webmanifest",
+      "bytes": 474,
+      "sha256": "5e20d98f0cc62931e2d3daca01721a45054744a8cbf2b5dc226c647ed03f0921"
+    },
+    {
+      "file": "web/og.png",
+      "bytes": 16810,
+      "sha256": "9d8693f6426e701867be5b694614787b23d70911a4483a3b19b759d3cae0e82a"
+    },
+    {
+      "file": "web/logo.svg",
+      "bytes": 361,
+      "sha256": "16133e3c07229add6d42b1e903b953b9f85666a16295aaf50f2982e029e19cf0"
+    },
+    {
+      "file": "web/logo-dark.svg",
+      "bytes": 361,
+      "sha256": "5c8c123c65862e046be2acc1cf9bff63f2ffbf9dcdbe9e9e07e4a5b67e2a9e96"
+    },
+    {
+      "file": "github/social-preview.png",
+      "bytes": 17502,
+      "sha256": "7c28ad89c5575eb04885616557b89e26519d25bc3e55b108d5f9ae7530f83b97"
+    },
+    {
+      "file": "github/avatar.png",
+      "bytes": 8093,
+      "sha256": "8870384dd350ff3de1fe9876d96be61b105402445d8582c0dee1a55991961b18"
+    },
+    {
+      "file": "github/readme-light.svg",
+      "bytes": 808,
+      "sha256": "7ec1080565cbb1d5d490fcdbf3e455576b3c24d9a11862781b2cf9753ef178da"
+    },
+    {
+      "file": "github/readme-dark.svg",
+      "bytes": 808,
+      "sha256": "08ee13a04c2a5885cd1a22294e429457233d4577679b3aa8c2fcd84dfe735561"
+    },
+    {
+      "file": "github/readme.svg",
+      "bytes": 898,
+      "sha256": "72574f2a0d7e7bd72895c8017327278ae184abcaaeae352571c9080c2479d1af"
+    },
+    {
+      "file": "kit/mark.svg",
+      "bytes": 361,
+      "sha256": "16133e3c07229add6d42b1e903b953b9f85666a16295aaf50f2982e029e19cf0"
+    },
+    {
+      "file": "kit/mark-dark.svg",
+      "bytes": 361,
+      "sha256": "5c8c123c65862e046be2acc1cf9bff63f2ffbf9dcdbe9e9e07e4a5b67e2a9e96"
+    },
+    {
+      "file": "kit/mark-black.svg",
+      "bytes": 361,
+      "sha256": "f5e37a2b38cca319f73bcb12bcfa7fbb9d19ff4576dfdcd80510381202342002"
+    },
+    {
+      "file": "kit/mark-white.svg",
+      "bytes": 361,
+      "sha256": "be29463e8b9d8cf5f9b24883e44dee7faa262a30ab1e21f1e34fffbf35a23e1f"
+    },
+    {
+      "file": "kit/lockup.svg",
+      "bytes": 808,
+      "sha256": "7ec1080565cbb1d5d490fcdbf3e455576b3c24d9a11862781b2cf9753ef178da"
+    },
+    {
+      "file": "kit/lockup-dark.svg",
+      "bytes": 808,
+      "sha256": "08ee13a04c2a5885cd1a22294e429457233d4577679b3aa8c2fcd84dfe735561"
+    },
+    {
+      "file": "kit/mark-1024.png",
+      "bytes": 29905,
+      "sha256": "1e7a031be4782027d69aaa9f28cf4d2469e7a52846b295aca348882b92198df3"
+    }
+  ],
+  "beacon": [
+    {
+      "file": "web/favicon.svg",
+      "bytes": 548,
+      "sha256": "8608c610afbf147caba3ee9757c5608ee435da92067acaf33db234cebf2120a1"
+    },
+    {
+      "file": "web/favicon.ico",
+      "bytes": 2037,
+      "sha256": "83489d0a99d85857d8e96d23e73d5fb3953399f7853f162b320704d08ac62161"
+    },
+    {
+      "file": "web/apple-touch-icon.png",
+      "bytes": 2335,
+      "sha256": "9857ad5a4429a17c56400a08cf2b987515520e67f2bf2517736264bde9c13d27"
+    },
+    {
+      "file": "web/icon-192.png",
+      "bytes": 3722,
+      "sha256": "cbe31832369f69544635230f3e4aab65912c99962b6ee1d6d6f25382a27b7e52"
+    },
+    {
+      "file": "web/icon-512.png",
+      "bytes": 11276,
+      "sha256": "0b6d7f22b5b29e35ad4222da4bd7a2a4a644dbcbfbf3344395963b3372a40707"
+    },
+    {
+      "file": "web/icon-maskable-512.png",
+      "bytes": 6886,
+      "sha256": "d018b45e2d6082b0a81c50c9c84119b2662437d49c7c19d46f18ad22cc758f28"
+    },
+    {
+      "file": "web/site.webmanifest",
+      "bytes": 474,
+      "sha256": "474eaef3b1b3f17774a6fca1ef91116e84722e2bfdef0a436fdba4cd77e99785"
+    },
+    {
+      "file": "web/og.png",
+      "bytes": 16030,
+      "sha256": "292df2d84503fa102c8f357a84697af01525ddaee67df8d62824c1329e6084bd"
+    },
+    {
+      "file": "web/logo.svg",
+      "bytes": 424,
+      "sha256": "79fa66f6c12f9c896a5e00e9a87cb0de597f74908d3c07dc1d763755fa38886e"
+    },
+    {
+      "file": "web/logo-dark.svg",
+      "bytes": 424,
+      "sha256": "ad8e786bb68ca39065f69bb0d933ec14f196133ac8878ac93bfdacdc397ea65e"
+    },
+    {
+      "file": "github/social-preview.png",
+      "bytes": 16516,
+      "sha256": "a83c089582153424a289af3877e495d20af699bbe9c0aa1e656f0d118ef81ede"
+    },
+    {
+      "file": "github/avatar.png",
+      "bytes": 6875,
+      "sha256": "fdc11e1fbca438546a2a021c21e59884413b8b15261c853a5fab82dddfa7494b"
+    },
+    {
+      "file": "github/readme-light.svg",
+      "bytes": 884,
+      "sha256": "e422446326e6f53ce1448c2d1900a21d8d7cab6f448fc63d0499b7b4fa4244d8"
+    },
+    {
+      "file": "github/readme-dark.svg",
+      "bytes": 884,
+      "sha256": "82a6fd9631ccc2e9fba7f8d9aa03bbcfda7fcf3cb98f853084b21dd6d7bfdff3"
+    },
+    {
+      "file": "github/readme.svg",
+      "bytes": 974,
+      "sha256": "0a592346edfc7f57e58ad664402d8b327fa375392ddb3989b570167af4841977"
+    },
+    {
+      "file": "kit/mark.svg",
+      "bytes": 424,
+      "sha256": "79fa66f6c12f9c896a5e00e9a87cb0de597f74908d3c07dc1d763755fa38886e"
+    },
+    {
+      "file": "kit/mark-dark.svg",
+      "bytes": 424,
+      "sha256": "ad8e786bb68ca39065f69bb0d933ec14f196133ac8878ac93bfdacdc397ea65e"
+    },
+    {
+      "file": "kit/mark-black.svg",
+      "bytes": 424,
+      "sha256": "b3b4e60dd1efdf233c1e087ed641038a94555bfd8250ba496b314443ca558938"
+    },
+    {
+      "file": "kit/mark-white.svg",
+      "bytes": 424,
+      "sha256": "e5185fb140de514b01a51a82e80b71bae7e81cc2cb935e53ad8321706a337a0a"
+    },
+    {
+      "file": "kit/lockup.svg",
+      "bytes": 884,
+      "sha256": "e422446326e6f53ce1448c2d1900a21d8d7cab6f448fc63d0499b7b4fa4244d8"
+    },
+    {
+      "file": "kit/lockup-dark.svg",
+      "bytes": 884,
+      "sha256": "82a6fd9631ccc2e9fba7f8d9aa03bbcfda7fcf3cb98f853084b21dd6d7bfdff3"
+    },
+    {
+      "file": "kit/mark-1024.png",
+      "bytes": 26511,
+      "sha256": "a84fe8f8526f519f52dc2e3cf105645b82ea8a552b791ceddec4721cef8ad906"
+    }
+  ],
+  "agent": [
+    {
+      "file": "web/favicon.svg",
+      "bytes": 503,
+      "sha256": "ca5937ee21b73e3726d87ae5899e23e77d0d772f63654144d48ece61ebd7b426"
+    },
+    {
+      "file": "web/favicon.ico",
+      "bytes": 2859,
+      "sha256": "1b34d62b074abb975a69580cee36360794d7dd775c31824c27f64f4c2763c78a"
+    },
+    {
+      "file": "web/apple-touch-icon.png",
+      "bytes": 3209,
+      "sha256": "63ac0c16ba50d5287e64445c365bf6f48549adaf0480b97e47990fa26ab0fee9"
+    },
+    {
+      "file": "web/icon-192.png",
+      "bytes": 4891,
+      "sha256": "f554ca5ce729ef8c8d75cc3b58b375aba788aa09a64fae99c3214a4aa12cee16"
+    },
+    {
+      "file": "web/icon-512.png",
+      "bytes": 13767,
+      "sha256": "2bdc821be10ee85899ad440ea0870a7b51bbec26ed0c54bf8f405ba24cf301be"
+    },
+    {
+      "file": "web/icon-maskable-512.png",
+      "bytes": 8950,
+      "sha256": "920b834e25cc9a79646b1703af0b651dcf21ab73a9b62344bc26f80894ff4587"
+    },
+    {
+      "file": "web/site.webmanifest",
+      "bytes": 494,
+      "sha256": "466e152570149f4d479756085259b29283e51584f3cba80f2101c73e3e45e8fc"
+    },
+    {
+      "file": "web/og.png",
+      "bytes": 24281,
+      "sha256": "5c5173f143bf388ef542bc8ac97463ba588ff874bccce0fc5ceba321fade25fe"
+    },
+    {
+      "file": "web/logo.svg",
+      "bytes": 379,
+      "sha256": "b861ae0c9f8bbd62e229da699b8975990befe4bfedce3858dcee6bbfdda0e6f0"
+    },
+    {
+      "file": "web/logo-dark.svg",
+      "bytes": 379,
+      "sha256": "9e15ee926f2efb05201a6fd2b61f24d343d9b053aa2e02365db76ed1bbb98c1a"
+    },
+    {
+      "file": "github/social-preview.png",
+      "bytes": 26137,
+      "sha256": "b3ee0f492e0323fae94092b824491472302ffa8ae0c45b40c189d471d14cd72e"
+    },
+    {
+      "file": "github/avatar.png",
+      "bytes": 9162,
+      "sha256": "79f0661ddd5bb3294c1bc93eb6760488ed1b822e1caaa6d303b2bf293399f425"
+    },
+    {
+      "file": "github/readme-light.svg",
+      "bytes": 1478,
+      "sha256": "59c482201215f43914a8ebbf9b14098c5705e4faba69e09f6c4bf7eda3c42992"
+    },
+    {
+      "file": "github/readme-dark.svg",
+      "bytes": 1478,
+      "sha256": "ff2201d087bd445149235be497c1090c73c2f59ea04920f02531a678d746ba85"
+    },
+    {
+      "file": "github/readme.svg",
+      "bytes": 1568,
+      "sha256": "7a5f800213a6ea289ca59243f9e9a2ed8a50d69e0c5cff711f22dd0bcfffc2c8"
+    },
+    {
+      "file": "kit/mark.svg",
+      "bytes": 379,
+      "sha256": "b861ae0c9f8bbd62e229da699b8975990befe4bfedce3858dcee6bbfdda0e6f0"
+    },
+    {
+      "file": "kit/mark-dark.svg",
+      "bytes": 379,
+      "sha256": "9e15ee926f2efb05201a6fd2b61f24d343d9b053aa2e02365db76ed1bbb98c1a"
+    },
+    {
+      "file": "kit/mark-black.svg",
+      "bytes": 379,
+      "sha256": "bf25af81835f2a238b116d5688f211ec4f8b932d15ce8da431ea099334a67439"
+    },
+    {
+      "file": "kit/mark-white.svg",
+      "bytes": 379,
+      "sha256": "4e4da040bd94fdc0858f42b7e32325ceebd6b781b4fcf0c6eef7ca348f72037f"
+    },
+    {
+      "file": "kit/lockup.svg",
+      "bytes": 1478,
+      "sha256": "59c482201215f43914a8ebbf9b14098c5705e4faba69e09f6c4bf7eda3c42992"
+    },
+    {
+      "file": "kit/lockup-dark.svg",
+      "bytes": 1478,
+      "sha256": "ff2201d087bd445149235be497c1090c73c2f59ea04920f02531a678d746ba85"
+    },
+    {
+      "file": "kit/mark-1024.png",
+      "bytes": 31665,
+      "sha256": "1b9759f1bf3f36ca8ce71aee4a80429482f2756b1e6b5956d75bfeda14ddd81a"
     }
   ]
 }

@@ -10,7 +10,7 @@
       "en": "Open-source software for the AI era",
       "zh": "面向 AI 时代的开源软件"
     },
-    "nav": null,
+    "nav": [],
     "colors": {
       "mark": { "light": "#2563eb", "dark": "#6b9bff" },
       "brand": {
@@ -18,52 +18,6 @@
         "dark": ["#6b9bff", "#5b8cff", "#2563eb"]
       },
       "soft": { "light": "rgba(37, 99, 235, 0.14)", "dark": "rgba(107, 155, 255, 0.16)" }
-    }
-  },
-  "origin": {
-    "name": "Origin",
-    "tier": "product",
-    "parent": "openlinkos",
-    "mark": "ring-dot",
-    "word": "Origin",
-    "url": { "en": "https://origin.openlinkos.com/", "zh": "https://origin.openlinkos.com/zh/" },
-    "description": {
-      "en": "Local-first, cross-agent personal memory for AI coding agents",
-      "zh": "本地优先、跨 Agent 的个人记忆，服务于 AI 编码 Agent"
-    },
-    "nav": "projects",
-    "colors": {
-      "mark": { "light": "#4f5bd5", "dark": "#8b96ff" },
-      "brand": {
-        "light": ["#4f5bd5", "#5f6ae0", "#4f5bd5"],
-        "dark": ["#8b96ff", "#7a85f7", "#4f5bd5"]
-      },
-      "soft": { "light": "rgba(79, 91, 213, 0.14)", "dark": "rgba(139, 150, 255, 0.16)" }
-    }
-  },
-  "agent": {
-    "name": "OpenLinkOS Agent",
-    "tier": "product",
-    "parent": "openlinkos",
-    "mark": "rings",
-    "word": "OpenLinkOS",
-    "descriptor": "Agent",
-    "url": {
-      "en": "https://github.com/openlinkos/agent",
-      "zh": "https://github.com/openlinkos/agent"
-    },
-    "description": {
-      "en": "A TypeScript framework for building AI agents",
-      "zh": "构建 AI Agent 的 TypeScript 框架"
-    },
-    "nav": "projects",
-    "colors": {
-      "mark": { "light": "#7c3aed", "dark": "#a78bfa" },
-      "brand": {
-        "light": ["#6d28d9", "#7c3aed", "#7c3aed"],
-        "dark": ["#a78bfa", "#9575f5", "#6d28d9"]
-      },
-      "soft": { "light": "rgba(124, 58, 237, 0.14)", "dark": "rgba(167, 139, 250, 0.16)" }
     }
   },
   "linkos": {
@@ -76,7 +30,7 @@
       "en": "The team behind OpenLinkOS and the LinkOS public services",
       "zh": "OpenLinkOS 开源项目和 LinkOS 公共服务背后的团队"
     },
-    "nav": null,
+    "nav": [],
     "colors": {
       "mark": { "light": "#0d9b76", "dark": "#34d399" },
       "brand": {
@@ -94,11 +48,12 @@
     "word": "LinkOS",
     "descriptor": "Mirrors",
     "url": { "en": "https://linkos.org/mirrors", "zh": "https://linkos.org/zh/mirrors" },
+    "repo": "openlinkos/registry-mirrors",
     "description": {
       "en": "Free mirrors of public container registries",
       "zh": "免费的公共容器镜像仓库加速服务"
     },
-    "nav": "services",
+    "nav": ["projects", "services"],
     "colors": "linkos"
   },
   "linkos-status": {
@@ -113,7 +68,77 @@
       "en": "Live status of LinkOS services",
       "zh": "LinkOS 各项服务的实时状态"
     },
-    "nav": "services",
+    "nav": ["services"],
     "colors": "linkos"
+  },
+  "origin": {
+    "name": "Origin",
+    "tier": "product",
+    "parent": "openlinkos",
+    "mark": "ring-dot",
+    "word": "Origin",
+    "url": { "en": "https://origin.openlinkos.com/", "zh": "https://origin.openlinkos.com/zh/" },
+    "repo": "openlinkos/origin",
+    "description": {
+      "en": "Local-first, cross-agent personal memory for AI coding agents",
+      "zh": "本地优先、跨 Agent 的个人记忆，服务于 AI 编码 Agent"
+    },
+    "nav": ["projects"],
+    "colors": {
+      "mark": { "light": "#4f5bd5", "dark": "#8b96ff" },
+      "brand": {
+        "light": ["#4f5bd5", "#5f6ae0", "#4f5bd5"],
+        "dark": ["#8b96ff", "#7a85f7", "#4f5bd5"]
+      },
+      "soft": { "light": "rgba(79, 91, 213, 0.14)", "dark": "rgba(139, 150, 255, 0.16)" }
+    }
+  },
+  "beacon": {
+    "name": "Beacon",
+    "tier": "product",
+    "parent": "openlinkos",
+    "mark": "beacon",
+    "word": "Beacon",
+    "url": { "en": "https://beacon.openlinkos.com/", "zh": "https://beacon.openlinkos.com/zh/" },
+    "repo": "openlinkos/beacon",
+    "description": {
+      "en": "Infrastructure for AI agents that run operations",
+      "zh": "给做运维的 AI Agent 用的基础设施"
+    },
+    "nav": ["projects"],
+    "colors": {
+      "mark": { "light": "#e55900", "dark": "#ff7728" },
+      "brand": {
+        "light": ["#b84400", "#d25100", "#b84400"],
+        "dark": ["#ff7728", "#ef6505", "#b84400"]
+      },
+      "soft": { "light": "rgba(229, 89, 0, 0.14)", "dark": "rgba(255, 119, 40, 0.16)" }
+    }
+  },
+  "agent": {
+    "name": "OpenLinkOS Agent",
+    "tier": "product",
+    "parent": "openlinkos",
+    "mark": "rings",
+    "word": "OpenLinkOS",
+    "descriptor": "Agent",
+    "url": {
+      "en": "https://github.com/openlinkos/agent",
+      "zh": "https://github.com/openlinkos/agent"
+    },
+    "repo": "openlinkos/agent",
+    "description": {
+      "en": "A TypeScript framework for building AI agents",
+      "zh": "构建 AI Agent 的 TypeScript 框架"
+    },
+    "nav": [],
+    "colors": {
+      "mark": { "light": "#7c3aed", "dark": "#a78bfa" },
+      "brand": {
+        "light": ["#6d28d9", "#7c3aed", "#7c3aed"],
+        "dark": ["#a78bfa", "#9575f5", "#6d28d9"]
+      },
+      "soft": { "light": "rgba(124, 58, 237, 0.14)", "dark": "rgba(167, 139, 250, 0.16)" }
+    }
   }
 }

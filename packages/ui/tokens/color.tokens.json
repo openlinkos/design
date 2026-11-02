@@ -429,7 +429,47 @@
       }
     },
     "series": {
-      "$description": "Chart series: the categorical palette, in a fixed order. Slot 1 is the brand accent. Every slot reaches 3:1 on the surfaces a chart sits on; neighbouring slots, and the first four with each other, stay apart for colour-blind readers.",
+      "$description": "Chart series: the categorical palette, in a fixed order. Slot 1 is the brand accent. Every slot reaches 3:1 on the surfaces a chart sits on; neighbouring slots, and the first four with each other, stay apart for colour-blind readers. A slot that would be the accent's twin gives way, in that brand only, to the next reserve colour.",
+      "$extensions": {
+        "com.openlinkos": {
+          "reserve": [
+            {
+              "$value": {
+                "colorSpace": "srgb",
+                "components": [0.1451, 0.3882, 0.9216],
+                "hex": "#2563eb"
+              },
+              "$description": "Blue: the default accent, free when a brand's accent is not blue.",
+              "$extensions": {
+                "com.openlinkos": {
+                  "dark": {
+                    "colorSpace": "srgb",
+                    "components": [0.2275, 0.4549, 0.9451],
+                    "hex": "#3a74f1"
+                  }
+                }
+              }
+            },
+            {
+              "$value": {
+                "colorSpace": "srgb",
+                "components": [0, 0.5569, 0.5098],
+                "hex": "#008e82"
+              },
+              "$description": "Teal.",
+              "$extensions": {
+                "com.openlinkos": {
+                  "dark": {
+                    "colorSpace": "srgb",
+                    "components": [0.1922, 0.7647, 0.7098],
+                    "hex": "#31c3b5"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
       "1": {
         "$value": "{palette.accent.9}",
         "$description": "The brand accent.",

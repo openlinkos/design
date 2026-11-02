@@ -2,7 +2,7 @@
 
 The shared [VitePress](https://vitepress.dev) theme of every OpenLinkOS and LinkOS site. A site names its brand and its pages; the theme brings the rest:
 
-- **Brand.** The brand's colours, logo, favicons, app icons, web manifest and Open Graph image, generated from the [OpenLinkOS design repository](https://github.com/openlinkos/design), a family menu of the open-source projects and services, and a shared footer (see below).
+- **Brand.** The brand's colours, logo, favicons, app icons, web manifest and Open Graph image, generated from the [OpenLinkOS design repository](https://github.com/openlinkos/design), a family menu of the open-source projects and the free public services, and a shared footer (see below).
 - **Two languages.** English at the root and Simplified Chinese under `/zh/`, with complete interface strings in both, Chinese local search (with a tokenizer that understands Chinese), and Chinese titles for containers, alerts and the copy button on Chinese pages.
 - **Metadata.** A canonical URL, `hreflang` alternates (with `x-default`), Open Graph and Twitter tags on every page, a sitemap with language alternates, `robots.txt`, `/.well-known/security.txt`, and `noindex` on the 404 page.
 - **Language detection** that is safe behind a CDN and for search engines (see below).
@@ -57,7 +57,7 @@ export default defineOpenLinkOSConfig({
 
 | Option | |
 | --- | --- |
-| `brand` | The brand id from `brands.json`: `openlinkos`, `origin`, `agent`, `linkos`, `linkos-mirrors` or `linkos-status`. |
+| `brand` | The brand id from `brands.json`: `openlinkos`, `origin`, `agent`, `beacon`, `linkos`, `linkos-mirrors` or `linkos-status`. |
 | `hostname` | The site's origin, such as `https://origin.openlinkos.com`. Used for canonical URLs, Open Graph, the sitemap and `robots.txt`. |
 | `brandKit` | Publish every brand's web, GitHub and kit files under `/brand/<id>/` (for openlinkos.com). Markdown can then show them, as in `![](/brand/origin/kit/lockup.svg)`. |
 | `cookieDomain` | The domain that shares the language preference across sites. Defaults to the last two labels of `hostname` (`openlinkos.com`); `false` keeps it to one host. |
@@ -78,7 +78,7 @@ Things to know:
 Every site gets the same footer, built from `brands.json`:
 
 - the site's logo and name, its description (the locale's `description`, or the brand's), and who it belongs to: "Open source by LinkOS" on the open-source sites, "Run by LinkOS" on a service, nothing on the master brand's own sites;
-- columns of the open-source projects and the services (`nav` in `brands.json`, the same as the family menu), the master brand's pages (about, news, trust and security, contact), and resources (GitHub, brand guidelines, design system);
+- columns of the open-source projects and the free public services (`nav` in `brands.json`, the same as the family menu; a service that is also an open-source project links to its repository under the projects), the master brand's pages (about, news, trust and security, contact), and resources (GitHub, brand guidelines, design system);
 - a bottom row with `© <build year> <master brand>` and the site's `legal` links.
 
 Links into the site itself become paths. On pages with a sidebar, VitePress hides the footer. A site that sets its own `footer.message` replaces the columns and keeps the bottom row. VitePress renders the footer with `v-html` inside a paragraph, so the theme builds it from phrasing elements only.

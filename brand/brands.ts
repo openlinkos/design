@@ -5,6 +5,8 @@ import type { MarkId } from './marks.ts';
 
 export type Tier = 'master' | 'product' | 'line' | 'service';
 export type Locale = 'en' | 'zh';
+/** The groups of the family menu and the footer: open-source projects and free public services. */
+export type NavGroup = 'projects' | 'services';
 
 export interface BrandColours {
   /** Accent of the mark (graphics, 3:1 against the page). */
@@ -23,8 +25,11 @@ export interface Brand {
   word: string;
   descriptor?: string;
   url: Record<Locale, string>;
+  /** The source repository on GitHub, as owner/name, for brands that have one. */
+  repo?: string;
   description: Record<Locale, string>;
-  nav: 'projects' | 'services' | null;
+  /** The groups the brand is listed in; none for a brand that is not listed. */
+  nav: NavGroup[];
   colors: BrandColours;
 }
 

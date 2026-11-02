@@ -63,14 +63,14 @@ export const UI: Record<'en' | 'zh', UiStrings> = {
 export const FAMILY = {
   en: {
     home: (name: string) => `${name} home`,
-    projects: 'Projects',
-    services: 'Services',
+    projects: 'Open-source projects',
+    services: 'Free public services',
     allServices: 'All services',
   },
   zh: {
     home: (name: string) => `${name} 主页`,
     projects: '开源项目',
-    services: '服务',
+    services: '公益服务',
     allServices: '全部服务',
   },
 } as const;
@@ -78,8 +78,8 @@ export const FAMILY = {
 /** Labels of the footer. The attribution lines take the name of the master brand. */
 export const FOOTER = {
   en: {
-    projects: 'Open source',
-    services: 'Services',
+    projects: 'Open-source projects',
+    services: 'Free public services',
     about: 'About',
     news: 'News',
     trust: 'Trust & security',
@@ -94,7 +94,7 @@ export const FOOTER = {
   },
   zh: {
     projects: '开源项目',
-    services: '服务',
+    services: '公益服务',
     about: '关于',
     news: '动态',
     trust: '信任与安全',

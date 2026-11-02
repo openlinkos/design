@@ -210,7 +210,7 @@ function tokenReference(all: ResolvedToken[]): string {
     '',
     '# Token reference',
     '',
-    `Every token of \`@openlinkos/ui\` ${version}, resolved for light and dark mode with the OpenLinkOS accent. Accent tokens take each brand's colours under \`data-brand\`; size tokens marked with a density change under \`data-density\`. The sources are the DTCG files in [\`tokens/\`](../tokens).`,
+    `Every token of \`@openlinkos/ui\` ${version}, resolved for light and dark mode with the OpenLinkOS accent. Accent tokens, and any chart series that gives way to a brand's accent, take that brand's colours under \`data-brand\`; size tokens marked with a density change under \`data-density\`. The sources are the DTCG files in [\`tokens/\`](../tokens).`,
   ];
   for (const [key, tokens] of groups) {
     lines.push(

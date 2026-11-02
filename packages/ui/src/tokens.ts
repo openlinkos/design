@@ -8,12 +8,15 @@
 //   dark:    the value in dark mode, when it differs from $value (light mode).
 //   density: values for `data-density` variants, keyed by density name.
 //   brand:   on the `accent` palette group, marks it as generated per brand from brand/brands.json.
+//   reserve: on a group whose first token is the accent (the chart series), colours that take the
+//            place of a later token when, for some brand, it would be the accent's twin.
 
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { type Brand, loadBrands } from '../../../brand/brands.ts';
 import {
   contrast,
+  deltaE,
   hexToOklch,
   type Mode,
   oklchToHex,
@@ -349,6 +352,70 @@ function usesAccent(value: Json, tree: Record<string, Json>): boolean {
 
 export const cssName = (path: string[]): string => `--ol-${path.join('-')}`;
 
+/** Two chart series closer than this (deltaE, OKLab ×100) in either mode are twins. */
+export const TWIN = 15;
+
+/** The token tree for one mode and brand: the sources with that brand's palette. */
+const brandTree = (sources: Record<string, Json>, mode: Mode, b: Brand): Record<string, Json> => ({
+  ...sources,
+  palette: expandPalette(sources, mode, b),
+});
+
+/**
+ * The tokens that give way to a brand's accent, by dotted path. In a group with the `reserve`
+ * extension (the chart series), the first token is the accent; a later token that would be its twin
+ * in either mode takes the next reserve colour instead, in both modes, and keeps its place. So no
+ * accent has a twin among the series, whatever its hue. Most brands get none.
+ */
+export function yieldedTokens(
+  sources: Record<string, Json>,
+  b: Brand,
+  tree: (mode: Mode) => Record<string, Json> = (mode) => brandTree(sources, mode, b),
+): Map<string, TokenNode> {
+  const out = new Map<string, TokenNode>();
+  const colour = (t: TokenNode, mode: Mode): string => {
+    const raw = mode === 'dark' ? (ext(t, 'dark') ?? t.$value) : t.$value;
+    const hex = colourHex(resolveValue(raw ?? null, tree(mode), mode, []));
+    if (!hex) throw new Error(`expected a colour, got ${JSON.stringify(raw)}`);
+    return hex;
+  };
+  const walk = (node: Record<string, Json>, path: string[]): void => {
+    const reserve = ext(node as TokenNode, 'reserve');
+    if (Array.isArray(reserve)) {
+      const slots = Object.entries(node).filter(
+        (e): e is [string, TokenNode & { $value: Json }] => !e[0].startsWith('$') && isToken(e[1]),
+      );
+      const [first, ...rest] = slots;
+      let next = 0;
+      for (const [key, slot] of first ? rest : []) {
+        const twin = MODES.some((m) => deltaE(colour(first[1], m), colour(slot, m)) < TWIN);
+        if (!twin) continue;
+        const r = reserve[next++];
+        if (!isToken(r)) {
+          throw new Error(`${[...path, key].join('.')}: no reserve colour left for brand ${b.id}`);
+        }
+        out.set([...path, key].join('.'), r);
+      }
+      return;
+    }
+    for (const [key, child] of Object.entries(node)) {
+      if (key.startsWith('$') || isToken(child)) continue;
+      if (typeof child === 'object' && child !== null && !Array.isArray(child)) {
+        walk(child, [...path, key]);
+      }
+    }
+  };
+  for (const [key, child] of Object.entries(sources)) {
+    if (key === 'palette' || key.startsWith('$')) continue;
+    if (typeof child === 'object' && child !== null && !Array.isArray(child)) walk(child, [key]);
+  }
+  return out;
+}
+
+/** A token's raw value in one mode. */
+const rawValue = (t: TokenNode, mode: Mode): Json =>
+  (mode === 'dark' ? (ext(t, 'dark') ?? t.$value) : t.$value) ?? null;
+
 /** Every token resolved for both modes, the default brand, every brand (for accent tokens), and densities. */
 export function resolveTokens(dir: string): ResolvedToken[] {
   const sources = loadSources(dir);
@@ -358,22 +425,29 @@ export function resolveTokens(dir: string): ResolvedToken[] {
     if (!b) throw new Error(`unknown brand ${id}`);
     return b;
   };
-  const treeFor = (mode: Mode, b: Brand): Record<string, Json> => ({
-    ...sources,
-    palette: expandPalette(sources, mode, b),
-  });
   const trees = new Map<string, Record<string, Json>>();
   const tree = (mode: Mode, id: string): Record<string, Json> => {
     const key = `${mode}:${id}`;
-    if (!trees.has(key)) trees.set(key, treeFor(mode, brand(id)));
+    if (!trees.has(key)) trees.set(key, brandTree(sources, mode, brand(id)));
     return trees.get(key) as Record<string, Json>;
   };
+  const yielded = new Map(
+    brands.map((b) => [b.id, yieldedTokens(sources, b, (mode) => tree(mode, b.id))]),
+  );
   const tokens = flatten(sources);
   return tokens.map((t) => {
-    const perBrand = usesAccent(t.value.light, sources) || usesAccent(t.value.dark, sources);
+    const key = t.path.join('.');
+    const perBrand =
+      usesAccent(t.value.light, sources) ||
+      usesAccent(t.value.dark, sources) ||
+      brands.some((b) => yielded.get(b.id)?.has(key));
+    const raw = (id: string, m: Mode): Json => {
+      const y = yielded.get(id)?.get(key);
+      return y ? rawValue(y, m) : t.value[m];
+    };
     const css = (id: string): Record<Mode, string> =>
       Object.fromEntries(
-        MODES.map((m) => [m, toCss(t.type, resolveValue(t.value[m], tree(m, id), m, []), t.unit)]),
+        MODES.map((m) => [m, toCss(t.type, resolveValue(raw(id, m), tree(m, id), m, []), t.unit)]),
       ) as Record<Mode, string>;
     const resolved: ResolvedToken = {
       name: cssName(t.path),
@@ -491,8 +565,18 @@ export function tokenCss(dir: string): TokenCss {
       densities[density].push(`${cssName(t.path)}: ${cssValue(t.type, v, t.unit)};`);
     }
   }
+  // Tokens that give way to the brand's accent take their reserve colour in its block.
+  const yieldedDecls = (b: Brand): string[] => {
+    const yielded = yieldedTokens(sources, b);
+    return flatten(sources).flatMap((t) => {
+      const y = yielded.get(t.path.join('.'));
+      if (!y) return [];
+      const [light, dark] = MODES.map((m) => cssValue(t.type, rawValue(y, m), t.unit));
+      return [`${cssName(t.path)}: ${modal(t.type, light as string, dark as string)};`];
+    });
+  };
   const perBrand = Object.fromEntries(
-    brands.map((b) => [b.id, [...scales(b, 'accent'), ...accentDependent]]),
+    brands.map((b) => [b.id, [...scales(b, 'accent'), ...accentDependent, ...yieldedDecls(b)]]),
   );
   return { root, brands: perBrand, densities };
 }

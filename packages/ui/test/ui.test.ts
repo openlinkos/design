@@ -88,6 +88,22 @@ describe('colour difference', () => {
   });
 });
 
+describe('chart series per brand', () => {
+  it('change a slot only where it would be the twin of the brand accent', () => {
+    const accent = tokens['--ol-color-series-1'] as Token;
+    for (const { id } of loadBrands()) {
+      const own = accent.brands?.[id] ?? accent;
+      for (let n = 2; n <= 8; n++) {
+        const slot = tokens[`--ol-color-series-${n}`] as Token;
+        const mine = slot.brands?.[id] ?? slot;
+        const twin = (['light', 'dark'] as const).some((m) => deltaE(own[m], slot[m]) < 15);
+        const kept = mine.light === slot.light && mine.dark === slot.dark;
+        expect(kept, `${id} series ${n}`).toBe(!twin);
+      }
+    }
+  });
+});
+
 describe('colour contrast for every brand and mode', () => {
   const brands = loadBrands().map((b) => b.id);
   const modes = ['light', 'dark'] as const;
