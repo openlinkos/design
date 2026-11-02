@@ -13,7 +13,7 @@ Every brand is an entry in [`brand/brands.json`](brand/brands.json), the single 
 | `linkos-mirrors` | LinkOS Mirrors | service | interlocked rings | green |
 | `linkos-status` | LinkOS Status | service | interlocked rings | green |
 | `origin` | Origin | product | ring and centre point | indigo |
-| `beacon` | Beacon | product | its own, provisional (see below) | orange |
+| `beacon` | Beacon | product | its own (see below) | orange |
 | `agent` | OpenLinkOS Agent | product | interlocked rings | violet |
 
 The open-source projects are LinkOS Mirrors (its code: registry-mirrors, registry-mirrors-caddy and registry-mirrors-relay), Origin and Beacon; the free public services are LinkOS Mirrors and LinkOS Status. OpenLinkOS Agent was an experiment: it keeps its entry and its files, which its README uses, but is not listed.
@@ -28,7 +28,7 @@ An entry holds the name, tier and parent, the mark, the wordmark and an optional
 - **Line.** One stroke weight, 4 units, with round caps and joins. At 32 px and below the small variant uses 5.5 units so the mark stays legible; the favicon uses it.
 - **Interlocked rings.** Two rings of radius 10, centres 14 apart. Each passes under the other once: the left ring at the upper crossing, the right ring at the lower one. The gap where a ring passes under is the stroke width plus 1.25 units on each side.
 - **Ring and centre point.** A ring of radius 15 around a solid point of radius 5 (6 in the small variant).
-- **Beacon.** Its own mark, in [`brand/beacon.ts`](brand/beacon.ts), which documents its construction. It is provisional: the candidates are in [`brand/proposals/beacon/`](brand/proposals/beacon/) with their gallery (`index.html`, built by `node brand/proposals/beacon/build.ts`), each a drop-in for `brand/beacon.ts`; the one picked replaces it, and `pnpm gen` does the rest. The mark holds candidate 1 until then.
+- **Beacon.** Its own mark, in [`brand/beacon.ts`](brand/beacon.ts), which documents its construction: the family ring as the tower, opened at the top by 90 degrees, and the fire (the accent point) on the rim in that opening, the moment an alarm leaves the tower.
 - **Wordmark.** A monoline alphabet drawn as paths in [`brand/wordmark.ts`](brand/wordmark.ts) (x-height 11, cap height 15, descender 5, stroke 2.6 font units). In a lockup the wordmark is scaled by 1.45 so its stroke matches the mark, sits 13 units to the right of the mark, and the descriptor follows 8 units after the name. Brand names are always set in Latin letters, in every language.
 - **Colour.** The left ring (or the ring around the origin, or the lines of Beacon's mark) is ink; the accent is the brand colour (Beacon's fire). Ink is `#0f172a` on light backgrounds and `#e2e8f0` on dark ones. App icons and cards use the ink tile `#0f172a` with the dark colourway.
 - **Paths only.** Marks contain no text, filters, external references, embedded fonts or inline colours; colours come from the classes `ink`, `accent`, `ink-f` and `accent-f`, so one geometry renders every colourway. The tests enforce this.

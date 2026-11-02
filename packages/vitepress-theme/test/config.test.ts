@@ -132,7 +132,7 @@ describe('defineOpenLinkOSConfig', () => {
     expect(family.items.map((g) => (g as DefaultTheme.NavItemChildren).text)).toEqual([
       'LinkOS 主页',
       '开源项目',
-      '公益服务',
+      '公共服务',
     ]);
     expect(family.items[0]).toEqual({ text: 'LinkOS 主页', link: 'https://linkos.io/zh/' });
     expect((family.items[2] as DefaultTheme.NavItemChildren).items.at(-1)).toEqual({

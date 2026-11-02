@@ -70,7 +70,7 @@ export const FAMILY = {
   zh: {
     home: (name: string) => `${name} 主页`,
     projects: '开源项目',
-    services: '公益服务',
+    services: '公共服务',
     allServices: '全部服务',
   },
 } as const;
@@ -94,7 +94,7 @@ export const FOOTER = {
   },
   zh: {
     projects: '开源项目',
-    services: '公益服务',
+    services: '公共服务',
     about: '关于',
     news: '动态',
     trust: '信任与安全',

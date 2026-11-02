@@ -562,33 +562,33 @@
   "beacon": [
     {
       "file": "web/favicon.svg",
-      "bytes": 548,
-      "sha256": "8608c610afbf147caba3ee9757c5608ee435da92067acaf33db234cebf2120a1"
+      "bytes": 483,
+      "sha256": "b87759fed12654d948346c7709dbc3dc7d9ae6ddc12e9916a1ab1b6b8cebbff5"
     },
     {
       "file": "web/favicon.ico",
-      "bytes": 2037,
-      "sha256": "83489d0a99d85857d8e96d23e73d5fb3953399f7853f162b320704d08ac62161"
+      "bytes": 2242,
+      "sha256": "71ad251faa7098d72a372f8e1ac71e621f6631c491a97e0fb1af4fa8834e53a5"
     },
     {
       "file": "web/apple-touch-icon.png",
-      "bytes": 2335,
-      "sha256": "9857ad5a4429a17c56400a08cf2b987515520e67f2bf2517736264bde9c13d27"
+      "bytes": 2626,
+      "sha256": "32dc86472abba11df543999a5fbba68c966b62f0696faa5719fb3c6a2a61499b"
     },
     {
       "file": "web/icon-192.png",
-      "bytes": 3722,
-      "sha256": "cbe31832369f69544635230f3e4aab65912c99962b6ee1d6d6f25382a27b7e52"
+      "bytes": 4160,
+      "sha256": "62d4995a597e4ed38d4b5f675cf65862ec4c0562845a6ce92c63b522b2560a1a"
     },
     {
       "file": "web/icon-512.png",
-      "bytes": 11276,
-      "sha256": "0b6d7f22b5b29e35ad4222da4bd7a2a4a644dbcbfbf3344395963b3372a40707"
+      "bytes": 11919,
+      "sha256": "f67b1f4cc2c7612b6d4e692fb4db07010fd81fbf43f6a4d158f516c4596d578c"
     },
     {
       "file": "web/icon-maskable-512.png",
-      "bytes": 6886,
-      "sha256": "d018b45e2d6082b0a81c50c9c84119b2662437d49c7c19d46f18ad22cc758f28"
+      "bytes": 7284,
+      "sha256": "7cc4bd398ddc58455a305fd8b50b0b6dc8caf5b2f55dd3dba3e02621587355c1"
     },
     {
       "file": "web/site.webmanifest",
@@ -597,78 +597,78 @@
     },
     {
       "file": "web/og.png",
-      "bytes": 16030,
-      "sha256": "292df2d84503fa102c8f357a84697af01525ddaee67df8d62824c1329e6084bd"
+      "bytes": 16451,
+      "sha256": "37e520f5bcce69e33be21e122fd92fbff5db2cf1aafa819684cf5023c08524f8"
     },
     {
       "file": "web/logo.svg",
-      "bytes": 424,
-      "sha256": "79fa66f6c12f9c896a5e00e9a87cb0de597f74908d3c07dc1d763755fa38886e"
+      "bytes": 359,
+      "sha256": "cc7ac0ce12cda369223becea7c49a3e46a11d743184cd4d4ffe95925c15c3eb6"
     },
     {
       "file": "web/logo-dark.svg",
-      "bytes": 424,
-      "sha256": "ad8e786bb68ca39065f69bb0d933ec14f196133ac8878ac93bfdacdc397ea65e"
+      "bytes": 359,
+      "sha256": "ae7f0d2a2ee50d33ce7b3b5b82e590668e22f5bbf47aab29895df435bb627106"
     },
     {
       "file": "github/social-preview.png",
-      "bytes": 16516,
-      "sha256": "a83c089582153424a289af3877e495d20af699bbe9c0aa1e656f0d118ef81ede"
+      "bytes": 16877,
+      "sha256": "c7ab8c32aba1a35eb9286bea7ff0b3f07825b4757aebc8e0628704576f96bad8"
     },
     {
       "file": "github/avatar.png",
-      "bytes": 6875,
-      "sha256": "fdc11e1fbca438546a2a021c21e59884413b8b15261c853a5fab82dddfa7494b"
+      "bytes": 7301,
+      "sha256": "6c82344a8242b08674e5eb0866283b5a303d6ab3664d78116a8aa24f83f4f732"
     },
     {
       "file": "github/readme-light.svg",
-      "bytes": 884,
-      "sha256": "e422446326e6f53ce1448c2d1900a21d8d7cab6f448fc63d0499b7b4fa4244d8"
+      "bytes": 819,
+      "sha256": "b528cb560006a65a961343088775b2613b6563b490dd192edb94385a491a0c3d"
     },
     {
       "file": "github/readme-dark.svg",
-      "bytes": 884,
-      "sha256": "82a6fd9631ccc2e9fba7f8d9aa03bbcfda7fcf3cb98f853084b21dd6d7bfdff3"
+      "bytes": 819,
+      "sha256": "458370ec9548857366b5427a57e4ab52b50eb6422effcef3a9f1dd4de2d17ad3"
     },
     {
       "file": "github/readme.svg",
-      "bytes": 974,
-      "sha256": "0a592346edfc7f57e58ad664402d8b327fa375392ddb3989b570167af4841977"
+      "bytes": 909,
+      "sha256": "247e45a9410979aa253dc501edac1ea4ed4cbf13f4f272d46a10799e5c23c8c4"
     },
     {
       "file": "kit/mark.svg",
-      "bytes": 424,
-      "sha256": "79fa66f6c12f9c896a5e00e9a87cb0de597f74908d3c07dc1d763755fa38886e"
+      "bytes": 359,
+      "sha256": "cc7ac0ce12cda369223becea7c49a3e46a11d743184cd4d4ffe95925c15c3eb6"
     },
     {
       "file": "kit/mark-dark.svg",
-      "bytes": 424,
-      "sha256": "ad8e786bb68ca39065f69bb0d933ec14f196133ac8878ac93bfdacdc397ea65e"
+      "bytes": 359,
+      "sha256": "ae7f0d2a2ee50d33ce7b3b5b82e590668e22f5bbf47aab29895df435bb627106"
     },
     {
       "file": "kit/mark-black.svg",
-      "bytes": 424,
-      "sha256": "b3b4e60dd1efdf233c1e087ed641038a94555bfd8250ba496b314443ca558938"
+      "bytes": 359,
+      "sha256": "9d5f0d189136f8734960fe93620e1cd8e4b8dcd05e121cabb9c2c1efdd844da0"
     },
     {
       "file": "kit/mark-white.svg",
-      "bytes": 424,
-      "sha256": "e5185fb140de514b01a51a82e80b71bae7e81cc2cb935e53ad8321706a337a0a"
+      "bytes": 359,
+      "sha256": "4116ce9f1c5447fb80686b10836784b037e607e675bb94b3f1b00a206af4d00a"
     },
     {
       "file": "kit/lockup.svg",
-      "bytes": 884,
-      "sha256": "e422446326e6f53ce1448c2d1900a21d8d7cab6f448fc63d0499b7b4fa4244d8"
+      "bytes": 819,
+      "sha256": "b528cb560006a65a961343088775b2613b6563b490dd192edb94385a491a0c3d"
     },
     {
       "file": "kit/lockup-dark.svg",
-      "bytes": 884,
-      "sha256": "82a6fd9631ccc2e9fba7f8d9aa03bbcfda7fcf3cb98f853084b21dd6d7bfdff3"
+      "bytes": 819,
+      "sha256": "458370ec9548857366b5427a57e4ab52b50eb6422effcef3a9f1dd4de2d17ad3"
     },
     {
       "file": "kit/mark-1024.png",
-      "bytes": 26511,
-      "sha256": "a84fe8f8526f519f52dc2e3cf105645b82ea8a552b791ceddec4721cef8ad906"
+      "bytes": 27885,
+      "sha256": "92cea40a74b6cbc50a8b89bdea7eaf3037d2d976d9be4d10c4376bd8c24b5572"
     }
   ],
   "agent": [
