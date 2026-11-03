@@ -59,6 +59,12 @@ export interface OpenLinkOSConfig extends Omit<Config, 'locales' | 'extends'> {
    * `hostname` (its last two labels); `false` keeps the cookie host-only.
    */
   cookieDomain?: string | false;
+  /**
+   * The layer for agents (on by default): `/llms.txt` and `/llms-full.txt` per locale, built from
+   * the site's sidebars, and every page served as its Markdown source next to itself
+   * (`/guide/x.md`), in the dev server and in the build.
+   */
+  llms?: boolean;
   /** English at the root and Simplified Chinese under /zh/; no other locales. */
   locales?: { root?: OpenLinkOSLocale; zh?: OpenLinkOSLocale };
   /** The site's own part of the shared footer: `note`, one line of its own. */
@@ -93,6 +99,7 @@ interface Resolved {
   hostname: string;
   brandKit: boolean;
   cookieDomain: string | null;
+  llms: boolean;
   markdown: MarkdownOptions | undefined;
   /** Whether the site uses the local search (the default) rather than another provider. */
   localSearch: boolean;
@@ -245,6 +252,7 @@ const baseConfig = (r: Resolved): Config => ({
         hostname: r.hostname,
         brandKit: r.brandKit,
         cookieDomain: r.cookieDomain,
+        llms: r.llms,
       }),
     ],
     ssr: { noExternal: [PACKAGE_NAME] },
@@ -290,6 +298,7 @@ export function defineOpenLinkOSConfig(config: OpenLinkOSConfig): Config {
     hostname: rawHostname,
     brandKit = false,
     cookieDomain,
+    llms = true,
     locales = {},
     footer: ownFooter,
     legal,
@@ -322,6 +331,7 @@ export function defineOpenLinkOSConfig(config: OpenLinkOSConfig): Config {
     hostname,
     brandKit,
     cookieDomain: cookieDomain === false ? null : (cookieDomain ?? deriveCookieDomain(hostname)),
+    llms,
     markdown: site.markdown,
     localSearch: (site.themeConfig?.search?.provider ?? 'local') === 'local',
     footers: {

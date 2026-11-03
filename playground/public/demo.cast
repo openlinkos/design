@@ -1,0 +1,9 @@
+{"version":2,"width":72,"height":12,"timestamp":1770000000,"env":{"TERM":"xterm-256color"}}
+[0.5,"o","\u001b[1m\u001b[32m$\u001b[0m curl -fsS http://demo.local:8080/health"]
+[1.4,"o","curl: (7) Failed to connect to demo.local port 8080"]
+[2.2,"o","\u001b[1m\u001b[32m$\u001b[0m probe_now demo.local"]
+[2.8,"o","probing from 3 locations ..."]
+[4.6,"o","hongkong   HTTP 200   41 ms"]
+[5.1,"o","frankfurt  HTTP 200   38 ms"]
+[5.6,"o","seattle    HTTP 200   44 ms"]
+[6.6,"o","\u001b[1m\u001b[32m$\u001b[0m "]

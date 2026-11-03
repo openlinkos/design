@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 404" role="img" aria-label="A terminal recording poster">
+  <rect x="0.5" y="0.5" width="719" height="403" rx="10" fill="#0f172a" stroke="#334155"/>
+  <circle cx="28" cy="24" r="6" fill="#f87171"/>
+  <circle cx="48" cy="24" r="6" fill="#fbbf24"/>
+  <circle cx="68" cy="24" r="6" fill="#34d399"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17">
+    <text x="28" y="84" fill="#e2e8f0"><tspan fill="#34d399" font-weight="600">$</tspan> curl -fsS http://demo.local:8080/health</text>
+    <text x="28" y="112" fill="#94a3b8">curl: (7) Failed to connect to demo.local port 8080</text>
+    <text x="28" y="152" fill="#e2e8f0"><tspan fill="#34d399" font-weight="600">$</tspan> probe_now demo.local</text>
+    <text x="28" y="180" fill="#94a3b8">probing from 3 locations ...</text>
+    <text x="28" y="220" fill="#e2e8f0">hongkong   <tspan fill="#34d399">HTTP 200</tspan>   41 ms</text>
+    <text x="28" y="248" fill="#e2e8f0">frankfurt  <tspan fill="#34d399">HTTP 200</tspan>   38 ms</text>
+    <text x="28" y="276" fill="#e2e8f0">seattle    <tspan fill="#34d399">HTTP 200</tspan>   44 ms</text>
+    <text x="28" y="316" fill="#e2e8f0"><tspan fill="#34d399" font-weight="600">$</tspan> </text>
+    <rect x="44" y="302" width="10" height="20" fill="#94a3b8"/>
+  </g>
+</svg>

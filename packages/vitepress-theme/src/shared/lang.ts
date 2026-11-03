@@ -13,6 +13,10 @@ const MAX_AGE = 31536000;
 export const localeOfPath = (pathname: string): Lang =>
   /^\/zh(\/|$)/.test(pathname) ? 'zh' : 'en';
 
+/** The locale of an HTML `lang` value, such as VitePress's `en-US` or `zh-CN`. */
+export const localeOfLang = (lang: string): Lang =>
+  lang.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+
 export interface RedirectInput {
   /** Locale of the page being loaded. */
   here: Lang;

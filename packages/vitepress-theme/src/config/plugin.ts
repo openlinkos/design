@@ -15,6 +15,7 @@ import {
 } from './brands.js';
 import { checkSite, formatProblem, type Problem } from './check.js';
 import { masterBrand, orgLink } from './footer.js';
+import { type LlmsSite, llmsFiles, markdownFile } from './llms.js';
 import { CONTACT } from './strings.js';
 
 /** The package name, for `ssr.noExternal` and `optimizeDeps.exclude`. */
@@ -40,6 +41,11 @@ export interface PluginOptions {
   hostname: string;
   brandKit: boolean;
   cookieDomain: string | null;
+  /**
+   * The layer for agents: `llms.txt` and `llms-full.txt` per locale and every page as Markdown
+   * next to itself. On by default.
+   */
+  llms?: boolean;
   /** The build time, which sets the expiry of security.txt; now when not set. */
   now?: Date;
 }
@@ -132,6 +138,24 @@ export const openlinkosPlugin = (o: PluginOptions): Plugin => {
   let site: SiteConfig | undefined;
   let ssr = false;
 
+  /** The llms index files of the moment, served in dev and emitted on build. */
+  const getLlmsFiles = (): Map<string, SiteFile> =>
+    site
+      ? llmsFiles(site as unknown as LlmsSite, { hostname: o.hostname })
+      : new Map<string, SiteFile>();
+
+  /** The Markdown of a page, served next to the page itself (`/guide/x.md`). */
+  const pageMarkdown = (path: string): SiteFile | undefined => {
+    if (!site || !path.endsWith('.md')) return undefined;
+    const file = path.slice(1);
+    const page = site.pages.find((p) => markdownFile(site as LlmsSite, p) === file);
+    if (!page) return undefined;
+    return {
+      source: readFileSync(join(site.srcDir, page)),
+      type: 'text/markdown; charset=utf-8',
+    };
+  };
+
   const devCheck = (server: DevServer): void => {
     let last = '';
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -178,7 +202,9 @@ export const openlinkosPlugin = (o: PluginOptions): Plugin => {
       if (!allow.includes(PACKAGE_DIR)) allow.push(PACKAGE_DIR);
       const publicDir = config.publicDir;
       if (publicDir) {
-        const clashes = [...getFiles().keys()].filter((name) => existsSync(join(publicDir, name)));
+        const reserved =
+          o.llms === false ? getFiles() : new Map([...getFiles(), ...getLlmsFiles()]);
+        const clashes = [...reserved.keys()].filter((name) => existsSync(join(publicDir, name)));
         if (clashes.length) {
           throw new Error(
             `${PREFIX} the theme provides ${clashes.join(', ')}; remove ${clashes.length === 1 ? 'it' : 'them'} ` +
@@ -215,22 +241,47 @@ export const openlinkosPlugin = (o: PluginOptions): Plugin => {
       for (const [fileName, file] of getFiles()) {
         this.emitFile({ type: 'asset', fileName, source: file.source });
       }
+      if (o.llms === false || !site) return;
+      for (const [fileName, file] of getLlmsFiles()) {
+        this.emitFile({ type: 'asset', fileName, source: file.source });
+      }
+      for (const page of site.pages) {
+        if (page === '404.md' || page === 'zh/404.md') continue;
+        this.emitFile({
+          type: 'asset',
+          fileName: markdownFile(site as LlmsSite, page),
+          source: readFileSync(join(site.srcDir, page)),
+        });
+      }
     },
 
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         let path: string;
+        const raw = req.url ?? '';
         try {
-          path = decodeURIComponent((req.url ?? '').replace(/[?#].*$/, ''));
+          path = decodeURIComponent(raw.replace(/[?#].*$/, ''));
         } catch {
           return next();
         }
-        const file = getFiles().get(path.slice(1));
+        const send = (file: SiteFile): void => {
+          res.statusCode = 200;
+          res.setHeader('Content-Type', file.type);
+          res.setHeader('Cache-Control', 'no-cache');
+          res.end(file.source);
+        };
+        const asset = getFiles().get(path.slice(1));
+        if (asset) return send(asset);
+        // The page's Markdown is served to a reader or an agent: a plain request for the address.
+        // A module load of the same file — Vite appends a query (`?import`, `?t=`) or the browser
+        // says what it is for (`Sec-Fetch-Dest`) — is left to Vite.
+        if (raw.includes('?') || raw.includes('#')) return next();
+        const dest = req.headers['sec-fetch-dest'];
+        if (dest && dest !== 'document') return next();
+        const file =
+          (o.llms === false ? undefined : getLlmsFiles().get(path.slice(1))) ?? pageMarkdown(path);
         if (!file) return next();
-        res.statusCode = 200;
-        res.setHeader('Content-Type', file.type);
-        res.setHeader('Cache-Control', 'no-cache');
-        res.end(file.source);
+        send(file);
       });
       devCheck(server);
     },
