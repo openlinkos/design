@@ -2,6 +2,19 @@
 
 Changes to `@openlinkos/vitepress-theme`, newest first. It shares its version with `@openlinkos/ui`; releases before 0.7.0 are described in the git history.
 
+## 0.8.0-rc.1
+
+### Added
+
+- **A layer for agents** (`llms`, on by default): `/llms.txt` and `/llms-full.txt` per locale, built from the site's sidebars (one section per group, pages in sidebar order, home-layout pages left out), and every page served as its Markdown source at its own address with `.md` appended (`/guide/x.md`, `/zh/guide/x.md`, `/index.md`), in the dev server and in the build. English is the source of truth: the root files list the English pages, `/zh/llms.txt` and `/zh/llms-full.txt` the Chinese ones, and each index points to the other. `llms: false` turns the layer off; the build stops if the site's `public/` provides one of the files.
+- **Page actions** on every doc page, at the top of the content and in the page's language: copy the page as Markdown (fetching the page's `.md`), open it in Claude (`claude.ai/new?q=`, documented by Anthropic) or in ChatGPT (`chatgpt.com/?q=`, an undocumented parameter) with `Read <address>.md and answer questions about it.` prefilled. Plain DOM, no Vue import; the strings live in the theme's string tables (`PAGE_ACTIONS`).
+- **Landing-page components**, `@openlinkos/vitepress-theme/components`: `OlHero` (title, lead, actions, a `command` with a copy button, a media slot), `OlSteps` (a numbered timeline with media), `OlCast` (an asciinema recording: a poster is all a reader without JavaScript or with reduced motion sees; with both, the play button loads the site's own copy of asciinema-player and the recording starts on click), `OlLogos` (a row of names) and `OlBand` (the closing call to action). They ship as single-file components for the site's own Vite build to compile; `vue` is now a peer dependency (≥ 3.5) for that path. Their styles use `@openlinkos/ui` tokens only.
+- The theme loads `@openlinkos/ui`'s design tokens on every page (`@openlinkos/ui` is a dependency) and sets `data-brand` in the head, so the components follow the brand's palette in light and dark.
+
+### Changed
+
+- The reserved files a site's `public/` must not provide now include `llms.txt`, `llms-full.txt`, `zh/llms.txt` and `zh/llms-full.txt`; the build stops, as before, when one of them clashes.
+
 ## 0.7.1
 
 ### Added
