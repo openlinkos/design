@@ -51,7 +51,15 @@ const copyPlayground = (name: string): string => {
   const root = join(tmp, name);
   rmSync(root, { recursive: true, force: true });
   mkdirSync(root, { recursive: true });
-  for (const entry of ['index.md', 'guide.md', 'zh', '.vitepress/config.ts', '.vitepress/theme']) {
+  for (const entry of [
+    'index.md',
+    'guide.md',
+    'components.md',
+    'zh',
+    'public',
+    '.vitepress/config.ts',
+    '.vitepress/theme',
+  ]) {
     cpSync(join(playground, entry), join(root, entry), { recursive: true });
   }
   return root;
@@ -233,6 +241,102 @@ describe('the playground build', () => {
     expect(style).toMatch(/\.dark\{[^}]*--vp-c-brand-1:\s*#6b9bff/);
     expect(style).toContain('html[lang^=zh]');
   });
+
+  it('writes the layer for agents: llms files per locale and every page as Markdown', () => {
+    const llms = read('llms.txt');
+    expect(llms).toContain('# Playground');
+    expect(llms).toContain('> A test site for the OpenLinkOS VitePress theme.');
+    expect(llms).toContain(
+      '> 简体中文 (Simplified Chinese): https://playground.openlinkos.com/zh/llms.txt',
+    );
+    expect(llms).toContain('- [Guide](https://playground.openlinkos.com/guide.md):');
+    expect(llms).toContain('- [Components](https://playground.openlinkos.com/components.md):');
+    // The home-layout page is a designed page, not reading material; it is not listed.
+    expect(llms).not.toContain('(/index.md)');
+
+    const zh = read('zh/llms.txt');
+    expect(zh).toContain('> English: https://playground.openlinkos.com/llms.txt');
+    expect(zh).toContain('## 演示站点');
+    expect(zh).toContain('- [组件](https://playground.openlinkos.com/zh/components.md):');
+    expect(zh).toContain('- [指南](https://playground.openlinkos.com/zh/guide.md):');
+
+    const full = read('llms-full.txt');
+    expect(full).toContain('# Guide\n\nSource: https://playground.openlinkos.com/guide.md');
+    expect(full).toContain('## Install');
+    expect(read('zh/llms-full.txt')).toContain(
+      '# 组件\n\nSource: https://playground.openlinkos.com/zh/components.md',
+    );
+
+    // Every page sits next to itself as Markdown, both locales, 404 excepted.
+    for (const file of [
+      'index.md',
+      'guide.md',
+      'components.md',
+      'zh/index.md',
+      'zh/guide.md',
+      'zh/components.md',
+    ]) {
+      expect(existsSync(join(dist, file)), file).toBe(true);
+    }
+    expect(existsSync(join(dist, '404.md'))).toBe(false);
+    expect(read('components.md')).toContain('# Components');
+  });
+
+  it('can turn the layer off', () => {
+    const root = copyPlayground('no-llms');
+    const config = join(root, '.vitepress/config.ts');
+    writeFileSync(
+      config,
+      readFileSync(config, 'utf8').replace(
+        "hostname: 'https://playground.openlinkos.com',",
+        "hostname: 'https://playground.openlinkos.com',\n  llms: false,",
+      ),
+    );
+    const result = buildSite(root);
+    expect(result.status, result.output).toBe(0);
+    const out = join(root, '.vitepress/dist');
+    expect(existsSync(join(out, 'llms.txt'))).toBe(false);
+    expect(existsSync(join(out, 'zh/llms-full.txt'))).toBe(false);
+    // Off means off: no page Markdown either, and public/llms.txt is the site's own again.
+    expect(existsSync(join(out, 'guide.md'))).toBe(false);
+    writeFileSync(join(root, 'public', 'llms.txt'), 'mine');
+    const again = buildSite(root);
+    expect(again.status, again.output).toBe(0);
+  }, 240_000);
+
+  it('refuses public files the layer would write', () => {
+    const root = copyPlayground('llms-clash');
+    writeFileSync(join(root, 'public', 'llms.txt'), 'mine');
+    const clash = buildSite(root);
+    expect(clash.status).toBe(1);
+    expect(clash.output).toContain('the theme provides llms.txt');
+  }, 240_000);
+
+  it('renders the landing components and puts the page actions on doc pages', () => {
+    const html = read('components.html');
+    for (const part of [
+      'olc-hero-title',
+      'olc-hero-command-code',
+      'olc-steps',
+      'olc-cast-poster',
+      'olc-logos',
+      'olc-band-title',
+    ]) {
+      expect(html, part).toContain(part);
+    }
+    // The page actions are plain DOM put in place by the browser (no server round trip), and the
+    // design tokens and their guard ride along in the stylesheet.
+    const chunks = join(dist, 'assets', 'chunks');
+    const theme = readdirSync(chunks)
+      .map((f) => readFileSync(join(chunks, f), 'utf8'))
+      .find((code) => code.includes('ol-page-actions'));
+    expect(theme).toContain('claude.ai/new?q=');
+    expect(theme).toContain('chatgpt.com/?q=');
+    expect(theme).toContain('复制本页');
+    const style = stylesheet();
+    expect(style).toContain('--ol-color-accent-solid');
+    expect(style).toContain('.ol-page-action');
+  });
 });
 
 describe('a family site', () => {
@@ -286,7 +390,6 @@ describe('the bilingual coverage check', () => {
 
   it('refuses public files that the theme provides', () => {
     const root = copyPlayground('reserved');
-    mkdirSync(join(root, 'public'));
     writeFileSync(join(root, 'public', 'favicon.ico'), '');
     const result = buildSite(root);
     expect(result.status).toBe(1);

@@ -24,13 +24,17 @@ export default defineOpenLinkOSConfig({
     root: {
       description: 'A test site for the OpenLinkOS VitePress theme.',
       themeConfig: {
-        nav: [{ text: 'Guide', link: '/guide' }],
+        nav: [
+          { text: 'Guide', link: '/guide' },
+          { text: 'Components', link: '/components' },
+        ],
         sidebar: [
           {
             text: 'Playground',
             items: [
               { text: 'Home', link: '/' },
               { text: 'Guide', link: '/guide' },
+              { text: 'Components', link: '/components' },
             ],
           },
         ],
@@ -46,6 +50,7 @@ export default defineOpenLinkOSConfig({
             items: [
               { text: '首页', link: '/zh/' },
               { text: '指南', link: '/zh/guide' },
+              { text: '组件', link: '/zh/components' },
             ],
           },
         ],

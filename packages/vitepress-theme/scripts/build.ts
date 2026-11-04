@@ -24,6 +24,13 @@ execFileSync(process.execPath, [tsc, '-p', join(pkg, 'tsconfig.json')], { stdio:
 
 copyFileSync(join(pkg, 'src', 'theme', 'style.css'), join(dist, 'theme', 'style.css'));
 
+// The landing components ship as single-file source for the site's Vite build to compile.
+mkdirSync(join(dist, 'components'), { recursive: true });
+for (const file of readdirSync(join(pkg, 'src', 'components'))) {
+  if (file.endsWith('.vue'))
+    copyFileSync(join(pkg, 'src', 'components', file), join(dist, 'components', file));
+}
+
 const brand = join(repo, 'brand');
 mkdirSync(join(dist, 'brand'), { recursive: true });
 copyFileSync(join(brand, 'brands.json'), join(dist, 'brand', 'brands.json'));

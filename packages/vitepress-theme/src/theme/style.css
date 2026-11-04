@@ -1,9 +1,73 @@
+/*
+ * The design tokens of @openlinkos/ui, so the theme's own pieces (the page actions, the landing
+ * components) take every colour, size and radius from the design system. The tokens use
+ * `light-dark()`, which keys off `color-scheme`: VitePress sets it on `html.dark`, and the value
+ * below keeps a forced light theme from following the system into dark (scrollbars, form
+ * controls), beating the tokens' layered `:root { color-scheme: light dark }`. The head script
+ * sets `data-brand`, which picks the brand's palette.
+ */
+@import "@openlinkos/ui/tokens.css";
+
+:root {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
 /* Chinese pages: Inter for Latin text, then the common Simplified Chinese system fonts. */
 html[lang^="zh"] {
   --vp-font-family-base:
     "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
     "Source Han Sans SC", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
+}
+
+/*
+ * The page actions (theme/actions.ts), at the top of a doc page: copy the page as Markdown, open
+ * it in Claude or ChatGPT. A quiet row that stays out of the title's way.
+ */
+.ol-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--ol-space-1-5);
+  min-height: var(--ol-size-control-xs);
+  margin-block-end: var(--ol-space-1);
+  font-size: var(--ol-font-size-xs);
+}
+
+.ol-page-action {
+  display: inline-flex;
+  align-items: center;
+  height: var(--ol-size-control-xs);
+  padding-inline: var(--ol-space-2);
+  border: 1px solid var(--ol-color-border);
+  border-radius: var(--ol-radius-control);
+  background: transparent;
+  color: var(--ol-color-fg-muted);
+  font-size: inherit;
+  font-family: inherit;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--ol-duration-fast) var(--ol-ease-standard),
+    color var(--ol-duration-fast) var(--ol-ease-standard),
+    border-color var(--ol-duration-fast) var(--ol-ease-standard);
+}
+
+.ol-page-action:hover {
+  border-color: var(--ol-color-border-strong);
+  background: var(--ol-color-fill-subtle);
+  color: var(--ol-color-fg);
+  text-decoration: none;
+}
+
+.ol-page-action:focus-visible {
+  outline: var(--ol-focus-width) solid var(--ol-color-focus-ring);
+  outline-offset: var(--ol-focus-offset);
 }
 
 /*

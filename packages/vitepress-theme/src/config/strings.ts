@@ -164,3 +164,44 @@ export const ZH_ALERTS: Record<string, string> = {
 };
 
 export const ZH_COPY_CODE = '复制代码';
+
+/**
+ * The page actions of a doc page: copy the page as Markdown, or open it in a chat with the page's
+ * address prefilled. `prompt` takes the Markdown address of the page as `{url}`.
+ */
+export const PAGE_ACTIONS = {
+  en: {
+    label: 'Page actions',
+    copy: 'Copy page',
+    copied: 'Copied',
+    copyFailed: 'Copy failed',
+    openClaude: 'Open in Claude',
+    openChatGPT: 'Open in ChatGPT',
+    prompt: 'Read {url} and answer questions about it.',
+  },
+  zh: {
+    label: '本页操作',
+    copy: '复制本页',
+    copied: '已复制',
+    copyFailed: '复制失败',
+    openClaude: '在 Claude 中打开',
+    openChatGPT: '在 ChatGPT 中打开',
+    prompt: '阅读 {url}，回答我关于它的问题。',
+  },
+} as const;
+
+/** Strings of the landing-page components (`@openlinkos/vitepress-theme/components`). */
+export const COMPONENTS = {
+  en: {
+    copyCommand: 'Copy command',
+    copied: 'Copied',
+    play: 'Play recording',
+    castError: 'The recording could not be played.',
+  },
+  zh: {
+    copyCommand: '复制命令',
+    copied: '已复制',
+    play: '播放录像',
+    castError: '录像无法播放。',
+  },
+} as const;

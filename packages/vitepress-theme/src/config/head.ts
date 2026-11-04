@@ -39,6 +39,9 @@ export const siteHead = (brand: Brand): HeadConfig[] => {
       { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: THEME_COLOR.dark },
     ],
     ['meta', { name: 'apple-mobile-web-app-title', content: brand.name }],
+    // The design tokens (`@openlinkos/ui/tokens.css`) pick the brand's palette from this
+    // attribute; set before first paint so the landing components never flash another colour.
+    ['script', {}, `document.documentElement.dataset.brand=${JSON.stringify(brand.id)};`],
   ];
 };
 
