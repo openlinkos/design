@@ -2,6 +2,12 @@
 
 Changes to `@openlinkos/vitepress-theme`, newest first. It shares its version with `@openlinkos/ui`; releases before 0.7.0 are described in the git history.
 
+## 0.8.0-rc.2
+
+### Fixed
+
+- The published package depends on `@openlinkos/ui` by its version. 0.8.0-rc.1 went out with the monorepo's `workspace:*` range and could not be installed outside this repository; the release now publishes the tarball `pnpm pack` makes, which rewrites the range, and stops if a packed manifest still has one.
+
 ## 0.8.0-rc.1
 
 ### Added

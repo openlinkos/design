@@ -59,6 +59,16 @@ jobs:
             if npm view "${name}@${version}" version >/dev/null 2>&1; then
               echo "${name}@${version} is already published"
             else
-              (cd "packages/${pkg}" && case "$version" in *-*) npm publish --access public --tag next ;; *) npm publish --access public ;; esac)
+              dest="$(mktemp -d)"
+              (cd "packages/${pkg}" && pnpm pack --pack-destination "$dest" >/dev/null)
+              tarball="$(ls "$dest"/*.tgz)"
+              if tar -xOzf "$tarball" package/package.json | grep -q '"workspace:'; then
+                echo "${name}@${version}: the packed manifest still has a workspace: range" >&2
+                exit 1
+              fi
+              case "$version" in
+                *-*) npm publish "$tarball" --access public --tag next ;;
+                *) npm publish "$tarball" --access public ;;
+              esac
             fi
           done
