@@ -364,7 +364,7 @@ describe('a family site', () => {
     }
     expect(en.some((a) => a.includes('https://linkos.org'))).toBe(false);
     // Links to other sites, such as LinkOS Status, stay external.
-    expect(en.find((a) => a.includes('href="https://uptime.linkos.org/"'))).toContain(
+    expect(en.find((a) => a.includes('href="https://status.linkos.io/"'))).toContain(
       'target="_blank"',
     );
     const zh = links(read('zh/guide.html', out));
