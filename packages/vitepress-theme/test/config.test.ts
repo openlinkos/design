@@ -121,7 +121,7 @@ describe('defineOpenLinkOSConfig', () => {
           text: 'Free public services',
           items: [
             { text: 'LinkOS Mirrors', link: 'https://linkos.org/mirrors' },
-            { text: 'LinkOS Status', link: 'https://uptime.linkos.org/' },
+            { text: 'LinkOS Status', link: 'https://status.linkos.io/' },
             { text: 'All services', link: 'https://linkos.org/' },
           ],
         },
@@ -170,12 +170,12 @@ describe('defineOpenLinkOSConfig', () => {
     });
     expect(group(org, 2)).toEqual([
       { text: 'LinkOS Mirrors', link: '/mirrors' },
-      { text: 'LinkOS Status', link: 'https://uptime.linkos.org/' },
+      { text: 'LinkOS Status', link: 'https://status.linkos.io/' },
       { text: 'All services', link: '/' },
     ]);
     expect(group(family('linkos', 'https://linkos.org', 'zh'), 2)).toEqual([
       { text: 'LinkOS Mirrors', link: '/zh/mirrors' },
-      { text: 'LinkOS Status', link: 'https://uptime.linkos.org/' },
+      { text: 'LinkOS Status', link: 'https://status.linkos.io/' },
       { text: '全部服务', link: '/zh/' },
     ]);
     expect(family('linkos', 'https://linkos.io', 'root').items[0]).toEqual({

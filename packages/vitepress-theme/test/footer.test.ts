@@ -53,7 +53,7 @@ describe('the footer', () => {
       'https://origin.openlinkos.com/',
       'https://beacon.openlinkos.com/',
       'https://linkos.org/mirrors',
-      'https://uptime.linkos.org/',
+      'https://status.linkos.io/',
       'https://linkos.org/',
       'https://linkos.io/about',
       'https://linkos.io/news',
@@ -107,8 +107,8 @@ describe('the footer', () => {
     expect(siteLink('https://linkos.org.cn/x', 'https://linkos.org')).toBe(
       'https://linkos.org.cn/x',
     );
-    expect(siteLink('https://uptime.linkos.org/', 'https://linkos.org')).toBe(
-      'https://uptime.linkos.org/',
+    expect(siteLink('https://status.linkos.org/', 'https://linkos.org')).toBe(
+      'https://status.linkos.org/',
     );
   });
 
