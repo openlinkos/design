@@ -2,6 +2,14 @@
 
 Changes to `@openlinkos/vitepress-theme`, newest first. It shares its version with `@openlinkos/ui`; releases before 0.7.0 are described in the git history.
 
+## 0.8.0-rc.3
+
+### Fixed
+
+- `llms.txt` links a section's landing page (`guide/index.md`) at the address its Markdown is served at, `/guide/index.md`, instead of `/guide/.md`, which answered 404; `llms-full.txt` names the same address as the page's source. A sidebar link to a directory (`/guide/`) now finds that directory's `index.md`, so landing pages stay in their sidebar section instead of falling into the closing "Pages" list.
+- Sidebars keyed by directory make one `llms.txt` section per top-level group, named by its text, as a single sidebar always did, instead of one section per directory named by its path (`guide/`). A page outside any group, such as a section's landing page, joins the group after it.
+- The LinkOS Status link in the footer and the LinkOS menu points at `status.linkos.io`.
+
 ## 0.8.0-rc.2
 
 ### Fixed
