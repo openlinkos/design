@@ -50,7 +50,8 @@ export const markdownFile = (site: LlmsSite, page: string): string =>
 /** The address a page's Markdown is served at, next to the page itself. */
 export const markdownUrl = (site: LlmsSite, page: string): string => {
   const path = pagePath(markdownFile(site, page));
-  return path === '/' ? '/index.md' : `${path}.md`;
+  // A directory's page is served as the index.md inside it, as the page actions fetch it.
+  return path.endsWith('/') ? `${path}index.md` : `${path}.md`;
 };
 
 const FRONTMATTER = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
@@ -122,16 +123,25 @@ export const pageEntry = (page: string, source: string, sidebarTitle?: string): 
   };
 };
 
-/** The page a sidebar link points at, as a path relative to the source directory. */
-const pageOfLink = (link: string, locale: Lang): string | null => {
-  if (!link) return null;
-  const stripped = link.replace(/^\//, '').replace(/\.md$/, '').replace(/\/+$/, '');
+/**
+ * The pages a sidebar link may point at, as paths relative to the source directory, likelier
+ * first: `/guide` is guide.md or else guide/index.md, and `/guide/` the other way round.
+ */
+const pagesOfLink = (link: string, locale: Lang): string[] => {
+  if (!link) return [];
+  const path = link.replace(/^\//, '').replace(/\.md$/, '');
+  const bare = path.replace(/\/+$/, '');
+  let base = bare;
   if (locale === 'zh') {
-    if (link.startsWith('/') && !/^zh(\/|$)/.test(stripped)) return null;
-    const relative = stripped.replace(/^zh\//, '');
-    return relative === '' ? 'zh/index.md' : `zh/${relative}.md`;
+    if (link.startsWith('/') && !/^zh(\/|$)/.test(bare)) return [];
+    const relative = bare.replace(/^zh(\/|$)/, '');
+    base = relative === '' ? '' : `zh/${relative}`;
+    if (base === '') return ['zh/index.md'];
   }
-  return stripped === '' ? 'index.md' : `${stripped}.md`;
+  if (base === '') return ['index.md'];
+  const file = `${base}.md`;
+  const index = `${base}/index.md`;
+  return path.endsWith('/') ? [index, file] : [file, index];
 };
 
 const readSource = (site: LlmsSite, page: string): string | null => {
@@ -163,8 +173,10 @@ export const collectPages = (site: LlmsSite, locale: Lang): Array<[string, PageE
         walkItems(item.items, section);
         continue;
       }
-      const page = item.link ? pageOfLink(item.link, locale) : null;
-      if (!page || !sources.has(page) || listed.has(page)) continue;
+      const page = item.link
+        ? pagesOfLink(item.link, locale).find((p) => sources.has(p))
+        : undefined;
+      if (!page || listed.has(page)) continue;
       const e = entry(page, item.text);
       if (!e) continue;
       listed.set(page, e);
@@ -195,22 +207,39 @@ export const collectPages = (site: LlmsSite, locale: Lang): Array<[string, PageE
   return kept;
 };
 
-/** The locale's sidebar as sections: an array sidebar yields one section per top-level group, and
- * sidebars keyed by directory one section per key. */
+/**
+ * A sidebar's items as sections: one per top-level group, named by its text. A page outside any
+ * group, such as a section's landing page, joins the group after it (the one before it, at the
+ * end); a sidebar without groups is one section named `fallback`.
+ */
+const sectionsOf = (items: SidebarItem[], fallback: string): Array<[string, SidebarItem[]]> => {
+  const sections: Array<[string, SidebarItem[]]> = [];
+  let loose: SidebarItem[] = [];
+  for (const item of items) {
+    if (!item.items?.length) {
+      loose.push(item);
+      continue;
+    }
+    sections.push([item.text || fallback, [...loose, ...item.items]]);
+    loose = [];
+  }
+  if (loose.length) {
+    const last = sections.at(-1);
+    if (last) last[1].push(...loose);
+    else sections.push([fallback, loose]);
+  }
+  return sections;
+};
+
+/** The locale's sidebar as sections, whether it is one sidebar or several keyed by directory. */
 const sidebarConfig = (site: LlmsSite, locale: Lang): Array<[string, SidebarItem[]]> | null => {
   const config = site.site.locales?.[locale === 'zh' ? 'zh' : 'root'];
   const sidebar = config?.themeConfig?.sidebar as Sidebar | undefined;
   if (!sidebar) return null;
-  if (Array.isArray(sidebar)) {
-    const groups = sidebar.filter((item) => item.items?.length);
-    return groups.length
-      ? groups.map((group) => [group.text || DOCS[locale], group.items as SidebarItem[]])
-      : ([[DOCS[locale], sidebar]] as Array<[string, SidebarItem[]]>);
-  }
-  return Object.entries(sidebar as Record<string, SidebarItem[]>).map(([key, items]) => [
-    key === '/' ? DOCS[locale] : key.replace(/^\//, ''),
-    items,
-  ]);
+  if (Array.isArray(sidebar)) return sectionsOf(sidebar, DOCS[locale]);
+  return Object.entries(sidebar as Record<string, SidebarItem[]>).flatMap(([key, items]) =>
+    sectionsOf(items, key === '/' ? DOCS[locale] : key.replace(/^\//, '')),
+  );
 };
 
 const OTHER_LANGUAGE_ENTRY: Record<Lang, [string, string]> = {

@@ -80,6 +80,8 @@ beforeAll(() => {
   page('zh/index.md', '---\nlayout: home\n---\n');
   page('zh/guide.md', '# 指南\n\n十分钟让一个 Agent 值班。\n');
   page('zh/reference/api.md', '# 路由 {#routes}\n\nGET /api/v1/alerts。\n');
+  page('integrations/index.md', '# Integrations\n\nThe tools around Beacon.\n');
+  page('integrations/codex.md', '# Codex\n\nCodex signs in through the browser.\n');
 });
 
 afterAll(() => {
@@ -95,6 +97,9 @@ describe('the page paths', () => {
     expect(markdownUrl(s, 'index.md')).toBe('/index.md');
     expect(markdownUrl(s, 'reference/api.md')).toBe('/reference/http.md');
     expect(markdownUrl(s, 'zh/guide.md')).toBe('/zh/guide.md');
+    // A directory's page is the index.md inside it, not "/integrations/.md".
+    expect(markdownUrl(s, 'integrations/index.md')).toBe('/integrations/index.md');
+    expect(markdownUrl(s, 'zh/integrations/index.md')).toBe('/zh/integrations/index.md');
   });
 });
 
@@ -129,6 +134,36 @@ describe('llms.txt', () => {
       '- [全部页面合在一个文件里](https://beacon.openlinkos.com/zh/llms-full.txt)',
     );
     expect(text).not.toContain('](https://beacon.openlinkos.com/guide.md)');
+  });
+
+  it('indexes sidebars keyed by directory one section per group, landing pages included', () => {
+    const keyed = site({
+      pages: ['index.md', 'guide.md', 'integrations/index.md', 'integrations/codex.md'],
+    });
+    (keyed.site.locales?.root as { themeConfig?: unknown }).themeConfig = {
+      sidebar: {
+        '/guide': [{ text: 'Getting started', items: [{ text: 'Guide', link: '/guide' }] }],
+        '/integrations/': [
+          { text: 'Overview', link: '/integrations/' },
+          { text: 'Agent clients', items: [{ text: 'Codex', link: '/integrations/codex' }] },
+        ],
+      },
+    };
+    expect(collectPages(keyed, 'en')).toEqual([
+      ['Getting started', [expect.objectContaining({ page: 'guide.md', title: 'Guide' })]],
+      [
+        'Agent clients',
+        [
+          expect.objectContaining({ page: 'integrations/index.md', title: 'Overview' }),
+          expect.objectContaining({ page: 'integrations/codex.md', title: 'Codex' }),
+        ],
+      ],
+    ]);
+    const text = llmsTxt(keyed, { hostname: 'https://beacon.openlinkos.com', locale: 'en' });
+    expect(text).toContain(
+      '- [Overview](https://beacon.openlinkos.com/integrations/index.md): The tools around Beacon.',
+    );
+    expect(text).not.toContain('## Pages');
   });
 
   it('falls back to pages in file order when a locale has no sidebar', () => {
